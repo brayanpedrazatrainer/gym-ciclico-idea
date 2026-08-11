@@ -6,12 +6,13 @@
 <title>Club Gym Cíclico — Tu carta de hoy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@400;600;800;900&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,300;1,9..144,400&family=Karla:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@400;600;800;900&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,300&family=Karla:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#0E0B0A; --surface:#191211; --surface-2:#221818; --surface-3:#2C1F1E;
     --burgundy:#710D0B; --red:#C7372C; --gold:#B8963E; --gold-soft:#E0C97F;
     --cream:#F2E9DC; --muted:#A08D82; --line:rgba(184,150,62,.22);
+    --paper:#EFE4D2; --paper-2:#E4D6BE; --tinta:#33201C; --tinta-2:#6B4B42;
     --heroic:'Cinzel',Georgia,serif;
     --brandface:'Bebas Neue',Impact,sans-serif;
     --voice:'Fraunces',Georgia,serif;
@@ -35,7 +36,6 @@
   .view.active{display:block}
   @keyframes enter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
-  /* ornamento divisorio */
   .rule{display:flex;align-items:center;gap:9px;margin:16px 0}
   .rule::before,.rule::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent)}
   .rule span{font-size:8px;color:var(--gold);letter-spacing:.3em}
@@ -44,94 +44,174 @@
   .lead{font-family:var(--voice);font-style:italic;font-weight:300;font-size:19px;line-height:1.45;color:var(--cream)}
   .sub{font-size:12.5px;color:var(--muted);line-height:1.5}
 
-  .btn{display:block;width:100%;padding:16px;background:var(--red);color:#fff;border:none;border-radius:10px;
-    font-family:var(--heroic);font-weight:800;font-size:13.5px;letter-spacing:.2em;cursor:pointer;
-    transition:background .18s;position:relative}
-  .btn::after{content:'';position:absolute;inset:4px;border:1px solid rgba(255,255,255,.22);border-radius:7px;pointer-events:none}
-  .btn:hover{background:var(--burgundy)}
+  /* botón con volumen */
+  .btn{display:block;width:100%;padding:16px;border:none;border-radius:10px;cursor:pointer;position:relative;
+    font-family:var(--heroic);font-weight:800;font-size:13.5px;letter-spacing:.2em;color:#fff;
+    background:linear-gradient(178deg,#D8503F 0%,var(--red) 42%,#8E1A12 100%);
+    box-shadow:0 5px 0 -1px #5C0806, 0 9px 18px -6px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,.25);
+    transition:transform .12s ease, box-shadow .12s ease, filter .18s ease}
+  .btn::after{content:'';position:absolute;inset:4px;border:1px solid rgba(255,255,255,.20);border-radius:7px;pointer-events:none}
+  .btn:hover{filter:brightness(1.06)}
+  .btn:active{transform:translateY(4px);box-shadow:0 1px 0 -1px #5C0806, 0 4px 10px -6px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.2)}
   .btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
-  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--gold-soft)}
+  .btn.ghost{background:linear-gradient(178deg,rgba(44,31,30,.9),rgba(25,18,17,.9));color:var(--gold-soft);
+    box-shadow:0 4px 0 -1px #0B0807, inset 0 1px 0 rgba(242,233,220,.10), 0 0 0 1px var(--line)}
   .btn.ghost::after{display:none}
-  .btn.ghost:hover{background:var(--surface-2)}
 
-  /* ── SOBRE SELLADO ────────────────────── */
-  .env-stage{display:flex;justify-content:center;margin:24px 0 6px}
-  .envelope{width:100%;max-width:280px;aspect-ratio:1.5/1;position:relative;border-radius:10px;
+  /* ── ESCENA 3D ────────────────────────── */
+  .scene{perspective:900px;perspective-origin:50% 40%;margin:26px 0 6px;display:flex;justify-content:center}
+  .scene{width:100%}
+  .tilt{width:100%;max-width:290px;transform-style:preserve-3d;transition:transform .25s ease-out;will-change:transform}
+
+  .envelope{width:100%;aspect-ratio:1.42/1;position:relative;border-radius:6px;
+    transform-style:preserve-3d;
     background:
       repeating-linear-gradient(58deg,rgba(0,0,0,.10) 0 3px,transparent 3px 9px),
-      linear-gradient(155deg,#2A0908 0%,var(--burgundy) 55%,#3A0F0D 100%);
-    border:1px solid var(--gold);overflow:hidden;display:flex;align-items:center;justify-content:center}
-  .envelope::before{content:'';position:absolute;top:0;left:0;right:0;height:62%;
-    background:linear-gradient(170deg,rgba(0,0,0,.30),rgba(0,0,0,0));
-    clip-path:polygon(0 0,100% 0,50% 100%);border-bottom:1px solid rgba(184,150,62,.45)}
-  .envelope::after{content:'';position:absolute;inset:6px;border:1px solid rgba(184,150,62,.30);border-radius:6px}
-  .seal{width:72px;height:72px;position:relative;z-index:2;transition:transform .5s ease,opacity .5s ease}
-  .envelope.open .seal{transform:scale(.35) rotate(-32deg);opacity:0}
-  .glow{position:absolute;inset:0;background:linear-gradient(105deg,transparent 38%,rgba(242,233,220,.15) 50%,transparent 62%);
-    transform:translateX(-100%);animation:sweep 3.4s ease-in-out infinite}
+      linear-gradient(155deg,#3A0F0D 0%,var(--burgundy) 52%,#2A0908 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(242,233,220,.14),
+      inset 0 -2px 6px rgba(0,0,0,.5),
+      0 18px 30px -14px rgba(0,0,0,.85),
+      0 3px 0 -1px #1E0605;
+    border:1px solid rgba(184,150,62,.55);
+    display:flex;align-items:center;justify-content:center}
+  /* solapa con pliegue real */
+  .flap{position:absolute;top:0;left:0;right:0;height:62%;transform-origin:top center;z-index:4;
+    background:linear-gradient(172deg,#4A1512 0%,#340D0B 62%,#240706 100%);
+    clip-path:polygon(0 0,100% 0,50% 100%);
+    box-shadow:0 2px 8px rgba(0,0,0,.5);
+    transition:transform .85s cubic-bezier(.35,1,.35,1);
+    transform:rotateX(0deg) translateZ(2px);backface-visibility:hidden}
+  .flap::after{content:'';position:absolute;inset:0;
+    background:linear-gradient(172deg,rgba(242,233,220,.10),transparent 55%);
+    clip-path:polygon(0 0,100% 0,50% 100%)}
+  .envelope.open .flap{transform:rotateX(-172deg) translateZ(2px)}
+  .env-inner{position:absolute;inset:6px;z-index:1;border:1px solid rgba(184,150,62,.22);border-radius:4px;
+    box-shadow:inset 0 0 22px rgba(0,0,0,.45)}
+  /* costuras: los dos triángulos laterales del pliego */
+  .seam{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;border-radius:6px}
+  .seam::before,.seam::after{content:'';position:absolute;top:0;bottom:0;width:53%;
+    background:linear-gradient(90deg,rgba(0,0,0,.30) 0%,rgba(0,0,0,.04) 100%)}
+  .seam::before{left:0;clip-path:polygon(0 0,100% 50%,0 100%)}
+  .seam::after{right:0;transform:scaleX(-1);clip-path:polygon(0 0,100% 50%,0 100%)}
+
+  /* lacre con relieve */
+  .seal{width:78px;height:78px;position:absolute;top:50%;left:50%;z-index:6;
+    transform:translate(-50%,-50%) translateZ(18px);
+    filter:drop-shadow(0 6px 10px rgba(0,0,0,.75));
+    transition:transform .55s cubic-bezier(.5,-.3,.6,1),opacity .5s ease}
+  .envelope.open .seal{transform:translate(-50%,-50%) translateZ(60px) scale(.3) rotate(-38deg);opacity:0}
+
+  .glow{position:absolute;inset:0;border-radius:6px;pointer-events:none;z-index:7;
+    background:linear-gradient(105deg,transparent 38%,rgba(242,233,220,.13) 50%,transparent 62%);
+    transform:translateX(-100%);animation:sweep 3.6s ease-in-out infinite}
   @keyframes sweep{0%{transform:translateX(-100%)}55%,100%{transform:translateX(100%)}}
 
-  /* ── CARTA ────────────────────────────── */
-  .letter{position:relative;border-radius:10px;padding:26px 22px 20px;
-    background:
-      repeating-linear-gradient(94deg,rgba(242,233,220,.014) 0 1px,transparent 1px 5px),
-      linear-gradient(172deg,var(--surface-3) 0%,#160F0E 100%);
-    border:1px solid var(--gold);transform-origin:top center;
-    transition:transform .7s cubic-bezier(.22,1,.36,1),opacity .5s ease .12s}
-  .letter.folded{transform:scaleY(.06);opacity:0;pointer-events:none;height:0;padding:0;margin:0;border:none;overflow:hidden}
-  .letter::after{content:'';position:absolute;inset:6px;border:1px solid rgba(184,150,62,.20);border-radius:6px;pointer-events:none}
-  .crest{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:6px}
-  .l-phase{font-family:var(--heroic);font-weight:900;font-size:19px;letter-spacing:.13em;color:var(--gold-soft);
-    line-height:1.25;margin-top:9px}
-  .l-meta{font-family:var(--heroic);font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);line-height:1.9;margin-top:5px}
-  .l-body{font-family:var(--voice);font-style:italic;font-weight:300;font-size:15px;line-height:1.64;color:var(--cream)}
-  .l-body p{margin-bottom:11px}
-  .l-body p:first-child{font-style:normal;font-family:var(--heroic);font-weight:600;font-size:12px;
-    letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
-  .l-sign{margin-top:14px;padding-top:15px;border-top:1px solid rgba(184,150,62,.28);
-    display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
-  .l-sign small{font-family:var(--heroic);font-size:7.5px;letter-spacing:.24em;text-transform:uppercase;
-    color:var(--muted);display:block;margin-bottom:5px}
-  .l-sign b{font-family:var(--heroic);font-weight:900;font-size:23px;letter-spacing:.1em;color:var(--cream);line-height:1}
-  .l-from{font-family:var(--voice);font-style:italic;font-size:13px;color:var(--muted);white-space:nowrap}
+  /* ── LA HOJA DE PAPEL ─────────────────── */
+  .pocket{position:absolute;left:0;right:0;bottom:0;height:52%;z-index:5;border-radius:0 0 7px 7px;
+    background:linear-gradient(178deg,#5C1714 0%,#3A0F0D 40%,#2A0908 100%);
+    border-top:1px solid rgba(184,150,62,.35);
+    box-shadow:0 -5px 12px rgba(0,0,0,.55),inset 0 1px 0 rgba(242,233,220,.10)}
+  .peek{position:absolute;left:9%;right:9%;top:16%;height:40%;z-index:3;border-radius:3px 3px 0 0;
+    background:linear-gradient(180deg,var(--paper) 0%,var(--paper-2) 100%);
+    box-shadow:0 -2px 6px rgba(0,0,0,.35);opacity:0;transition:opacity .3s ease .5s}
+  .envelope.open .peek{opacity:1}
 
-  /* ── CHECK-IN ─────────────────────────── */
+  .sheet-stage{position:relative;overflow:hidden}
+  .sheet{position:relative;padding:30px 26px 26px;border-radius:2px;color:var(--tinta);
+    background:
+      repeating-linear-gradient(91deg,rgba(120,90,60,.030) 0 1px,transparent 1px 4px),
+      radial-gradient(120% 80% at 20% 0%,#F7EFE0 0%,rgba(247,239,224,0) 60%),
+      linear-gradient(168deg,var(--paper) 0%,#EADCC6 52%,var(--paper-2) 100%);
+    box-shadow:
+      inset 0 0 40px rgba(150,115,75,.22),
+      inset 0 1px 0 rgba(255,255,255,.6),
+      0 3px 0 -1px #C9B99C,
+      0 6px 0 -3px #B8A588,
+      0 26px 44px -18px rgba(0,0,0,.9);
+    transform:translateY(-46%) scale(.94);opacity:0;
+    transition:transform 1.05s cubic-bezier(.2,.9,.25,1),opacity .5s ease}
+  .sheet.out{transform:translateY(0) scale(1);opacity:1}
+  .crease{position:absolute;left:0;right:0;height:10px;pointer-events:none;
+    background:linear-gradient(180deg,rgba(120,90,60,.16),rgba(255,255,255,.55) 50%,rgba(120,90,60,.10))}
+  .crease.c-a{top:33%}
+  .crease.c-b{top:66%}
+  .torn{position:absolute;left:0;right:0;top:0;height:6px;opacity:.5;
+    background:repeating-linear-gradient(90deg,var(--paper) 0 5px,rgba(0,0,0,.06) 5px 6px,var(--paper) 6px 11px)}
+
+  .s-crest{display:flex;flex-direction:column;align-items:center;text-align:center}
+  .s-phase{font-family:var(--heroic);font-weight:900;font-size:18px;letter-spacing:.13em;
+    color:var(--burgundy);line-height:1.3;margin-top:8px}
+  .s-meta{font-family:var(--heroic);font-size:7.5px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--tinta-2);line-height:1.9;margin-top:5px}
+  .s-rule{display:flex;align-items:center;gap:9px;margin:15px 0 17px}
+  .s-rule::before,.s-rule::after{content:'';flex:1;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(113,13,11,.35),transparent)}
+  .s-rule span{font-size:7.5px;color:var(--burgundy);letter-spacing:.3em}
+
+  .s-body{font-family:var(--voice);font-weight:400;font-size:15.5px;line-height:1.68;color:var(--tinta);position:relative;z-index:2}
+  .s-body p{margin-bottom:12px}
+  .s-body p:first-child{font-family:var(--heroic);font-weight:600;font-size:12.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--burgundy);margin-bottom:15px}
+  .s-body p:last-child{margin-bottom:0}
+
+  .s-sign{margin-top:20px;padding-top:16px;border-top:1px solid rgba(113,13,11,.28);
+    display:flex;justify-content:space-between;align-items:flex-end;gap:12px;position:relative;z-index:2}
+  .s-sign small{font-family:var(--heroic);font-size:7px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--tinta-2);display:block;margin-bottom:5px}
+  .s-sign b{font-family:var(--heroic);font-weight:900;font-size:23px;letter-spacing:.1em;color:var(--burgundy);line-height:1}
+  .s-from{font-family:var(--voice);font-style:italic;font-weight:400;font-size:16px;color:var(--tinta-2);white-space:nowrap}
+
+  /* ── CHECK-IN con relieve ─────────────── */
   .row{margin-bottom:12px}
   .row-name{font-family:var(--heroic);font-weight:600;font-size:9px;letter-spacing:.22em;
     text-transform:uppercase;color:var(--muted);margin-bottom:7px}
   .chips{display:flex;gap:6px}
-  .chip{flex:1;padding:11px 4px;border-radius:7px;background:var(--surface-2);
-    border:1px solid rgba(242,233,220,.09);color:var(--muted);font-family:var(--ui);font-size:12px;
-    font-weight:500;cursor:pointer;transition:all .18s}
+  .chip{flex:1;padding:11px 4px;border-radius:7px;cursor:pointer;transition:all .16s ease;
+    background:linear-gradient(178deg,#2B2020,#1C1414);
+    border:1px solid rgba(242,233,220,.09);color:var(--muted);
+    font-family:var(--ui);font-size:12px;font-weight:500;
+    box-shadow:0 3px 0 -1px #0C0808, inset 0 1px 0 rgba(242,233,220,.07)}
   .chip:hover{border-color:rgba(184,150,62,.45);color:var(--cream)}
-  .chip[aria-pressed=true]{background:var(--burgundy);border-color:var(--gold);color:var(--cream)}
+  .chip[aria-pressed=true]{color:var(--cream);border-color:var(--gold);
+    background:linear-gradient(178deg,#5A0F0C,var(--burgundy));
+    transform:translateY(3px);
+    box-shadow:0 0 0 0 #0C0808, inset 0 3px 7px rgba(0,0,0,.6)}
   .chip:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
   /* ── DIAL / INSTRUMENTO ───────────────── */
-  .dial-wrap{position:relative;display:flex;justify-content:center;margin-top:10px}
-  svg.dial{width:220px;height:220px;overflow:visible}
+  .dial-wrap{position:relative;display:flex;justify-content:center;margin-top:10px;perspective:800px}
+  .dial-tilt{transform-style:preserve-3d;transition:transform .25s ease-out}
+  svg.dial{width:220px;height:220px;overflow:visible;filter:drop-shadow(0 10px 14px rgba(0,0,0,.6))}
   .seg{fill:none;stroke-width:8;stroke-linecap:butt;transition:stroke .5s,stroke-width .5s}
   .seg.on{stroke-width:14}
   #marker{transition:transform .55s cubic-bezier(.22,1,.36,1)}
   .dial-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
-  .day-num{font-family:var(--brandface);font-size:48px;line-height:.82;color:var(--cream)}
+  .day-num{font-family:var(--brandface);font-size:48px;line-height:.82;color:var(--cream);
+    text-shadow:0 2px 0 rgba(0,0,0,.8),0 -1px 0 rgba(242,233,220,.14)}
   .day-word{font-family:var(--heroic);font-size:7.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);margin-top:7px}
   .dial-tag{font-family:var(--heroic);font-weight:800;font-size:10.5px;letter-spacing:.16em;color:var(--gold);margin-top:10px}
 
   .scrub{margin:18px 2px 4px}
   .scrub-label{display:flex;justify-content:space-between;font-family:var(--heroic);font-size:7.5px;
     letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
-  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:2px;border-radius:2px;outline:none;
-    background:linear-gradient(90deg,var(--burgundy) 0 18%,var(--red) 18% 43%,var(--gold-soft) 43% 57%,#8A5A2B 57% 100%)}
-  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;
-    background:var(--cream);border:3px solid var(--ink);box-shadow:0 0 0 1px var(--gold);cursor:grab}
-  input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--cream);
-    border:3px solid var(--ink);box-shadow:0 0 0 1px var(--gold);cursor:grab}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;outline:none;
+    background:linear-gradient(90deg,var(--burgundy) 0 18%,var(--red) 18% 43%,var(--gold-soft) 43% 57%,#8A5A2B 57% 100%);
+    box-shadow:inset 0 2px 4px rgba(0,0,0,.6)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;border-radius:50%;cursor:grab;
+    background:radial-gradient(circle at 34% 28%,#FFF6E2,var(--cream) 45%,#9C8B78);
+    border:2px solid #0E0B0A;box-shadow:0 3px 6px rgba(0,0,0,.7),0 0 0 1px var(--gold)}
+  input[type=range]::-moz-range-thumb{width:17px;height:17px;border-radius:50%;cursor:grab;
+    background:radial-gradient(circle at 34% 28%,#FFF6E2,var(--cream) 45%,#9C8B78);
+    border:2px solid #0E0B0A;box-shadow:0 3px 6px rgba(0,0,0,.7),0 0 0 1px var(--gold)}
   input[type=range]:focus-visible{box-shadow:0 0 0 3px rgba(184,150,62,.5)}
 
-  /* ── PANELS con herrajes ──────────────── */
-  .panel{position:relative;background:linear-gradient(180deg,var(--surface-2) 0%,rgba(34,24,24,.35) 100%);
-    border:1px solid var(--line);border-radius:10px;padding:20px 17px;margin-top:22px}
+  /* ── PANELS con volumen ───────────────── */
+  .panel{position:relative;border-radius:10px;padding:20px 17px;margin-top:22px;
+    background:linear-gradient(178deg,#291E1D 0%,var(--surface-2) 38%,rgba(22,15,14,.92) 100%);
+    border:1px solid var(--line);
+    box-shadow:inset 0 1px 0 rgba(242,233,220,.08), inset 0 -12px 22px -14px rgba(0,0,0,.7),
+      0 3px 0 -1px #100B0A, 0 16px 26px -18px rgba(0,0,0,.85)}
   .panel .corner{position:absolute;width:11px;height:11px;border:1px solid var(--gold);opacity:.55}
   .panel .c1{top:5px;left:5px;border-right:none;border-bottom:none}
   .panel .c2{top:5px;right:5px;border-left:none;border-bottom:none}
@@ -139,7 +219,8 @@
   .panel .c4{bottom:5px;right:5px;border-left:none;border-top:none}
 
   .p-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-  .intent{font-family:var(--heroic);font-weight:900;font-size:25px;letter-spacing:.1em;color:var(--cream);line-height:1.1}
+  .intent{font-family:var(--heroic);font-weight:900;font-size:25px;letter-spacing:.1em;color:var(--cream);line-height:1.1;
+    text-shadow:0 2px 0 rgba(0,0,0,.8),0 -1px 0 rgba(242,233,220,.13)}
   .dur{font-family:var(--heroic);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding-top:7px}
   .session-name{font-size:12.5px;color:var(--muted);margin:4px 0 16px}
   .blocks{list-style:none}
@@ -149,13 +230,15 @@
   .b-note{flex:1.1;font-size:11.5px;color:var(--muted);line-height:1.35}
   .b-min{font-family:var(--brandface);font-size:17px;color:var(--gold);min-width:32px;text-align:right}
 
-  .note{margin-top:15px;padding:12px 13px;border-radius:7px;font-size:12.5px;line-height:1.5}
+  .note{margin-top:15px;padding:12px 13px;border-radius:7px;font-size:12.5px;line-height:1.5;
+    box-shadow:inset 0 1px 0 rgba(242,233,220,.05)}
   .note.adjust{background:rgba(199,55,44,.12);border-left:2px solid var(--red);color:var(--cream)}
   .note.warn{background:rgba(184,150,62,.10);border-left:2px solid var(--gold);color:var(--gold-soft)}
   .note.body{background:rgba(242,233,220,.05);border-left:2px solid var(--muted);color:var(--cream)}
   .note[hidden]{display:none}
 
-  .p-title{font-family:var(--heroic);font-weight:900;font-size:15px;letter-spacing:.14em;color:var(--cream);margin-bottom:5px}
+  .p-title{font-family:var(--heroic);font-weight:900;font-size:15px;letter-spacing:.14em;color:var(--cream);margin-bottom:5px;
+    text-shadow:0 1px 0 rgba(0,0,0,.7)}
   .p-promise{font-size:11.5px;color:var(--muted);margin-bottom:14px;line-height:1.45}
 
   .pattern{display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-bottom:1px dashed rgba(242,233,220,.09)}
@@ -165,16 +248,19 @@
   .pat-text em{font-family:var(--voice);font-style:italic;color:var(--gold-soft)}
 
   .switch{display:flex;gap:6px;margin:12px 0 14px}
-  .switch button{flex:1;padding:12px 6px;border-radius:7px;cursor:pointer;background:transparent;
-    border:1px solid rgba(242,233,220,.12);color:var(--muted);font-family:var(--ui);font-size:12px;
-    font-weight:500;transition:all .18s}
-  .switch button[aria-pressed=true]{background:var(--surface-2);border-color:var(--gold);color:var(--gold-soft)}
+  .switch button{flex:1;padding:12px 6px;border-radius:7px;cursor:pointer;transition:all .16s;
+    background:linear-gradient(178deg,#2B2020,#1C1414);
+    border:1px solid rgba(242,233,220,.12);color:var(--muted);font-family:var(--ui);font-size:12px;font-weight:500;
+    box-shadow:0 3px 0 -1px #0C0808, inset 0 1px 0 rgba(242,233,220,.06)}
+  .switch button[aria-pressed=true]{border-color:var(--gold);color:var(--gold-soft);transform:translateY(3px);
+    box-shadow:0 0 0 0 #0C0808, inset 0 3px 7px rgba(0,0,0,.55)}
   .switch button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   .corte{display:flex;align-items:center;gap:10px}
   .faces{display:flex}
   .face-av{width:27px;height:27px;border-radius:3px;border:1px solid var(--gold);margin-left:-7px;
     font-family:var(--heroic);font-weight:700;font-size:11px;display:flex;align-items:center;
-    justify-content:center;color:var(--cream);transform:rotate(45deg)}
+    justify-content:center;color:var(--cream);transform:rotate(45deg);
+    box-shadow:0 3px 6px rgba(0,0,0,.6),inset 0 1px 0 rgba(242,233,220,.18)}
   .face-av span{transform:rotate(-45deg)}
   .face-av:first-child{margin-left:0}
   .corte-text{font-size:12px;color:var(--muted);line-height:1.4;margin-left:6px}
@@ -182,47 +268,83 @@
   .privacy{margin-top:18px;font-family:var(--voice);font-style:italic;font-weight:300;font-size:13px;
     color:var(--muted);text-align:center;line-height:1.5}
 
-  .archive{display:flex;gap:9px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+  .archive{display:flex;gap:10px;overflow-x:auto;padding:4px 0 8px;scrollbar-width:none;perspective:600px}
   .archive::-webkit-scrollbar{display:none}
-  .env-mini{flex:0 0 76px;height:56px;border-radius:5px;position:relative;
-    background:linear-gradient(155deg,#2A0908,var(--burgundy));border:1px solid rgba(184,150,62,.4);
-    display:flex;align-items:center;justify-content:center}
-  .env-mini::before{content:'';position:absolute;top:0;left:0;right:0;height:60%;
-    background:rgba(0,0,0,.22);clip-path:polygon(0 0,100% 0,50% 100%)}
-  .env-mini b{position:relative;font-family:var(--heroic);font-weight:700;font-size:9px;letter-spacing:.12em;
-    color:var(--gold-soft);text-align:center;line-height:1.1;padding:0 5px}
-  .env-mini.sealed{background:var(--surface-3);border-style:dashed;border-color:rgba(242,233,220,.14);opacity:.5}
-  .env-mini.sealed::before{display:none}
+  .sheet-mini{flex:0 0 62px;height:78px;border-radius:2px;position:relative;
+    background:linear-gradient(168deg,var(--paper) 0%,#E2D3B9 100%);
+    border:1px solid rgba(120,90,60,.35);display:flex;align-items:flex-end;justify-content:center;
+    padding-bottom:7px;transform:rotateY(-10deg);transition:transform .25s ease;
+    box-shadow:0 6px 10px -5px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.6)}
+  .sheet-mini:hover{transform:rotateY(0deg) translateY(-3px)}
+  .sheet-mini::before{content:'';position:absolute;left:0;right:0;top:33%;height:5px;
+    background:linear-gradient(180deg,rgba(120,90,60,.14),rgba(255,255,255,.5))}
+  .sheet-mini::after{content:'';position:absolute;left:9px;right:9px;top:13px;height:1px;
+    background:rgba(113,13,11,.35);
+    box-shadow:0 5px 0 rgba(120,90,60,.22),0 10px 0 rgba(120,90,60,.22),0 15px 0 rgba(120,90,60,.16)}
+  .sheet-mini b{position:relative;font-family:var(--heroic);font-weight:700;font-size:8px;letter-spacing:.1em;color:var(--burgundy)}
+  .sheet-mini.sealed{background:linear-gradient(178deg,#2C1F1E,#1A1312);border-style:dashed;
+    border-color:rgba(242,233,220,.14);opacity:.5;box-shadow:inset 0 2px 6px rgba(0,0,0,.5)}
+  .sheet-mini.sealed::before,.sheet-mini.sealed::after{display:none}
+  .sheet-mini.sealed b{color:var(--muted)}
 
   @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-  @media (max-width:400px){svg.dial{width:196px;height:196px}.l-phase{font-size:17px}}
+  @media (max-width:400px){svg.dial{width:196px;height:196px}.s-phase{font-size:16.5px}.sheet{padding:26px 20px 22px}}
 </style>
 </head>
 <body>
 
 <p class="stage-label">Club Gym Cíclico — flujo diario</p>
 
-<div class="phone">
+<div class="phone" id="phone">
   <div class="top"><span class="brand">GYM CÍCLICO</span><span class="today" id="dateLine"></span></div>
+
+  <!-- SVG defs compartidos -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <radialGradient id="waxG" cx="34%" cy="26%" r="78%">
+        <stop offset="0" stop-color="#FBE9B8"/><stop offset=".26" stop-color="#E0C97F"/>
+        <stop offset=".62" stop-color="#B8963E"/><stop offset="1" stop-color="#5E4715"/>
+      </radialGradient>
+      <linearGradient id="rimG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#FFF3CE" stop-opacity=".85"/>
+        <stop offset="1" stop-color="#4A3810" stop-opacity=".8"/>
+      </linearGradient>
+      <filter id="emboss" x="-30%" y="-30%" width="160%" height="160%">
+        <feDropShadow dx="0" dy="1.4" stdDeviation="0.7" flood-color="#3A2A08" flood-opacity=".85"/>
+        <feDropShadow dx="0" dy="-1" stdDeviation="0.5" flood-color="#FFF0C4" flood-opacity=".45"/>
+      </filter>
+      <filter id="press" x="-30%" y="-30%" width="160%" height="160%">
+        <feDropShadow dx="0" dy="1" stdDeviation="0.5" flood-color="#FFFFFF" flood-opacity=".75"/>
+        <feDropShadow dx="0" dy="-0.7" stdDeviation="0.4" flood-color="#8A6B4E" flood-opacity=".55"/>
+      </filter>
+    </defs>
+  </svg>
 
   <!-- 1 · INTRO -->
   <section class="view active" id="v-intro">
-    <div class="env-stage">
-      <div class="envelope">
-        <div class="seal">
-          <svg viewBox="0 0 72 72" width="72" height="72">
-            <defs>
-              <radialGradient id="wax" cx="35%" cy="28%">
-                <stop offset="0" stop-color="#E0C97F"/><stop offset=".45" stop-color="#B8963E"/><stop offset="1" stop-color="#6E551C"/>
-              </radialGradient>
-            </defs>
-            <circle cx="36" cy="36" r="33" fill="url(#wax)"/>
-            <circle cx="36" cy="36" r="28" fill="none" stroke="#2A0908" stroke-width="1" opacity=".55"/>
-            <path d="M36 20 L48 30 L44 48 L28 48 L24 30 Z" fill="#2A0908" opacity=".82"/>
-            <path d="M27 27 L31 32 L36 25 L41 32 L45 27 L44 34 L28 34 Z" fill="#2A0908"/>
-          </svg>
+    <div class="scene">
+      <div class="tilt" data-tilt>
+        <div class="envelope">
+          <div class="env-inner"></div>
+          <div class="seam"></div>
+          <div class="peek"></div>
+          <div class="flap"></div>
+          <div class="pocket"></div>
+          <div class="seal">
+            <svg viewBox="0 0 82 82" width="82" height="82">
+              <circle cx="41" cy="41" r="38" fill="url(#waxG)"/>
+              <circle cx="41" cy="41" r="38" fill="none" stroke="url(#rimG)" stroke-width="1.6"/>
+              <circle cx="41" cy="41" r="32" fill="none" stroke="#5E4715" stroke-width="1" opacity=".55"/>
+              <g filter="url(#emboss)" fill="#4A3810" opacity=".92">
+                <path d="M30 30 L35 36 L41 27 L47 36 L52 30 L50 39 L32 39 Z"/>
+                <path d="M32 42 L50 42 L50 51 C50 58 45 61 41 63 C37 61 32 58 32 51 Z"
+                      fill="none" stroke="#4A3810" stroke-width="2.2"/>
+                <path d="M41 46 L41 58 M36 50 L46 50" stroke="#4A3810" stroke-width="1.8" fill="none"/>
+              </g>
+            </svg>
+          </div>
+          <div class="glow"></div>
         </div>
-        <div class="glow"></div>
       </div>
     </div>
     <div class="rule"><span>◆</span></div>
@@ -278,36 +400,55 @@
 
   <!-- 3 · CARTA + DÍA -->
   <section class="view" id="v-day">
-    <div class="env-stage" id="envStage">
-      <div class="envelope" id="envelope">
-        <div class="seal">
-          <svg viewBox="0 0 72 72" width="72" height="72">
-            <circle cx="36" cy="36" r="33" fill="url(#wax)" style="fill:#B8963E"/>
-            <circle cx="36" cy="36" r="28" fill="none" stroke="#2A0908" stroke-width="1" opacity=".55"/>
-            <path d="M36 20 L48 30 L44 48 L28 48 L24 30 Z" fill="#2A0908" opacity=".82"/>
-            <path d="M27 27 L31 32 L36 25 L41 32 L45 27 L44 34 L28 34 Z" fill="#2A0908"/>
-          </svg>
+    <div class="scene" id="envStage">
+      <div class="tilt" data-tilt>
+        <div class="envelope" id="envelope">
+          <div class="env-inner"></div>
+          <div class="seam"></div>
+          <div class="peek"></div>
+          <div class="flap"></div>
+          <div class="pocket"></div>
+          <div class="seal">
+            <svg viewBox="0 0 82 82" width="82" height="82">
+              <circle cx="41" cy="41" r="38" fill="url(#waxG)"/>
+              <circle cx="41" cy="41" r="38" fill="none" stroke="url(#rimG)" stroke-width="1.6"/>
+              <circle cx="41" cy="41" r="32" fill="none" stroke="#5E4715" stroke-width="1" opacity=".55"/>
+              <g filter="url(#emboss)" fill="#4A3810" opacity=".92">
+                <path d="M30 30 L35 36 L41 27 L47 36 L52 30 L50 39 L32 39 Z"/>
+                <path d="M32 42 L50 42 L50 51 C50 58 45 61 41 63 C37 61 32 58 32 51 Z"
+                      fill="none" stroke="#4A3810" stroke-width="2.2"/>
+                <path d="M41 46 L41 58 M36 50 L46 50" stroke="#4A3810" stroke-width="1.8" fill="none"/>
+              </g>
+            </svg>
+          </div>
+          <div class="glow"></div>
         </div>
-        <div class="glow"></div>
       </div>
     </div>
 
-    <div class="letter folded" id="letter">
-      <div class="crest">
-        <svg viewBox="0 0 46 52" width="42" height="48" aria-hidden="true">
-          <path d="M9 12 L14 16 L23 7 L32 16 L37 12 L35 21 L11 21 Z" fill="#B8963E"/>
-          <path d="M11 24 L35 24 L35 34 C35 42 29 46 23 49 C17 46 11 42 11 34 Z"
-                fill="none" stroke="#B8963E" stroke-width="1.4"/>
-          <path d="M23 28 L23 43 M17 33 L29 33" stroke="#B8963E" stroke-width="1.2" opacity=".7"/>
-        </svg>
-        <div class="l-phase" id="lPhase">REINA EN REPLIEGUE</div>
-        <div class="l-meta" id="lMeta"></div>
-      </div>
-      <div class="rule"><span>◆</span></div>
-      <div class="l-body" id="lBody"></div>
-      <div class="l-sign">
-        <div><small>Intención de hoy</small><b id="lIntent">SOSTENER</b></div>
-        <div class="l-from">— Brayan</div>
+    <!-- LA HOJA -->
+    <div class="sheet-stage">
+      <div class="sheet" id="sheet">
+        <div class="torn"></div>
+        <div class="crease c-a"></div>
+        <div class="crease c-b"></div>
+        <div class="s-crest">
+          <svg viewBox="0 0 46 54" width="40" height="47" aria-hidden="true">
+            <g filter="url(#press)">
+              <path d="M9 12 L14 17 L23 7 L32 17 L37 12 L35 22 L11 22 Z" fill="#710D0B"/>
+              <path d="M11 25 L35 25 L35 35 C35 43 29 47 23 50 C17 47 11 43 11 35 Z" fill="none" stroke="#710D0B" stroke-width="1.6"/>
+              <path d="M23 29 L23 44 M17 34 L29 34" stroke="#710D0B" stroke-width="1.4"/>
+            </g>
+          </svg>
+          <div class="s-phase" id="sPhase">REINA EN REPLIEGUE</div>
+          <div class="s-meta" id="sMeta"></div>
+        </div>
+        <div class="s-rule"><span>&#9670;</span></div>
+        <div class="s-body" id="sBody"></div>
+        <div class="s-sign">
+          <div><small>Intenci&oacute;n de hoy</small><b id="sIntent">SOSTENER</b></div>
+          <div class="s-from">&mdash; Brayan</div>
+        </div>
       </div>
     </div>
 
@@ -317,16 +458,20 @@
       <p class="p-title">TU POSICIÓN</p>
       <p class="p-promise">Las cuatro fases de tu ciclo, con sus 28 marcas. El punto blanco eres tú.</p>
       <div class="dial-wrap">
-        <svg class="dial" viewBox="0 0 220 220" role="img" aria-label="Tu ciclo">
-          <circle cx="110" cy="110" r="99" fill="none" stroke="rgba(184,150,62,.28)" stroke-width="1"/>
-          <circle cx="110" cy="110" r="95" fill="none" stroke="rgba(184,150,62,.55)" stroke-width="4"
-                  stroke-dasharray="1.6 19.7" stroke-dashoffset="0.8"/>
-          <g id="segs"></g>
-          <g id="marker">
-            <circle cx="110" cy="24" r="9" fill="rgba(242,233,220,.14)"></circle>
-            <circle cx="110" cy="24" r="5" fill="#F2E9DC" stroke="#0E0B0A" stroke-width="2.5"></circle>
-          </g>
-        </svg>
+        <div class="dial-tilt" data-tilt data-strength="6">
+          <svg class="dial" viewBox="0 0 220 220" role="img" aria-label="Tu ciclo">
+            <circle cx="110" cy="110" r="102" fill="none" stroke="rgba(0,0,0,.55)" stroke-width="7"/>
+            <circle cx="110" cy="110" r="99" fill="none" stroke="rgba(184,150,62,.30)" stroke-width="1"/>
+            <circle cx="110" cy="110" r="95" fill="none" stroke="rgba(184,150,62,.55)" stroke-width="4"
+                    stroke-dasharray="1.6 19.7" stroke-dashoffset="0.8"/>
+            <g id="segs"></g>
+            <g id="marker">
+              <circle cx="110" cy="24" r="9" fill="rgba(242,233,220,.14)"></circle>
+              <circle cx="110" cy="25.5" r="5" fill="rgba(0,0,0,.6)"></circle>
+              <circle cx="110" cy="24" r="5" fill="#F2E9DC" stroke="#0E0B0A" stroke-width="2.2"></circle>
+            </g>
+          </svg>
+        </div>
         <div class="dial-center">
           <div class="day-num" id="dayNum">22</div>
           <div class="day-word">de 28</div>
@@ -370,10 +515,10 @@
       </div>
       <div class="corte" id="corteBox">
         <div class="faces">
-          <div class="face-av" style="background:#710D0B"><span>M</span></div>
-          <div class="face-av" style="background:#8A5A2B"><span>L</span></div>
-          <div class="face-av" style="background:#4A2F2A"><span>C</span></div>
-          <div class="face-av" style="background:#B8963E;color:#191211"><span>+9</span></div>
+          <div class="face-av" style="background:linear-gradient(160deg,#8E1A16,#5A0A08)"><span>M</span></div>
+          <div class="face-av" style="background:linear-gradient(160deg,#A56B33,#6B4420)"><span>L</span></div>
+          <div class="face-av" style="background:linear-gradient(160deg,#5D3C35,#382220)"><span>C</span></div>
+          <div class="face-av" style="background:linear-gradient(160deg,#E0C97F,#9A7C2E);color:#191211"><span>+9</span></div>
         </div>
         <p class="corte-text" id="corteText"></p>
       </div>
@@ -467,28 +612,33 @@
 
   PHASES.forEach(p=>{
     const a1=((p.from-1)/TOTAL)*360+2.2, a2=(p.to/TOTAL)*360-2.2;
+    const sh=document.createElementNS(NS,'path');
+    sh.setAttribute('d',arc(a1,a2)); sh.setAttribute('fill','none');
+    sh.setAttribute('stroke','rgba(0,0,0,.55)'); sh.setAttribute('stroke-width','9');
+    sh.setAttribute('transform','translate(0,2)');
+    $('segs').appendChild(sh);
     const path=document.createElementNS(NS,'path');
     path.setAttribute('d',arc(a1,a2)); path.setAttribute('class','seg');
     path.dataset.key=p.key; path.style.stroke='rgba(242,233,220,.13)';
     $('segs').appendChild(path);
   });
 
-  $('archive').innerHTML=['Día 18','Día 19','Día 20','Día 21']
-    .map(d=>`<div class="env-mini"><b>${d}</b></div>`).join('')
-    +`<div class="env-mini sealed"><b>HOY</b></div><div class="env-mini sealed"><b>◆</b></div>`;
+  $('archive').innerHTML=['18','19','20','21']
+    .map(d=>`<div class="sheet-mini"><b>DÍA ${d}</b></div>`).join('')
+    +`<div class="sheet-mini sealed"><b>HOY</b></div><div class="sheet-mini sealed"><b>◆</b></div>`;
 
   function render(){
     const p=planFor(state.day);
     const base=PHASES.find(x=>state.day>=x.from&&state.day<=x.to);
 
-    $('lPhase').textContent=p.name;
-    $('lMeta').innerHTML=`${base.tag} · ${base.moon.toUpperCase()}<br>Día ${state.day} · Ciclo 3`;
-    $('lBody').innerHTML=p.letter.map(t=>`<p>${t}</p>`).join('');
-    $('lIntent').textContent=p.intent;
+    $('sPhase').textContent=p.name;
+    $('sMeta').innerHTML=`${base.tag} · ${base.moon.toUpperCase()}<br>Día ${state.day} · Ciclo 3`;
+    $('sBody').innerHTML=p.letter.map(t=>`<p>${t}</p>`).join('');
+    $('sIntent').textContent=p.intent;
 
     $('dayNum').textContent=state.day;
     $('dialTag').textContent=base.tag;
-    $('segs').querySelectorAll('path').forEach(s=>{
+    $('segs').querySelectorAll('path.seg').forEach(s=>{
       const on=s.dataset.key===base.key;
       s.classList.toggle('on',on);
       s.style.stroke=on?base.color:'rgba(242,233,220,.13)';
@@ -543,16 +693,17 @@
 
   $('goReveal').addEventListener('click',()=>{
     render();
-    const env=$('envelope'), lt=$('letter');
+    const env=$('envelope'), sh=$('sheet');
     $('envStage').style.display='flex';
-    env.classList.remove('open'); lt.classList.add('folded');
+    env.classList.remove('open'); sh.classList.remove('out');
     show('v-day');
     setTimeout(()=>env.classList.add('open'),380);
-    setTimeout(()=>{lt.classList.remove('folded');$('envStage').style.display='none'},900);
+    setTimeout(()=>sh.classList.add('out'),950);
+    setTimeout(()=>{$('envStage').style.display='none'},1900);
   });
 
   $('restart').addEventListener('click',()=>{
-    $('letter').classList.add('folded');
+    $('sheet').classList.remove('out');
     $('envelope').classList.remove('open');
     $('envStage').style.display='flex';
     show('v-intro');
@@ -582,6 +733,48 @@
   bc.addEventListener('click',()=>setCompany(false));
 
   $('dateLine').textContent=new Intl.DateTimeFormat('es-CO',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
+
+  /* ── PARALAJE: inclinar con el mouse o el giro del teléfono ── */
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const tilts=()=>document.querySelectorAll('[data-tilt]');
+
+  if(!reduce){
+    const phone=$('phone');
+    phone.addEventListener('mousemove',e=>{
+      const r=phone.getBoundingClientRect();
+      const px=(e.clientX-r.left)/r.width-.5, py=(e.clientY-r.top)/r.height-.5;
+      tilts().forEach(t=>{
+        const s=+(t.dataset.strength||13);
+        t.style.transform=`rotateY(${px*s}deg) rotateX(${-py*s*.7}deg)`;
+      });
+    });
+    phone.addEventListener('mouseleave',()=>{
+      tilts().forEach(t=>t.style.transform='rotateY(0deg) rotateX(0deg)');
+    });
+
+    // giroscopio en celular
+    const onOrient=ev=>{
+      const g=Math.max(-22,Math.min(22,ev.gamma||0));
+      const bRaw=(ev.beta||0)-45;
+      const b=Math.max(-18,Math.min(18,bRaw));
+      tilts().forEach(t=>{
+        const s=+(t.dataset.strength||13)/13;
+        t.style.transform=`rotateY(${g*.5*s}deg) rotateX(${-b*.3*s}deg)`;
+      });
+    };
+    if(window.DeviceOrientationEvent){
+      if(typeof DeviceOrientationEvent.requestPermission==='function'){
+        document.addEventListener('click',function ask(){
+          DeviceOrientationEvent.requestPermission().then(r=>{
+            if(r==='granted') window.addEventListener('deviceorientation',onOrient);
+          }).catch(()=>{});
+          document.removeEventListener('click',ask);
+        },{once:true});
+      }else{
+        window.addEventListener('deviceorientation',onOrient);
+      }
+    }
+  }
 
   setCompany(false); render();
 })();
