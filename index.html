@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Club Gym Cíclico — Tu carta de hoy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@400;600;800;900&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,300;1,9..144,400&family=Karla:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E0B0A; --surface:#191211; --surface-2:#221818; --surface-3:#2C1F1E;
+    --burgundy:#710D0B; --red:#C7372C; --gold:#B8963E; --gold-soft:#E0C97F;
+    --cream:#F2E9DC; --muted:#A08D82; --line:rgba(184,150,62,.22);
+    --heroic:'Cinzel',Georgia,serif;
+    --brandface:'Bebas Neue',Impact,sans-serif;
+    --voice:'Fraunces',Georgia,serif;
+    --ui:'Karla',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--ink);color:var(--cream);font-family:var(--ui);-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:26px 14px 60px;
+    background:radial-gradient(120% 55% at 50% -8%,rgba(113,13,11,.5) 0%,rgba(14,11,10,0) 62%),var(--ink)}
+  .stage-label{font-family:var(--heroic);font-size:9.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+
+  .phone{width:100%;max-width:392px;background:var(--surface);border:1px solid rgba(242,233,220,.10);
+    border-radius:34px;overflow:hidden;position:relative;
+    background-image:repeating-linear-gradient(112deg,rgba(242,233,220,.012) 0 2px,transparent 2px 6px);
+    box-shadow:0 40px 90px -30px rgba(0,0,0,.9),0 0 0 8px rgba(242,233,220,.03)}
+  .top{display:flex;align-items:baseline;justify-content:space-between;padding:22px 20px 0}
+  .brand{font-family:var(--brandface);font-size:18px;letter-spacing:.16em;color:var(--gold)}
+  .today{font-family:var(--heroic);font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+
+  .view{display:none;padding:0 20px 26px;animation:enter .45s cubic-bezier(.22,1,.36,1)}
+  .view.active{display:block}
+  @keyframes enter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  /* ornamento divisorio */
+  .rule{display:flex;align-items:center;gap:9px;margin:16px 0}
+  .rule::before,.rule::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent)}
+  .rule span{font-size:8px;color:var(--gold);letter-spacing:.3em}
+
+  .eyebrow{font-family:var(--heroic);font-weight:600;font-size:9.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+  .lead{font-family:var(--voice);font-style:italic;font-weight:300;font-size:19px;line-height:1.45;color:var(--cream)}
+  .sub{font-size:12.5px;color:var(--muted);line-height:1.5}
+
+  .btn{display:block;width:100%;padding:16px;background:var(--red);color:#fff;border:none;border-radius:10px;
+    font-family:var(--heroic);font-weight:800;font-size:13.5px;letter-spacing:.2em;cursor:pointer;
+    transition:background .18s;position:relative}
+  .btn::after{content:'';position:absolute;inset:4px;border:1px solid rgba(255,255,255,.22);border-radius:7px;pointer-events:none}
+  .btn:hover{background:var(--burgundy)}
+  .btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--gold-soft)}
+  .btn.ghost::after{display:none}
+  .btn.ghost:hover{background:var(--surface-2)}
+
+  /* ── SOBRE SELLADO ────────────────────── */
+  .env-stage{display:flex;justify-content:center;margin:24px 0 6px}
+  .envelope{width:100%;max-width:280px;aspect-ratio:1.5/1;position:relative;border-radius:10px;
+    background:
+      repeating-linear-gradient(58deg,rgba(0,0,0,.10) 0 3px,transparent 3px 9px),
+      linear-gradient(155deg,#2A0908 0%,var(--burgundy) 55%,#3A0F0D 100%);
+    border:1px solid var(--gold);overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .envelope::before{content:'';position:absolute;top:0;left:0;right:0;height:62%;
+    background:linear-gradient(170deg,rgba(0,0,0,.30),rgba(0,0,0,0));
+    clip-path:polygon(0 0,100% 0,50% 100%);border-bottom:1px solid rgba(184,150,62,.45)}
+  .envelope::after{content:'';position:absolute;inset:6px;border:1px solid rgba(184,150,62,.30);border-radius:6px}
+  .seal{width:72px;height:72px;position:relative;z-index:2;transition:transform .5s ease,opacity .5s ease}
+  .envelope.open .seal{transform:scale(.35) rotate(-32deg);opacity:0}
+  .glow{position:absolute;inset:0;background:linear-gradient(105deg,transparent 38%,rgba(242,233,220,.15) 50%,transparent 62%);
+    transform:translateX(-100%);animation:sweep 3.4s ease-in-out infinite}
+  @keyframes sweep{0%{transform:translateX(-100%)}55%,100%{transform:translateX(100%)}}
+
+  /* ── CARTA ────────────────────────────── */
+  .letter{position:relative;border-radius:10px;padding:26px 22px 20px;
+    background:
+      repeating-linear-gradient(94deg,rgba(242,233,220,.014) 0 1px,transparent 1px 5px),
+      linear-gradient(172deg,var(--surface-3) 0%,#160F0E 100%);
+    border:1px solid var(--gold);transform-origin:top center;
+    transition:transform .7s cubic-bezier(.22,1,.36,1),opacity .5s ease .12s}
+  .letter.folded{transform:scaleY(.06);opacity:0;pointer-events:none;height:0;padding:0;margin:0;border:none;overflow:hidden}
+  .letter::after{content:'';position:absolute;inset:6px;border:1px solid rgba(184,150,62,.20);border-radius:6px;pointer-events:none}
+  .crest{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:6px}
+  .l-phase{font-family:var(--heroic);font-weight:900;font-size:19px;letter-spacing:.13em;color:var(--gold-soft);
+    line-height:1.25;margin-top:9px}
+  .l-meta{font-family:var(--heroic);font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);line-height:1.9;margin-top:5px}
+  .l-body{font-family:var(--voice);font-style:italic;font-weight:300;font-size:15px;line-height:1.64;color:var(--cream)}
+  .l-body p{margin-bottom:11px}
+  .l-body p:first-child{font-style:normal;font-family:var(--heroic);font-weight:600;font-size:12px;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+  .l-sign{margin-top:14px;padding-top:15px;border-top:1px solid rgba(184,150,62,.28);
+    display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+  .l-sign small{font-family:var(--heroic);font-size:7.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--muted);display:block;margin-bottom:5px}
+  .l-sign b{font-family:var(--heroic);font-weight:900;font-size:23px;letter-spacing:.1em;color:var(--cream);line-height:1}
+  .l-from{font-family:var(--voice);font-style:italic;font-size:13px;color:var(--muted);white-space:nowrap}
+
+  /* ── CHECK-IN ─────────────────────────── */
+  .row{margin-bottom:12px}
+  .row-name{font-family:var(--heroic);font-weight:600;font-size:9px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+  .chips{display:flex;gap:6px}
+  .chip{flex:1;padding:11px 4px;border-radius:7px;background:var(--surface-2);
+    border:1px solid rgba(242,233,220,.09);color:var(--muted);font-family:var(--ui);font-size:12px;
+    font-weight:500;cursor:pointer;transition:all .18s}
+  .chip:hover{border-color:rgba(184,150,62,.45);color:var(--cream)}
+  .chip[aria-pressed=true]{background:var(--burgundy);border-color:var(--gold);color:var(--cream)}
+  .chip:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  /* ── DIAL / INSTRUMENTO ───────────────── */
+  .dial-wrap{position:relative;display:flex;justify-content:center;margin-top:10px}
+  svg.dial{width:220px;height:220px;overflow:visible}
+  .seg{fill:none;stroke-width:8;stroke-linecap:butt;transition:stroke .5s,stroke-width .5s}
+  .seg.on{stroke-width:14}
+  #marker{transition:transform .55s cubic-bezier(.22,1,.36,1)}
+  .dial-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+  .day-num{font-family:var(--brandface);font-size:48px;line-height:.82;color:var(--cream)}
+  .day-word{font-family:var(--heroic);font-size:7.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);margin-top:7px}
+  .dial-tag{font-family:var(--heroic);font-weight:800;font-size:10.5px;letter-spacing:.16em;color:var(--gold);margin-top:10px}
+
+  .scrub{margin:18px 2px 4px}
+  .scrub-label{display:flex;justify-content:space-between;font-family:var(--heroic);font-size:7.5px;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:2px;border-radius:2px;outline:none;
+    background:linear-gradient(90deg,var(--burgundy) 0 18%,var(--red) 18% 43%,var(--gold-soft) 43% 57%,#8A5A2B 57% 100%)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;
+    background:var(--cream);border:3px solid var(--ink);box-shadow:0 0 0 1px var(--gold);cursor:grab}
+  input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--cream);
+    border:3px solid var(--ink);box-shadow:0 0 0 1px var(--gold);cursor:grab}
+  input[type=range]:focus-visible{box-shadow:0 0 0 3px rgba(184,150,62,.5)}
+
+  /* ── PANELS con herrajes ──────────────── */
+  .panel{position:relative;background:linear-gradient(180deg,var(--surface-2) 0%,rgba(34,24,24,.35) 100%);
+    border:1px solid var(--line);border-radius:10px;padding:20px 17px;margin-top:22px}
+  .panel .corner{position:absolute;width:11px;height:11px;border:1px solid var(--gold);opacity:.55}
+  .panel .c1{top:5px;left:5px;border-right:none;border-bottom:none}
+  .panel .c2{top:5px;right:5px;border-left:none;border-bottom:none}
+  .panel .c3{bottom:5px;left:5px;border-right:none;border-top:none}
+  .panel .c4{bottom:5px;right:5px;border-left:none;border-top:none}
+
+  .p-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .intent{font-family:var(--heroic);font-weight:900;font-size:25px;letter-spacing:.1em;color:var(--cream);line-height:1.1}
+  .dur{font-family:var(--heroic);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding-top:7px}
+  .session-name{font-size:12.5px;color:var(--muted);margin:4px 0 16px}
+  .blocks{list-style:none}
+  .block{display:flex;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px dashed rgba(242,233,220,.09)}
+  .block:last-child{border-bottom:none}
+  .b-name{flex:1;font-size:13.5px;font-weight:500;color:var(--cream)}
+  .b-note{flex:1.1;font-size:11.5px;color:var(--muted);line-height:1.35}
+  .b-min{font-family:var(--brandface);font-size:17px;color:var(--gold);min-width:32px;text-align:right}
+
+  .note{margin-top:15px;padding:12px 13px;border-radius:7px;font-size:12.5px;line-height:1.5}
+  .note.adjust{background:rgba(199,55,44,.12);border-left:2px solid var(--red);color:var(--cream)}
+  .note.warn{background:rgba(184,150,62,.10);border-left:2px solid var(--gold);color:var(--gold-soft)}
+  .note.body{background:rgba(242,233,220,.05);border-left:2px solid var(--muted);color:var(--cream)}
+  .note[hidden]{display:none}
+
+  .p-title{font-family:var(--heroic);font-weight:900;font-size:15px;letter-spacing:.14em;color:var(--cream);margin-bottom:5px}
+  .p-promise{font-size:11.5px;color:var(--muted);margin-bottom:14px;line-height:1.45}
+
+  .pattern{display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-bottom:1px dashed rgba(242,233,220,.09)}
+  .pattern:last-child{border-bottom:none}
+  .pat-mark{font-size:9px;color:var(--gold);margin-top:3px;flex-shrink:0}
+  .pat-text{font-size:12.5px;line-height:1.5;color:var(--cream)}
+  .pat-text em{font-family:var(--voice);font-style:italic;color:var(--gold-soft)}
+
+  .switch{display:flex;gap:6px;margin:12px 0 14px}
+  .switch button{flex:1;padding:12px 6px;border-radius:7px;cursor:pointer;background:transparent;
+    border:1px solid rgba(242,233,220,.12);color:var(--muted);font-family:var(--ui);font-size:12px;
+    font-weight:500;transition:all .18s}
+  .switch button[aria-pressed=true]{background:var(--surface-2);border-color:var(--gold);color:var(--gold-soft)}
+  .switch button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .corte{display:flex;align-items:center;gap:10px}
+  .faces{display:flex}
+  .face-av{width:27px;height:27px;border-radius:3px;border:1px solid var(--gold);margin-left:-7px;
+    font-family:var(--heroic);font-weight:700;font-size:11px;display:flex;align-items:center;
+    justify-content:center;color:var(--cream);transform:rotate(45deg)}
+  .face-av span{transform:rotate(-45deg)}
+  .face-av:first-child{margin-left:0}
+  .corte-text{font-size:12px;color:var(--muted);line-height:1.4;margin-left:6px}
+  .corte-text b{color:var(--cream);font-weight:600}
+  .privacy{margin-top:18px;font-family:var(--voice);font-style:italic;font-weight:300;font-size:13px;
+    color:var(--muted);text-align:center;line-height:1.5}
+
+  .archive{display:flex;gap:9px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+  .archive::-webkit-scrollbar{display:none}
+  .env-mini{flex:0 0 76px;height:56px;border-radius:5px;position:relative;
+    background:linear-gradient(155deg,#2A0908,var(--burgundy));border:1px solid rgba(184,150,62,.4);
+    display:flex;align-items:center;justify-content:center}
+  .env-mini::before{content:'';position:absolute;top:0;left:0;right:0;height:60%;
+    background:rgba(0,0,0,.22);clip-path:polygon(0 0,100% 0,50% 100%)}
+  .env-mini b{position:relative;font-family:var(--heroic);font-weight:700;font-size:9px;letter-spacing:.12em;
+    color:var(--gold-soft);text-align:center;line-height:1.1;padding:0 5px}
+  .env-mini.sealed{background:var(--surface-3);border-style:dashed;border-color:rgba(242,233,220,.14);opacity:.5}
+  .env-mini.sealed::before{display:none}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  @media (max-width:400px){svg.dial{width:196px;height:196px}.l-phase{font-size:17px}}
+</style>
+</head>
+<body>
+
+<p class="stage-label">Club Gym Cíclico — flujo diario</p>
+
+<div class="phone">
+  <div class="top"><span class="brand">GYM CÍCLICO</span><span class="today" id="dateLine"></span></div>
+
+  <!-- 1 · INTRO -->
+  <section class="view active" id="v-intro">
+    <div class="env-stage">
+      <div class="envelope">
+        <div class="seal">
+          <svg viewBox="0 0 72 72" width="72" height="72">
+            <defs>
+              <radialGradient id="wax" cx="35%" cy="28%">
+                <stop offset="0" stop-color="#E0C97F"/><stop offset=".45" stop-color="#B8963E"/><stop offset="1" stop-color="#6E551C"/>
+              </radialGradient>
+            </defs>
+            <circle cx="36" cy="36" r="33" fill="url(#wax)"/>
+            <circle cx="36" cy="36" r="28" fill="none" stroke="#2A0908" stroke-width="1" opacity=".55"/>
+            <path d="M36 20 L48 30 L44 48 L28 48 L24 30 Z" fill="#2A0908" opacity=".82"/>
+            <path d="M27 27 L31 32 L36 25 L41 32 L45 27 L44 34 L28 34 Z" fill="#2A0908"/>
+          </svg>
+        </div>
+        <div class="glow"></div>
+      </div>
+    </div>
+    <div class="rule"><span>◆</span></div>
+    <p class="eyebrow">Día 22 de tu ciclo</p>
+    <p class="lead">Te dejé una carta esta mañana, reina. Antes de abrirla, cuéntame cómo amaneciste.</p>
+    <p class="sub" style="margin:14px 0 20px">Cuatro toques. Con eso sé qué escribirte y qué entreno ponerte hoy.</p>
+    <button class="btn" id="goCheck">EMPEZAR</button>
+  </section>
+
+  <!-- 2 · CHECK-IN -->
+  <section class="view" id="v-check">
+    <p class="eyebrow" style="margin-top:20px">Tu check-in de hoy</p>
+    <p class="lead" style="font-size:17px;margin-bottom:18px">¿Cómo amaneciste?</p>
+
+    <div class="row" data-group="energia">
+      <div class="row-name">Energía</div>
+      <div class="chips">
+        <button class="chip" aria-pressed="false" data-val="baja">En el piso</button>
+        <button class="chip" aria-pressed="true" data-val="media">Normal</button>
+        <button class="chip" aria-pressed="false" data-val="alta">Encendida</button>
+      </div>
+    </div>
+
+    <div class="row" data-group="animo">
+      <div class="row-name">Ánimo</div>
+      <div class="chips">
+        <button class="chip" aria-pressed="false" data-val="plana">Plana</button>
+        <button class="chip" aria-pressed="true" data-val="sensible">Sensible</button>
+        <button class="chip" aria-pressed="false" data-val="firme">Firme</button>
+      </div>
+    </div>
+
+    <div class="row" data-group="molestias">
+      <div class="row-name">Molestias</div>
+      <div class="chips">
+        <button class="chip" aria-pressed="false" data-val="ninguna">Ninguna</button>
+        <button class="chip" aria-pressed="true" data-val="algo">Algo</button>
+        <button class="chip" aria-pressed="false" data-val="fuertes">Fuertes</button>
+      </div>
+    </div>
+
+    <div class="row" data-group="sueno">
+      <div class="row-name">Anoche dormiste</div>
+      <div class="chips">
+        <button class="chip" aria-pressed="false" data-val="mal">Mal</button>
+        <button class="chip" aria-pressed="true" data-val="regular">Regular</button>
+        <button class="chip" aria-pressed="false" data-val="bien">Bien</button>
+      </div>
+    </div>
+
+    <button class="btn" id="goReveal" style="margin-top:22px">ROMPER EL SELLO</button>
+  </section>
+
+  <!-- 3 · CARTA + DÍA -->
+  <section class="view" id="v-day">
+    <div class="env-stage" id="envStage">
+      <div class="envelope" id="envelope">
+        <div class="seal">
+          <svg viewBox="0 0 72 72" width="72" height="72">
+            <circle cx="36" cy="36" r="33" fill="url(#wax)" style="fill:#B8963E"/>
+            <circle cx="36" cy="36" r="28" fill="none" stroke="#2A0908" stroke-width="1" opacity=".55"/>
+            <path d="M36 20 L48 30 L44 48 L28 48 L24 30 Z" fill="#2A0908" opacity=".82"/>
+            <path d="M27 27 L31 32 L36 25 L41 32 L45 27 L44 34 L28 34 Z" fill="#2A0908"/>
+          </svg>
+        </div>
+        <div class="glow"></div>
+      </div>
+    </div>
+
+    <div class="letter folded" id="letter">
+      <div class="crest">
+        <svg viewBox="0 0 46 52" width="42" height="48" aria-hidden="true">
+          <path d="M9 12 L14 16 L23 7 L32 16 L37 12 L35 21 L11 21 Z" fill="#B8963E"/>
+          <path d="M11 24 L35 24 L35 34 C35 42 29 46 23 49 C17 46 11 42 11 34 Z"
+                fill="none" stroke="#B8963E" stroke-width="1.4"/>
+          <path d="M23 28 L23 43 M17 33 L29 33" stroke="#B8963E" stroke-width="1.2" opacity=".7"/>
+        </svg>
+        <div class="l-phase" id="lPhase">REINA EN REPLIEGUE</div>
+        <div class="l-meta" id="lMeta"></div>
+      </div>
+      <div class="rule"><span>◆</span></div>
+      <div class="l-body" id="lBody"></div>
+      <div class="l-sign">
+        <div><small>Intención de hoy</small><b id="lIntent">SOSTENER</b></div>
+        <div class="l-from">— Brayan</div>
+      </div>
+    </div>
+
+    <!-- instrumento -->
+    <div class="panel">
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <p class="p-title">TU POSICIÓN</p>
+      <p class="p-promise">Las cuatro fases de tu ciclo, con sus 28 marcas. El punto blanco eres tú.</p>
+      <div class="dial-wrap">
+        <svg class="dial" viewBox="0 0 220 220" role="img" aria-label="Tu ciclo">
+          <circle cx="110" cy="110" r="99" fill="none" stroke="rgba(184,150,62,.28)" stroke-width="1"/>
+          <circle cx="110" cy="110" r="95" fill="none" stroke="rgba(184,150,62,.55)" stroke-width="4"
+                  stroke-dasharray="1.6 19.7" stroke-dashoffset="0.8"/>
+          <g id="segs"></g>
+          <g id="marker">
+            <circle cx="110" cy="24" r="9" fill="rgba(242,233,220,.14)"></circle>
+            <circle cx="110" cy="24" r="5" fill="#F2E9DC" stroke="#0E0B0A" stroke-width="2.5"></circle>
+          </g>
+        </svg>
+        <div class="dial-center">
+          <div class="day-num" id="dayNum">22</div>
+          <div class="day-word">de 28</div>
+          <div class="dial-tag" id="dialTag">FASE LÚTEA</div>
+        </div>
+      </div>
+      <div class="scrub">
+        <div class="scrub-label"><span>Día 1</span><span>demo · recorre el ciclo</span><span>28</span></div>
+        <input type="range" id="daySlider" min="1" max="28" value="22" aria-label="Día del ciclo">
+      </div>
+    </div>
+
+    <!-- entreno -->
+    <div class="panel">
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <div class="p-head"><div class="intent" id="intent">SOSTENER</div><div class="dur" id="dur">50 min</div></div>
+      <p class="session-name" id="sessionName"></p>
+      <ul class="blocks" id="blocks"></ul>
+      <div class="note adjust" id="adjust"></div>
+      <div class="note warn" id="warn" hidden></div>
+      <div class="note body" id="bodyNote" hidden></div>
+      <button class="btn" style="margin-top:18px">EMPEZAR MI ENTRENO</button>
+    </div>
+
+    <!-- patrones -->
+    <div class="panel">
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <p class="p-title">LO QUE YA SE REPITE</p>
+      <p class="p-promise">Tres ciclos registrados. Tu cuerpo tiene manías, y aquí quedan por escrito.</p>
+      <div id="patterns"></div>
+    </div>
+
+    <!-- corte -->
+    <div class="panel">
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <p class="p-title">CÓMO QUIERES TU DÍA</p>
+      <p class="p-promise">Tú decides si hoy hay compañía. Sin dar explicaciones.</p>
+      <div class="switch" role="group" aria-label="Compañía de hoy">
+        <button id="btnSola" aria-pressed="false">Hoy quiero estar sola</button>
+        <button id="btnCorte" aria-pressed="true">Hoy quiero compañía</button>
+      </div>
+      <div class="corte" id="corteBox">
+        <div class="faces">
+          <div class="face-av" style="background:#710D0B"><span>M</span></div>
+          <div class="face-av" style="background:#8A5A2B"><span>L</span></div>
+          <div class="face-av" style="background:#4A2F2A"><span>C</span></div>
+          <div class="face-av" style="background:#B8963E;color:#191211"><span>+9</span></div>
+        </div>
+        <p class="corte-text" id="corteText"></p>
+      </div>
+      <p class="privacy" id="privacyLine"></p>
+    </div>
+
+    <!-- archivo -->
+    <div class="panel">
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <p class="p-title">TUS CARTAS</p>
+      <p class="p-promise">Cada carta que abres se queda contigo. Al final del ciclo tienes tu mes entero por escrito.</p>
+      <div class="archive" id="archive"></div>
+    </div>
+
+    <button class="btn ghost" id="restart" style="margin-top:18px">Volver al inicio</button>
+  </section>
+</div>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const NS='http://www.w3.org/2000/svg';
+
+  const PHASES=[
+    {key:'menstrual',from:1,to:5,tag:'FASE MENSTRUAL',name:'REINA EN CALMA',
+     moon:'Luna nueva',color:'#710D0B',
+     letter:['Reina,',
+       'Hoy tu cuerpo está haciendo un trabajo que no se ve. Por eso amaneciste con el tanque en reserva.',
+       'Moverte suave hoy no te devuelve a la casilla uno. Es justo lo que hace que la próxima semana te rinda.'],
+     intent:'RESISTIR',dur:'35 min',session:'Movilidad y fuerza suave · Nivel 1',
+     blocks:[['Activación articular','Caderas, tobillos, columna','8'],
+             ['Activación neuromuscular','Despertar sin exigir','7'],
+             ['Trabajo principal','Sentadilla y remo, carga baja','12'],
+             ['Cierre y recuperación','Respiración y calor en el vientre','8']],warn:''},
+
+    {key:'folicular',from:6,to:12,tag:'FASE FOLICULAR',name:'REINA EN ASCENSO',
+     moon:'Luna creciente',color:'#C7372C',
+     letter:['Reina,',
+       'Empiezas a sentir que te alcanza el día, y eso no es casualidad.',
+       'Esta ventana no se queda abierta. Aquí es donde se construye lo que vas a ver en el espejo dentro de dos meses.'],
+     intent:'FORJAR',dur:'55 min',session:'Fuerza progresiva · Nivel 1',
+     blocks:[['Activación articular','Hombro y cadera','7'],
+             ['Activación neuromuscular','Saltos bajos, cuerpo despierto','8'],
+             ['Trabajo principal','Peso muerto y empuje · súbele una libra','22'],
+             ['Cardio metabólico','Intervalos cortos','10'],
+             ['Cierre y recuperación','Estiramiento largo','8']],warn:''},
+
+    {key:'ovulatoria',from:13,to:16,tag:'FASE OVULATORIA',name:'REINA EN CIMA',
+     moon:'Luna llena',color:'#E0C97F',
+     letter:['Reina,',
+       'Hoy estás en tu punto más alto del mes. Si hay un día para ir por esa marca que se te atragantó, es este.',
+       'Un aviso de mi parte: tus ligamentos hoy están más flojos de lo normal. Estira hasta donde te sienta bien y ahí paras.'],
+     intent:'CONQUISTAR',dur:'60 min',session:'Fuerza máxima · Nivel 1',
+     blocks:[['Activación articular','Blindaje de rodilla y hombro','8'],
+             ['Activación neuromuscular','Potencia, series cortas','8'],
+             ['Trabajo principal','Sentadilla pesada · 4 series de 6','24'],
+             ['Cardio metabólico','Empujes y escalera','12'],
+             ['Cierre y recuperación','Bajar pulsaciones','8']],
+     warn:'Con el estrógeno arriba tus ligamentos quedan más flojos. Trabaja fuerte, sin buscar el límite del rango.'},
+
+    {key:'lutea',from:17,to:28,tag:'FASE LÚTEA',name:'REINA EN REPLIEGUE',
+     moon:'Luna menguante',color:'#8A5A2B',
+     letter:['Reina,',
+       'Baja el ánimo y sube el hambre. Te vas a mirar al espejo y te vas a ver hinchada.',
+       'No estás fallando. Estás en otra fase, y esa hinchazón se va sola. Hoy sostenemos lo que ya construiste.'],
+     intent:'SOSTENER',dur:'50 min',session:'Fuerza moderada y cardio suave · Nivel 1',
+     blocks:[['Activación articular','Cadera y zona media','8'],
+             ['Activación neuromuscular','Sin saltos, control','7'],
+             ['Trabajo principal','El mismo peso de ayer, menos series','18'],
+             ['Cardio metabólico','Caminata inclinada','10'],
+             ['Cierre y recuperación','Piernas arriba, respiración','7']],warn:'',
+     late:{from:24,
+       letter:['Reina,',
+         'Esta es la semana en que todo te sabe a nada y te dan ganas de tirar la toalla.',
+         'Aquí es justo donde se gana. Las que aguantan estos días son las que en tres meses ya no vuelven a empezar de cero.'],
+       intent:'BLINDAR',dur:'40 min',session:'Circuito suave y blindaje articular · Nivel 1',
+       blocks:[['Activación articular','Blindaje completo','10'],
+               ['Activación neuromuscular','Suave, sin impacto','6'],
+               ['Trabajo principal','Circuito de tres ejercicios','14'],
+               ['Cierre y recuperación','Calor, respiración y silencio','10']]}}
+  ];
+
+  const TOTAL=28,CX=110,CY=110,R=80;
+  const state={day:22,energia:'media',animo:'sensible',molestias:'algo',sueno:'regular',sola:false};
+  const planFor=d=>{const p=PHASES.find(x=>d>=x.from&&d<=x.to);
+    return (p.late&&d>=p.late.from)?Object.assign({},p,p.late):p};
+
+  const pol=a=>{const r=(a-90)*Math.PI/180;return[CX+R*Math.cos(r),CY+R*Math.sin(r)]};
+  const arc=(a1,a2)=>{const[x1,y1]=pol(a1),[x2,y2]=pol(a2);
+    return `M ${x1.toFixed(2)} ${y1.toFixed(2)} A ${R} ${R} 0 ${(a2-a1)>180?1:0} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}`};
+
+  PHASES.forEach(p=>{
+    const a1=((p.from-1)/TOTAL)*360+2.2, a2=(p.to/TOTAL)*360-2.2;
+    const path=document.createElementNS(NS,'path');
+    path.setAttribute('d',arc(a1,a2)); path.setAttribute('class','seg');
+    path.dataset.key=p.key; path.style.stroke='rgba(242,233,220,.13)';
+    $('segs').appendChild(path);
+  });
+
+  $('archive').innerHTML=['Día 18','Día 19','Día 20','Día 21']
+    .map(d=>`<div class="env-mini"><b>${d}</b></div>`).join('')
+    +`<div class="env-mini sealed"><b>HOY</b></div><div class="env-mini sealed"><b>◆</b></div>`;
+
+  function render(){
+    const p=planFor(state.day);
+    const base=PHASES.find(x=>state.day>=x.from&&state.day<=x.to);
+
+    $('lPhase').textContent=p.name;
+    $('lMeta').innerHTML=`${base.tag} · ${base.moon.toUpperCase()}<br>Día ${state.day} · Ciclo 3`;
+    $('lBody').innerHTML=p.letter.map(t=>`<p>${t}</p>`).join('');
+    $('lIntent').textContent=p.intent;
+
+    $('dayNum').textContent=state.day;
+    $('dialTag').textContent=base.tag;
+    $('segs').querySelectorAll('path').forEach(s=>{
+      const on=s.dataset.key===base.key;
+      s.classList.toggle('on',on);
+      s.style.stroke=on?base.color:'rgba(242,233,220,.13)';
+    });
+    $('marker').setAttribute('transform',`rotate(${((state.day-.5)/TOTAL)*360} ${CX} ${CY})`);
+
+    $('intent').textContent=p.intent;
+    $('dur').textContent=p.dur;
+    $('sessionName').textContent=p.session;
+    $('blocks').innerHTML=p.blocks.map(b=>`<li class="block"><span class="b-name">${b[0]}</span><span class="b-note">${b[1]}</span><span class="b-min">${b[2]}'</span></li>`).join('');
+
+    let msg;
+    if(state.molestias==='fuertes'){
+      msg='Hoy dejamos quieto el trabajo principal. Nos quedamos en movilidad, blindaje articular y calor. Mañana retomamos donde ibas.';
+    }else if(state.energia==='baja'||state.sueno==='mal'){
+      msg='Hoy le bajamos un punto. Haz los dos primeros bloques y el cierre. Si te queda cuerda, sigues.';
+    }else if(state.energia==='alta'&&state.sueno==='bien'){
+      msg='Estás fina. Súbele una libra al trabajo principal y remátalo completo.';
+    }else{
+      msg='Vas al plan completo. Sin afanes, que no es carrera.';
+    }
+    if(state.animo==='plana') msg+=' Y pon la música antes de arrancar, que hoy empezar cuesta más.';
+    $('adjust').textContent=msg;
+
+    const w=$('warn');
+    if(p.warn){w.textContent=p.warn;w.hidden=false}else{w.hidden=true}
+
+    const b=$('bodyNote'); let bt='';
+    if(state.molestias==='fuertes'&&base.key==='menstrual')
+      bt='Cólico fuerte en estos días es lo esperado. Moverte suave suele bajarlo. Si en cambio sube, paras y ya.';
+    else if(state.molestias==='fuertes'&&base.key!=='menstrual')
+      bt='Molestias fuertes fuera de tu semana de sangrado. Anótalo, que si se repite dos ciclos seguidos vale la pena mirarlo con tu médica.';
+    else if(state.molestias==='algo'&&base.key==='lutea')
+      bt='Hinchazón y pesadez en esta fase son normales, reina. No es que estés subiendo de peso.';
+    else if(state.molestias==='ninguna'&&base.key==='ovulatoria')
+      bt='Sin molestias y en tu punto más alto. Este es el día del mes para ir por tu marca.';
+    if(bt){b.textContent=bt;b.hidden=false}else{b.hidden=true}
+
+    $('patterns').innerHTML=[
+      `Los tres ciclos pasados, del día 20 al 23 te bajó el ánimo. <em>Hoy es día ${state.day}.</em>`,
+      `En tu fase ovulatoria levantaste más peso que en cualquier otra semana. Tres ciclos seguidos.`,
+      `Cuando duermes mal dos noches, al tercer día no entrenas. Pasó en enero, en febrero y en marzo.`
+    ].map(t=>`<div class="pattern"><span class="pat-mark">◆</span><p class="pat-text">${t}</p></div>`).join('');
+
+    $('corteText').innerHTML=`<b>${3+(state.day%11)} reinas</b> están en tu misma fase hoy. Tres ya terminaron.`;
+  }
+
+  const show=id=>{document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));
+    document.querySelector('.phone').scrollIntoView({behavior:'smooth',block:'start'})};
+
+  $('goCheck').addEventListener('click',()=>show('v-check'));
+
+  $('goReveal').addEventListener('click',()=>{
+    render();
+    const env=$('envelope'), lt=$('letter');
+    $('envStage').style.display='flex';
+    env.classList.remove('open'); lt.classList.add('folded');
+    show('v-day');
+    setTimeout(()=>env.classList.add('open'),380);
+    setTimeout(()=>{lt.classList.remove('folded');$('envStage').style.display='none'},900);
+  });
+
+  $('restart').addEventListener('click',()=>{
+    $('letter').classList.add('folded');
+    $('envelope').classList.remove('open');
+    $('envStage').style.display='flex';
+    show('v-intro');
+  });
+
+  $('daySlider').addEventListener('input',e=>{state.day=+e.target.value;render()});
+
+  document.querySelectorAll('.row').forEach(row=>{
+    row.addEventListener('click',e=>{
+      const chip=e.target.closest('.chip'); if(!chip)return;
+      row.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',String(c===chip)));
+      state[row.dataset.group]=chip.dataset.val; render();
+    });
+  });
+
+  const bs=$('btnSola'),bc=$('btnCorte');
+  function setCompany(sola){
+    state.sola=sola;
+    bs.setAttribute('aria-pressed',String(sola));
+    bc.setAttribute('aria-pressed',String(!sola));
+    $('corteBox').style.display=sola?'none':'flex';
+    $('privacyLine').textContent=sola
+      ?'Nadie te va a escribir hoy. Aquí estamos cuando vuelvas.'
+      :'La corte solo ve que entrenaste. Lo demás queda entre tu cuerpo y tú.';
+  }
+  bs.addEventListener('click',()=>setCompany(true));
+  bc.addEventListener('click',()=>setCompany(false));
+
+  $('dateLine').textContent=new Intl.DateTimeFormat('es-CO',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
+
+  setCompany(false); render();
+})();
+</script>
+</body>
+</html>
