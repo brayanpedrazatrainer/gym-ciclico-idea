@@ -1196,7 +1196,7 @@ const CONTENIDO = {
       carga:"65 a 75% de tu máximo", prescripcion:"3 series de 8 a 10",
       tipo_sesion:"Sesión principal suave · 60 min", blindaje:"Blindaje integrador",
       cardio:"Caminata inclinada · 6 min", cardio_casa:"Subir y bajar escaleras o un escalón · 6 min",
-      porque:"El cuerpo asienta lo que construiste cuando le bajas un punto. Sin esta semana, las otras no cuajan.",
+      porque:"El cuerpo asienta lo que vas construyendo cuando le bajas un punto. Sin esta semana, las otras no cuajan.",
       cuerpo:"Recuperar no es perder. Es cuando el músculo de verdad se queda.",
       carta:["Reina,",
              "Esta semana no vas por más. Vas por dejar puesto lo que ya ganaste.",
@@ -1444,6 +1444,8 @@ const CONTENIDO = {
   /* --- LOS EJERCICIOS: principal y sustituto ---------------------
      REGLA: ella hace el principal. El sustituto SOLO si no tiene
      el equipo. Nunca los dos el mismo día.
+     Si una versión trae como:"...", eso reemplaza la línea de
+     ejecución de la fase solo para esa versión.
      Falta desarrollar por fase: empujar, jalar, bisagra, rotación,
      marcha y cargada (hoy usan el ejercicio general).
   ---------------------------------------------------------------- */
@@ -1463,13 +1465,13 @@ const CONTENIDO = {
       },
       ovulatoria: {
         intencion:"Expresar potencia aprovechando tu pico", ejecucion:"Bajada controlada · subida explosiva",
-        A:{p:"Sentadilla con salto", p2:"Zancada con salto", s:"Sentadilla explosiva sin despegar"},
+        A:{p:"Sentadilla con levantamiento de talón", p2:"Zancada con salto", s:"Sentadilla explosiva sin despegar"},
         B:{p:"Goblet squat explosivo", p2:"Búlgara explosiva", s:"Sentadilla con salto y mancuerna"},
         C:{p:"Sentadilla barra pesada", p2:"Prensa pesada", s:"Hack squat carga alta"}
       },
       lutea: {
         intencion:"Integrar el patrón con coordinación", ejecucion:"A una pierna · bajando despacio",
-        A:{p:"Zancada caminando", p2:"Sentadilla con pausa", s:"Split squat con pausa"},
+        A:{p:"Desplantes atrás", p2:"Sentadilla con pausa", s:"Split squat con pausa"},
         B:{p:"Búlgara con mancuernas", p2:"Goblet squat con pausa", s:"Zancada inversa con mancuernas"},
         C:{p:"Búlgara con barra", p2:"Prensa de piernas", s:"Zancada caminando con mancuernas"}
       },
@@ -1483,67 +1485,74 @@ const CONTENIDO = {
     "Empujar": {
       menstrual: {
         intencion:"Sentir el patrón y reconectar", ejecucion:"Pausa de 2 a 3 seg abajo · rango cómodo",
-        A:{p:"Flexión en pared con pausa", p2:"Pike en pared suave", s:"Flexión en rodillas"},
+        A:{p:"Flexión sobre rodillas", p2:"Pike en pared suave", s:"Flexión en silla"},
         B:{p:"Press con mancuerna ligero", p2:"Press de hombro sentada ligero", s:"Press con banda"},
         C:{p:"Press en máquina ligero", p2:"Press de hombro en máquina ligero", s:"Press con mancuerna sentada"}
       },
       folicular: {
         intencion:"Generar tensión real y construir músculo", ejecucion:"Bajas en 3, aguantas 1, subes en 2 · rango completo",
-        A:{p:"Flexión en suelo", p2:"Pike push-up", s:"Flexión en rodillas con tempo"},
+        A:{p:"Flexión sobre rodillas", p2:"Pike push-up", s:"Flexión en silla"},
         B:{p:"Press con mancuerna en banco", p2:"Press militar con mancuernas", s:"Press en el piso"},
         C:{p:"Press banca", p2:"Press inclinado con barra", s:"Press militar con barra"}
       },
       ovulatoria: {
         intencion:"Expresar potencia aprovechando tu pico", ejecucion:"Bajada controlada · subida explosiva",
-        A:{p:"Flexión con despegue", p2:"Pike explosivo", s:"Flexión explosiva en rodillas"},
+        A:{p:"Flexión sobre rodillas", p2:"Pike explosivo", s:"Flexión en silla"},
         B:{p:"Push press con mancuerna", p2:"Press en banco explosivo", s:"Press explosivo"},
         C:{p:"Press banca pesado", p2:"Fondos en paralelas", s:"Press militar pesado"}
       },
       lutea: {
         intencion:"Integrar el patrón con coordinación", ejecucion:"Un lado a la vez · bajando despacio",
-        A:{p:"Flexión escalonada", p2:"Pike en pared", s:"Flexión con una mano elevada"},
+        A:{como:"Bajando despacio", p:"Flexión sobre rodillas", p2:"Pike en pared", s:"Flexión en silla"},
         B:{p:"Press a un brazo", p2:"Press militar a un brazo", s:"Press alterno"},
         C:{p:"Press con mancuerna a un brazo", p2:"Press de hombro a un brazo en polea", s:"Press polea a un brazo"}
       },
       premenstrual: {
         intencion:"Mantener sin destruir", ejecucion:"Rango cómodo · lejos del fallo",
-        A:{p:"Flexión en pared", p2:"Pike en pared suave", s:"Flexión inclinada"},
+        A:{p:"Flexión sobre rodillas", p2:"Pike en pared suave", s:"Flexión en silla"},
         B:{p:"Press con mancuerna ligero", p2:"Press de hombro sentada ligero", s:"Press con banda"},
         C:{p:"Press en máquina ligero", p2:"Press de hombro en máquina ligero", s:"Press mancuerna sentada"}
       }
     },
+    /* SOLO CUERPO, provisional: "Remo solo cuerpo" en las cinco semanas mientras
+       no esté el video de remo invertido. Cuando llegue, vuelven: sangrado "Remo invertido
+       alto con pausa", arranque "Remo invertido", cima "Remo invertido explosivo",
+       bajón "Remo invertido a un brazo" (con "A un brazo"), ni me hables "Remo en toalla". */
     "Jalar": {
       menstrual: {
         intencion:"Sentir el patrón y reconectar", ejecucion:"Pausa de 2 a 3 seg abajo · rango cómodo",
-        A:{p:"Remo invertido alto con pausa", p2:"Jalón con banda sentada", s:"Remo en toalla"},
+        A:{p:"Remo solo cuerpo", p2:"Jalón con banda sentada", s:"Remo en toalla"},
         B:{p:"Remo con mancuerna ligero", p2:"Jalón con banda", s:"Remo con banda"},
         C:{p:"Jalón en polea ligero", p2:"Remo bajo en polea ligero", s:"Remo en máquina ligero"}
       },
       folicular: {
         intencion:"Generar tensión real y construir músculo", ejecucion:"Bajas en 3, aguantas 1, subes en 2 · rango completo",
-        A:{p:"Remo invertido", p2:"Jalón con banda de rodillas", s:"Remo con banda en puerta"},
+        A:{p:"Remo solo cuerpo", p2:"Jalón con banda de rodillas", s:"Remo con banda en puerta"},
         B:{p:"Remo a un brazo con mancuerna", p2:"Pull-over con mancuerna", s:"Remo inclinado con mancuernas"},
         C:{p:"Jalón en polea", p2:"Remo bajo en polea", s:"Remo en máquina"}
       },
       ovulatoria: {
         intencion:"Expresar potencia aprovechando tu pico", ejecucion:"Bajada controlada · subida explosiva",
-        A:{p:"Remo invertido explosivo", p2:"Jalón explosivo con banda", s:"Remo invertido rápido en rodillas"},
+        A:{p:"Remo solo cuerpo", p2:"Jalón explosivo con banda", s:"Remo invertido rápido en rodillas"},
         B:{p:"Remo alto explosivo", p2:"Jalón con banda potente", s:"Remo con mancuerna potente"},
         C:{p:"Dominadas asistidas", p2:"Remo en barra T", s:"Jalón en polea pesado"}
       },
       lutea: {
         intencion:"Integrar el patrón con coordinación", ejecucion:"A un brazo · bajando despacio",
-        A:{p:"Remo invertido a un brazo", p2:"Jalón con banda a un brazo", s:"Remo escalonado"},
+        A:{como:"Bajando despacio", p:"Remo solo cuerpo", p2:"Jalón con banda a un brazo", s:"Remo escalonado"},
         B:{p:"Remo a un brazo con apoyo", p2:"Jalón con banda a un brazo", s:"Remo alterno"},
         C:{p:"Remo en polea a un brazo", p2:"Jalón a un brazo en polea", s:"Remo en máquina a un brazo"}
       },
       premenstrual: {
         intencion:"Mantener sin destruir", ejecucion:"Rango cómodo · lejos del fallo",
-        A:{p:"Remo en toalla", p2:"Jalón con banda", s:"Remo invertido alto"},
+        A:{p:"Remo solo cuerpo", p2:"Jalón con banda", s:"Remo invertido alto"},
         B:{p:"Remo con banda", p2:"Jalón con banda sentada", s:"Remo con mancuerna ligero"},
         C:{p:"Jalón en polea ligero", p2:"Remo bajo en polea ligero", s:"Remo en máquina ligero"}
       }
     },
+    /* SOLO CUERPO, provisional mientras no esté el video de hip thrust.
+       Cuando llegue, vuelven: arranque "Hip thrust a dos piernas con pausa"
+       y bajón "Hip thrust a una pierna". */
     "Bisagra": {
       menstrual: {
         intencion:"Sentir el patrón y reconectar", ejecucion:"Pausa de 2 a 3 seg abajo · rango cómodo",
@@ -1553,7 +1562,7 @@ const CONTENIDO = {
       },
       folicular: {
         intencion:"Generar tensión real y construir músculo", ejecucion:"Bajas en 3, aguantas 1, subes en 2 · rango completo",
-        A:{p:"Hip thrust a dos piernas con pausa", p2:"Buenos días sin carga", s:"Puente con marcha"},
+        A:{p:"Empuje de cadera", p2:"Buenos días sin carga", s:"Puente con marcha"},
         B:{p:"Peso muerto rumano con mancuernas", p2:"Hip thrust con mancuerna", s:"Peso muerto sumo con mancuerna"},
         C:{p:"Peso muerto con barra", p2:"Hip thrust con barra", s:"Peso muerto rumano con barra"}
       },
@@ -1565,7 +1574,7 @@ const CONTENIDO = {
       },
       lutea: {
         intencion:"Integrar el patrón con coordinación", ejecucion:"A una pierna · bajando despacio",
-        A:{p:"Hip thrust a una pierna", p2:"Peso muerto a una pierna", s:"Peso muerto rumano a una pierna"},
+        A:{p:"Empuje de cadera a una pierna", p2:"Peso muerto a una pierna", s:"Peso muerto rumano a una pierna"},
         B:{p:"Peso muerto rumano a una pierna", p2:"Hip thrust a una pierna", s:"Peso muerto con apoyo atrás"},
         C:{p:"Peso muerto a una pierna con mancuerna", p2:"Hip thrust a una pierna en máquina", s:"Peso muerto a una pierna en polea"}
       },
@@ -1680,9 +1689,25 @@ const CONTENIDO = {
      El ejercicio que no esté aquí sale sin botón de video.
   ---------------------------------------------------------------- */
   videos: {
-    "Sentadilla con pausa": "https://youtube.com/shorts/mwGAWUqhNBA",
-    "Sentadilla búlgara":   "https://youtube.com/shorts/rjnsNi-2Hx8",
-    "Skipping":             "https://youtube.com/shorts/GDL6UsMJtWM"
+    /* sentadilla */
+    "Sentadilla con pausa":                  "https://youtube.com/shorts/mwGAWUqhNBA",
+    "Sentadilla búlgara":                    "https://youtube.com/shorts/rjnsNi-2Hx8",
+    "Sentadilla con levantamiento de talón": "https://youtube.com/shorts/uIPtf8a1wdc",
+    "Desplantes atrás":                      "https://youtube.com/shorts/-TuNt_0ANVg",
+    "Sentadilla a una pierna a silla":       "https://youtube.com/shorts/HuIkD2lSflU",
+    /* empujar */
+    "Flexión sobre rodillas":                "https://youtube.com/shorts/tSnVup1OzGg",
+    /* jalar */
+    "Remo solo cuerpo":                      "https://youtube.com/shorts/tlqlLuuDI2g",
+    /* bisagra */
+    "Empuje de cadera":                      "https://youtube.com/shorts/90j0eMzTD70",
+    "Empuje de cadera a una pierna":         "https://youtube.com/shorts/ABeSp-Pc5q4",
+    "Puente de glúteo con pausa":            "https://youtube.com/shorts/90j0eMzTD70",
+    "Puente de glúteo":                      "https://youtube.com/shorts/90j0eMzTD70",
+    /* marcha */
+    "Step up a banco":                       "https://youtube.com/shorts/I_upAwWJw3g",
+    "Step up lento a una pierna":            "https://youtube.com/shorts/I_upAwWJw3g",
+    "Skipping":                              "https://youtube.com/shorts/GDL6UsMJtWM"
   },
 
   /* En la versión de casa algunos videos muestran mancuerna. */
@@ -1706,8 +1731,8 @@ const CONTENIDO = {
       { nombre: "Nivel 3", detalle: "Pronto", series: "4 a 5 series × 4 a 8 reps", pronto: true }
     ],
     escenarios: [
-      { id: "A", nombre: "En casa", detalle: "Solo tu cuerpo" },
-      { id: "B", nombre: "Con peso", detalle: "Mancuernas y bandas" },
+      { id: "A", nombre: "Solo cuerpo", detalle: "Sin equipo" },
+      { id: "B", nombre: "Mancuernas", detalle: "Y bandas elásticas" },
       { id: "C", nombre: "Gimnasio", detalle: "Máquinas y barra" }
     ]
   },
@@ -1942,7 +1967,7 @@ window.arrancarReino=function(){
     if(p.modo==='semanas') return C.meno_semanas;
     return F;
   }
-  /* en casa y con mancuernas no hay máquinas: si la semana trae cardio_casa, va ese */
+  /* solo cuerpo y mancuernas no tienen máquinas: si la semana trae cardio_casa, va ese */
   const cardioDe=f=>(state.escenario!=='C'&&f.cardio_casa)?f.cardio_casa:f.cardio;
 
   /* ══ PORTADA ══ */
@@ -2159,7 +2184,7 @@ window.arrancarReino=function(){
         return `
         <div class="ej">
           <div class="ej-top"><span class="ej-n">${n.toUpperCase()}</span><span class="ej-name">${principal}</span></div>
-          ${det?`<div class="ej-como">${det.ejecucion}</div>`:''}
+          ${det?`<div class="ej-como">${det[esc.id].como||det.ejecucion}</div>`:''}
           <div class="ej-dato">
             <i>Series: <b>${presc.series}</b></i>
             <i>Descanso: <b>${presc.descanso}</b></i>
@@ -2350,7 +2375,7 @@ window.arrancarReino=function(){
       pasos.push({
         bloque:'Bloque 3 · '+n+' · ejercicio '+cuenta+' de '+totalEj,
         titulo:principal, ej:principal, ejSust:sust,
-        que: det ? det.ejecucion : (C.esfuerzo[carga]||''),
+        que: det ? (det[esc.id].como||det.ejecucion) : (C.esfuerzo[carga]||''),
         datos:[['Series',presc.series],['Descanso',presc.descanso]],
         sust: sust ? 'Si no tienes con qué: '+sust : '',
         peso: C.esfuerzo[carga]||'',
@@ -2361,7 +2386,7 @@ window.arrancarReino=function(){
         pasos.push({
           bloque:'Bloque 3 · '+n+' · ejercicio '+cuenta+' de '+totalEj,
           titulo:segundo, ej:segundo,
-          que: det ? det.ejecucion : '',
+          que: det ? (det[esc.id].como||det.ejecucion) : '',
           datos:[['Series',seriesSegundo],['Descanso',presc.descanso]],
           sust:'',
           peso: C.esfuerzo[carga]||'',
