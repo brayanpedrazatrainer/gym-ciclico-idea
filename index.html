@@ -487,6 +487,14 @@
     text-transform:uppercase;color:var(--muted);margin-bottom:6px}
   .en-dato b{font-family:var(--heroic);font-weight:800;font-size:15px;color:var(--gold-soft)}
   .en-sust{margin-top:12px;font-size:12px;color:rgba(160,141,130,.9);line-height:1.45;font-style:italic}
+  .en-video{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+  .en-vbtn{flex:1;min-width:140px;padding:11px 12px;border-radius:8px;border:1px solid var(--line);background:rgba(184,150,62,.08);
+    color:var(--gold-soft);font-family:var(--heroic);font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+  .en-vbtn[aria-pressed="true"]{border-color:var(--gold);background:rgba(184,150,62,.18)}
+  .en-vmarco{position:relative;width:min(100%,280px);aspect-ratio:9/16;margin:4px auto 0;border-radius:10px;overflow:hidden;
+    border:1px solid var(--line);background:#000}
+  .en-vmarco iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .en-vnota{width:100%;text-align:center;font-size:12px;color:var(--gold-soft);line-height:1.45}
   .en-timer{margin-top:18px;padding-top:16px;border-top:1px solid rgba(184,150,62,.25);text-align:center}
   .en-timer[hidden]{display:none}
   .en-timer-label{font-family:var(--heroic);font-size:7.5px;letter-spacing:.24em;
@@ -828,6 +836,7 @@
 
       <div class="en-datos" id="enDatos"></div>
       <p class="en-sust" id="enSust" hidden></p>
+      <div class="en-video" id="enVideo" hidden></div>
 
       <div class="en-timer" id="enTimer" hidden>
         <p class="en-timer-label">Descanso</p>
@@ -1665,6 +1674,20 @@ const CONTENIDO = {
     }
   },
 
+  /* --- VIDEOS DE LOS EJERCICIOS -----------------------------------
+     A la izquierda, el nombre EXACTO como está arriba en "ejercicios".
+     A la derecha, el enlace de YouTube tal cual lo copias.
+     El ejercicio que no esté aquí sale sin botón de video.
+  ---------------------------------------------------------------- */
+  videos: {
+    "Sentadilla con pausa": "https://youtube.com/shorts/mwGAWUqhNBA",
+    "Sentadilla búlgara":   "https://youtube.com/shorts/rjnsNi-2Hx8",
+    "Skipping":             "https://youtube.com/shorts/GDL6UsMJtWM"
+  },
+
+  /* En la versión de casa algunos videos muestran mancuerna. */
+  aviso_video_casa: "En tu versión va sin mancuerna, solo con tu cuerpo.",
+
   /* --- Los 7 patrones en los tres escenarios ---------------------- */
   patrones: {
     "Empujar":   { A: "Flexión en suelo · fondos en silla",        B: "Press con mancuerna · push press",        C: "Press banca · press militar · polea" },
@@ -2326,7 +2349,7 @@ window.arrancarReino=function(){
       cuenta++;
       pasos.push({
         bloque:'Bloque 3 · '+n+' · ejercicio '+cuenta+' de '+totalEj,
-        titulo:principal,
+        titulo:principal, ej:principal, ejSust:sust,
         que: det ? det.ejecucion : (C.esfuerzo[carga]||''),
         datos:[['Series',presc.series],['Descanso',presc.descanso]],
         sust: sust ? 'Si no tienes con qué: '+sust : '',
@@ -2337,7 +2360,7 @@ window.arrancarReino=function(){
         cuenta++;
         pasos.push({
           bloque:'Bloque 3 · '+n+' · ejercicio '+cuenta+' de '+totalEj,
-          titulo:segundo,
+          titulo:segundo, ej:segundo,
           que: det ? det.ejecucion : '',
           datos:[['Series',seriesSegundo],['Descanso',presc.descanso]],
           sust:'',
@@ -2365,6 +2388,28 @@ window.arrancarReino=function(){
     return m ? parseInt(m[0],10) : 60;
   }
 
+  /* videos: acepta el enlace completo de YouTube o solo el código */
+  const idVideo=u=>{
+    const m=String(u||'').match(/(?:shorts\/|v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+    return m ? m[1] : (/^[A-Za-z0-9_-]{11}$/.test(u||'') ? u : '');
+  };
+  const videoDe=nombre=>nombre ? idVideo((C.videos||{})[nombre]) : '';
+
+  /* el video solo se carga cuando ella lo toca, y se apaga al cambiar de paso */
+  $('enVideo').addEventListener('click',e=>{
+    const b=e.target.closest('.en-vbtn'); if(!b) return;
+    const vb=$('enVideo');
+    vb.querySelectorAll('.en-vmarco,.en-vnota').forEach(x=>x.remove());
+    const yaAbierto=b.getAttribute('aria-pressed')==='true';
+    vb.querySelectorAll('.en-vbtn').forEach(x=>x.setAttribute('aria-pressed','false'));
+    if(yaAbierto) return;
+    b.setAttribute('aria-pressed','true');
+    vb.insertAdjacentHTML('beforeend',
+      `<div class="en-vmarco"><iframe src="https://www.youtube-nocookie.com/embed/${b.dataset.vid}?rel=0&playsinline=1&autoplay=1"
+        title="C&oacute;mo se hace" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>`
+      +(state.escenario==='A'&&C.aviso_video_casa?`<p class="en-vnota">${C.aviso_video_casa}</p>`:''));
+  });
+
   function pintarPaso(){
     pararReloj();
     const p=PASOS[pasoActual]; if(!p) return;
@@ -2377,6 +2422,10 @@ window.arrancarReino=function(){
       `<div class="en-dato"><small>${d[0]}</small><b>${d[1]}</b></div>`).join('');
     const s=$('enSust');
     if(p.sust){s.textContent=p.sust;s.hidden=false}else{s.hidden=true}
+    const vP=videoDe(p.ej), vS=videoDe(p.ejSust), vb=$('enVideo');
+    vb.innerHTML=(vP?`<button class="en-vbtn" data-vid="${vP}" aria-pressed="false">&#9654; Ver c&oacute;mo se hace</button>`:'')
+                +(vS?`<button class="en-vbtn" data-vid="${vS}" aria-pressed="false">&#9654; Ver el reemplazo</button>`:'');
+    vb.hidden=!(vP||vS);
     if(p.peso){
       $('enDatos').innerHTML += `<div class="en-dato" style="min-width:100%"><small>Cuánto peso</small><b style="font-size:12px;font-family:var(--ui);font-weight:500;color:var(--cream)">${p.peso}</b></div>`;
     }
