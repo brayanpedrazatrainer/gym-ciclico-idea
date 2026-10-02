@@ -257,15 +257,7 @@
     box-shadow:0 0 0 0 #0C0808, inset 0 3px 7px rgba(0,0,0,.55)}
   .switch button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   .corte{display:flex;align-items:center;gap:10px}
-  .faces{display:flex}
-  .face-av{width:27px;height:27px;border-radius:3px;border:1px solid var(--gold);margin-left:-7px;
-    font-family:var(--heroic);font-weight:700;font-size:11px;display:flex;align-items:center;
-    justify-content:center;color:var(--cream);transform:rotate(45deg);
-    box-shadow:0 3px 6px rgba(0,0,0,.6),inset 0 1px 0 rgba(242,233,220,.18)}
-  .face-av span{transform:rotate(-45deg)}
-  .face-av:first-child{margin-left:0}
-  .corte-text{font-size:12px;color:var(--muted);line-height:1.4;margin-left:6px}
-  .corte-text b{color:var(--cream);font-weight:600}
+  .corte-text{font-size:13px;color:var(--muted);line-height:1.5}
   .privacy{margin-top:18px;font-family:var(--voice);font-style:italic;font-weight:300;font-size:13px;
     color:var(--muted);text-align:center;line-height:1.5}
 
@@ -668,7 +660,7 @@
   <section class="view" id="v-perfil">
     <p class="eyebrow" style="margin-top:20px">Paso 1 de 2</p>
     <p class="lead" style="font-size:18px;margin-bottom:6px">&iquest;C&oacute;mo anda tu ciclo?</p>
-    <p class="sub" style="margin-bottom:18px">Esto lo escoges una sola vez. Con eso s&eacute; c&oacute;mo ubicarte de aqu&iacute; en adelante.</p>
+    <p class="sub" style="margin-bottom:18px">Tu celular lo recuerda. Si tu situaci&oacute;n cambia, vuelves aqu&iacute; desde Tu semana.</p>
     <div id="perfiles"></div>
   </section>
 
@@ -858,14 +850,6 @@
     <p class="lead" style="font-size:17px;margin-bottom:6px">Todo el Club, cuando quieras m&aacute;s.</p>
     <p class="sub" style="margin-bottom:18px">Aqu&iacute; est&aacute; todo lo que sostiene el m&eacute;todo. No lo necesitas para entrenar hoy, pero es lo que te va a hacer due&ntilde;a de tu proceso.</p>
 
-    <div class="panel">
-      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
-      <p class="p-title">TU PLAN</p>
-      <p class="p-promise" id="planTexto"></p>
-      <a class="btn ghost" id="linkPlanes" href="#" target="_blank" rel="noopener"
-         style="margin-top:12px;text-align:center;text-decoration:none">VER LOS PLANES</a>
-    </div>
-
     <div id="mapaSecciones"></div>
   </section>
 
@@ -883,13 +867,7 @@
         <button id="btnCorte" aria-pressed="true">Hoy quiero compa&ntilde;&iacute;a</button>
       </div>
       <div class="corte" id="corteBox">
-        <div class="faces">
-          <div class="face-av" style="background:linear-gradient(160deg,#8E1A16,#5A0A08)"><span>M</span></div>
-          <div class="face-av" style="background:linear-gradient(160deg,#A56B33,#6B4420)"><span>L</span></div>
-          <div class="face-av" style="background:linear-gradient(160deg,#5D3C35,#382220)"><span>C</span></div>
-          <div class="face-av" style="background:linear-gradient(160deg,#E0C97F,#9A7C2E);color:#191211"><span>+9</span></div>
-        </div>
-        <p class="corte-text" id="corteText"></p>
+        <p class="corte-text">La comunidad est&aacute; a un clic. Si hoy quieres compa&ntilde;&iacute;a, cu&eacute;ntales en qu&eacute; semana vas y qu&eacute; contexto tiene tu d&iacute;a.</p>
       </div>
       <p class="privacy" id="privacyLine"></p>
     </div>
@@ -1041,7 +1019,7 @@ const CONTENIDO = {
       nombre: "REINA EN REPLIEGUE",
       dias: "Días 17 al 23",
       color: "#8A5A2B",
-      senal: "Te ves hinchada, te da más hambre y el mismo entreno de la semana pasada hoy te deja frita.",
+      senal: "Te ves hinchada, te da más hambre y lo que hace unos días hacías sin pensarlo hoy te deja frita.",
       lacre: "SOSTENER",
       entreno: "Integrar",
       comida: "Saciar",
@@ -1050,11 +1028,12 @@ const CONTENIDO = {
       tipo_sesion: "Sesión principal · 60 a 65 min",
       blindaje: "Blindaje integrador",
       cardio: "Caminata inclinada · 6 min",
-      porque: "Esta es la semana donde la mayoría abandona, porque se ve hinchada y cree que retrocedió. Aquí sostenemos lo que ya construiste.",
+      cardio_casa: "Subir y bajar escaleras o un escalón · 6 min",
+      porque: "Esta es la semana donde la mayoría abandona, porque se ve hinchada y cree que retrocedió. Por eso hoy el plan es más corto: para que esta vez tengas piso firme y sigas.",
       carta: [
         "Reina,",
         "Baja el ánimo y sube el hambre. Te vas a mirar al espejo y te vas a ver hinchada.",
-        "No estás fallando. Estás en otra fase, y esa hinchazón se va sola. Hoy sostenemos lo que ya construiste."
+        "Estás en otra fase, y esa hinchazón se va sola. Esta es la semana en la que siempre te bajabas del barco. Hoy toca hacer menos para que esta vez no pase."
       ],
       cuerpo: "Entra la progesterona. Retienes líquido y el hambre aparece de verdad. La hinchazón que ves no es grasa.",
       ojo: "",
@@ -1196,7 +1175,7 @@ const CONTENIDO = {
       porque:"Es tu semana de ir por la marca. Con el blindaje puesto, porque tus articulaciones hoy piden más cuidado.",
       cuerpo:"La potencia se pierde más rápido que la fuerza si no se entrena. Por eso esta semana existe.",
       carta:["Reina,",
-             "Hoy vas por lo que la semana pasada te pesaba.",
+             "Hoy vas por más, reina. Esta es tu semana para levantar lo que te parecía mucho.",
              "Fuerte no es sinónimo de brusca. Calienta bien, blinda, y ahí sí ve por ella."],
       ojo:"Calienta más de lo que crees necesario y no busques el límite del rango. Tus articulaciones hoy piden ese cuidado.",
       patrones:["Sentadilla","Empujar","Bisagra","Cargada"]
@@ -1207,7 +1186,7 @@ const CONTENIDO = {
       lacre:"SOSTENER", entreno:"Integrar", comida:"Saciar",
       carga:"65 a 75% de tu máximo", prescripcion:"3 series de 8 a 10",
       tipo_sesion:"Sesión principal suave · 60 min", blindaje:"Blindaje integrador",
-      cardio:"Caminata inclinada · 6 min",
+      cardio:"Caminata inclinada · 6 min", cardio_casa:"Subir y bajar escaleras o un escalón · 6 min",
       porque:"El cuerpo asienta lo que construiste cuando le bajas un punto. Sin esta semana, las otras no cuajan.",
       cuerpo:"Recuperar no es perder. Es cuando el músculo de verdad se queda.",
       carta:["Reina,",
@@ -1395,14 +1374,14 @@ const CONTENIDO = {
   ---------------------------------------------------------------- */
   cierre: {
     entreno: [
-      "Otra vez apareciste. Y aparecer es lo que te va a cambiar el cuerpo, reina.",
+      "Apareciste. Y aparecer es lo que te va a cambiar el cuerpo, reina.",
       "Hoy no le ganaste a nadie más que a la de ayer. Esa es la única pelea que cuenta.",
       "Esto que acabas de hacer nadie lo vio. Se va a ver en tres meses.",
       "Ahí está la reina que llevas adentro. No apareció hoy, solo se dejó ver un poquito más.",
       "Hiciste lo que tu cuerpo podía dar hoy. Ni más ni menos. Eso es gobernarte.",
-      "Otra que no se te cae. Cuando lleves tres meses así, vas a mirar para atrás y no lo vas a creer.",
-      "Terminaste. Y no porque tuvieras ganas, sino porque dijiste que lo ibas a hacer.",
-      "Hoy no volviste a empezar. Hoy seguiste. Que no es lo mismo, reina."
+      "Esta ya es tuya. Cuando lleves tres meses así, vas a mirar para atrás y no lo vas a creer.",
+      "Terminaste aunque no tenías ganas. Eso pasa cuando el plan por fin está hecho a tu medida.",
+      "Esta vez no es volver a la casilla uno. Esta vez el plan está hecho para tu cuerpo, reina."
     ],
     recuperacion: [
       "Moverte suave también es entrenar. Hoy le diste a tu cuerpo lo que pedía.",
@@ -1417,7 +1396,7 @@ const CONTENIDO = {
     titulo: "Recuperación activa",
     duracion: "20 a 30 min",
     nota: "Sin sudar y sin subir las pulsaciones. Esto no es descansar, es aparecer.",
-    porque: "Si ya vienes de dos o tres entrenos, hoy es el día en que tu cuerpo se queda con lo que hiciste. Mover suave hoy es lo que hace que esos días se te noten.",
+    porque: "Mover suave hoy es lo que hace que lo que entrenes esta semana se te note. Hacer menos y que te rinda más empieza aquí.",
     saltar: "Si hoy llegaste con ganas, entrena. La recuperación te espera mañana.",
     bloques: [
       ["Movilidad articular", "Suave, articulación por articulación", "8–10"],
@@ -1468,7 +1447,7 @@ const CONTENIDO = {
         C:{p:"Prensa de piernas", p2:"Sentadilla en Smith", s:"Goblet squat"}
       },
       folicular: {
-        intencion:"Generar tensión real y construir músculo", ejecucion:"Tempo 3-1-2 · rango completo",
+        intencion:"Generar tensión real y construir músculo", ejecucion:"Bajas en 3, aguantas 1, subes en 2 · rango completo",
         A:{p:"Sentadilla búlgara", p2:"Sentadilla profunda con pausa", s:"Sentadilla a una pierna asistida"},
         B:{p:"Goblet squat pesado", p2:"Zancada con mancuernas", s:"Búlgara con mancuernas"},
         C:{p:"Sentadilla con barra", p2:"Zancada con barra", s:"Hack squat"}
@@ -1480,7 +1459,7 @@ const CONTENIDO = {
         C:{p:"Sentadilla barra pesada", p2:"Prensa pesada", s:"Hack squat carga alta"}
       },
       lutea: {
-        intencion:"Integrar el patrón con coordinación", ejecucion:"Unilateral · tempo controlado",
+        intencion:"Integrar el patrón con coordinación", ejecucion:"A una pierna · bajando despacio",
         A:{p:"Zancada caminando", p2:"Sentadilla con pausa", s:"Split squat con pausa"},
         B:{p:"Búlgara con mancuernas", p2:"Goblet squat con pausa", s:"Zancada inversa con mancuernas"},
         C:{p:"Búlgara con barra", p2:"Prensa de piernas", s:"Zancada caminando con mancuernas"}
@@ -1500,7 +1479,7 @@ const CONTENIDO = {
         C:{p:"Press en máquina ligero", p2:"Press de hombro en máquina ligero", s:"Press con mancuerna sentada"}
       },
       folicular: {
-        intencion:"Generar tensión real y construir músculo", ejecucion:"Tempo 3-1-2 · rango completo",
+        intencion:"Generar tensión real y construir músculo", ejecucion:"Bajas en 3, aguantas 1, subes en 2 · rango completo",
         A:{p:"Flexión en suelo", p2:"Pike push-up", s:"Flexión en rodillas con tempo"},
         B:{p:"Press con mancuerna en banco", p2:"Press militar con mancuernas", s:"Press en el piso"},
         C:{p:"Press banca", p2:"Press inclinado con barra", s:"Press militar con barra"}
@@ -1512,10 +1491,10 @@ const CONTENIDO = {
         C:{p:"Press banca pesado", p2:"Fondos en paralelas", s:"Press militar pesado"}
       },
       lutea: {
-        intencion:"Integrar el patrón con coordinación", ejecucion:"Unilateral · tempo controlado",
+        intencion:"Integrar el patrón con coordinación", ejecucion:"Un lado a la vez · bajando despacio",
         A:{p:"Flexión escalonada", p2:"Pike en pared", s:"Flexión con una mano elevada"},
         B:{p:"Press a un brazo", p2:"Press militar a un brazo", s:"Press alterno"},
-        C:{p:"Press mancuerna unilateral", p2:"Press de hombro unilateral en polea", s:"Press polea a un brazo"}
+        C:{p:"Press con mancuerna a un brazo", p2:"Press de hombro a un brazo en polea", s:"Press polea a un brazo"}
       },
       premenstrual: {
         intencion:"Mantener sin destruir", ejecucion:"Rango cómodo · lejos del fallo",
@@ -1532,7 +1511,7 @@ const CONTENIDO = {
         C:{p:"Jalón en polea ligero", p2:"Remo bajo en polea ligero", s:"Remo en máquina ligero"}
       },
       folicular: {
-        intencion:"Generar tensión real y construir músculo", ejecucion:"Tempo 3-1-2 · rango completo",
+        intencion:"Generar tensión real y construir músculo", ejecucion:"Bajas en 3, aguantas 1, subes en 2 · rango completo",
         A:{p:"Remo invertido", p2:"Jalón con banda de rodillas", s:"Remo con banda en puerta"},
         B:{p:"Remo a un brazo con mancuerna", p2:"Pull-over con mancuerna", s:"Remo inclinado con mancuernas"},
         C:{p:"Jalón en polea", p2:"Remo bajo en polea", s:"Remo en máquina"}
@@ -1544,10 +1523,10 @@ const CONTENIDO = {
         C:{p:"Dominadas asistidas", p2:"Remo en barra T", s:"Jalón en polea pesado"}
       },
       lutea: {
-        intencion:"Integrar el patrón con coordinación", ejecucion:"Unilateral · tempo controlado",
+        intencion:"Integrar el patrón con coordinación", ejecucion:"A un brazo · bajando despacio",
         A:{p:"Remo invertido a un brazo", p2:"Jalón con banda a un brazo", s:"Remo escalonado"},
-        B:{p:"Remo unilateral con apoyo", p2:"Jalón con banda unilateral", s:"Remo alterno"},
-        C:{p:"Remo en polea unilateral", p2:"Jalón unilateral en polea", s:"Remo en máquina a un brazo"}
+        B:{p:"Remo a un brazo con apoyo", p2:"Jalón con banda a un brazo", s:"Remo alterno"},
+        C:{p:"Remo en polea a un brazo", p2:"Jalón a un brazo en polea", s:"Remo en máquina a un brazo"}
       },
       premenstrual: {
         intencion:"Mantener sin destruir", ejecucion:"Rango cómodo · lejos del fallo",
@@ -1564,7 +1543,7 @@ const CONTENIDO = {
         C:{p:"Hip thrust en máquina ligero", p2:"Peso muerto rumano en Smith ligero", s:"Peso muerto rumano con mancuerna"}
       },
       folicular: {
-        intencion:"Generar tensión real y construir músculo", ejecucion:"Tempo 3-1-2 · rango completo",
+        intencion:"Generar tensión real y construir músculo", ejecucion:"Bajas en 3, aguantas 1, subes en 2 · rango completo",
         A:{p:"Hip thrust a dos piernas con pausa", p2:"Buenos días sin carga", s:"Puente con marcha"},
         B:{p:"Peso muerto rumano con mancuernas", p2:"Hip thrust con mancuerna", s:"Peso muerto sumo con mancuerna"},
         C:{p:"Peso muerto con barra", p2:"Hip thrust con barra", s:"Peso muerto rumano con barra"}
@@ -1576,10 +1555,10 @@ const CONTENIDO = {
         C:{p:"Peso muerto barra pesado", p2:"Hip thrust pesado", s:"Hip thrust barra pesado"}
       },
       lutea: {
-        intencion:"Integrar el patrón con coordinación", ejecucion:"Unilateral · tempo controlado",
+        intencion:"Integrar el patrón con coordinación", ejecucion:"A una pierna · bajando despacio",
         A:{p:"Hip thrust a una pierna", p2:"Peso muerto a una pierna", s:"Peso muerto rumano a una pierna"},
-        B:{p:"Peso muerto rumano unilateral", p2:"Hip thrust unilateral", s:"Peso muerto con apoyo atrás"},
-        C:{p:"Peso muerto unilateral con mancuerna", p2:"Hip thrust unilateral en máquina", s:"Peso muerto unilateral en polea"}
+        B:{p:"Peso muerto rumano a una pierna", p2:"Hip thrust a una pierna", s:"Peso muerto con apoyo atrás"},
+        C:{p:"Peso muerto a una pierna con mancuerna", p2:"Hip thrust a una pierna en máquina", s:"Peso muerto a una pierna en polea"}
       },
       premenstrual: {
         intencion:"Mantener sin destruir", ejecucion:"Rango cómodo · lejos del fallo",
@@ -1596,7 +1575,7 @@ const CONTENIDO = {
         C:{p:"Pallof en polea ligero", p2:"Rotación en máquina ligera", s:"Pallof con banda ligero"}
       },
       folicular: {
-        intencion:"Generar tensión real y construir músculo", ejecucion:"Tempo 3-1-2 · rango completo",
+        intencion:"Generar tensión real y construir músculo", ejecucion:"Bajas en 3, aguantas 1, subes en 2 · rango completo",
         A:{p:"Pallof con manos", p2:"Woodchop sin carga", s:"Plancha lateral"},
         B:{p:"Pallof press con banda", p2:"Woodchop de abajo a arriba", s:"Woodchop con mancuerna"},
         C:{p:"Pallof en polea", p2:"Woodchop de abajo a arriba en cable", s:"Woodchop en cable"}
@@ -1608,10 +1587,10 @@ const CONTENIDO = {
         C:{p:"Woodchop en cable potente", p2:"Pallof en polea con paso", s:"Rotación en polea rápida"}
       },
       lutea: {
-        intencion:"Integrar el patrón con coordinación", ejecucion:"Unilateral · tempo controlado",
+        intencion:"Integrar el patrón con coordinación", ejecucion:"Un lado a la vez · bajando despacio",
         A:{p:"Plancha lateral con rotación", p2:"Dead bug contralateral", s:"Plancha lateral con apoyo"},
-        B:{p:"Pallof press unilateral", p2:"Giro con mancuerna a un lado", s:"Pallof con banda a un lado"},
-        C:{p:"Pallof en polea unilateral", p2:"Rotación en polea con paso", s:"Woodchop en cable unilateral"}
+        B:{p:"Pallof press a un brazo", p2:"Giro con mancuerna a un lado", s:"Pallof con banda a un lado"},
+        C:{p:"Pallof en polea a un brazo", p2:"Rotación en polea con paso", s:"Woodchop en cable a un lado"}
       },
       premenstrual: {
         intencion:"Mantener sin destruir", ejecucion:"Rango cómodo · lejos del fallo",
@@ -1628,7 +1607,7 @@ const CONTENIDO = {
         C:{p:"Caminata en cinta", p2:"Marcha lateral con banda", s:"Step up bajo"}
       },
       folicular: {
-        intencion:"Generar tensión real y construir músculo", ejecucion:"Tempo 3-1-2 · rango completo",
+        intencion:"Generar tensión real y construir músculo", ejecucion:"Bajas en 3, aguantas 1, subes en 2 · rango completo",
         A:{p:"Step up a banco", p2:"Marcha lateral con banda", s:"Zancada en sitio"},
         B:{p:"Step up con mancuernas", p2:"Marcha con carga", s:"Step up bajo con mancuernas"},
         C:{p:"Step up con barra", p2:"Caminata inclinada con carga", s:"Empuje de trineo"}
@@ -1640,7 +1619,7 @@ const CONTENIDO = {
         C:{p:"Empuje de trineo", p2:"Step up con barra potente", s:"Step up en cajón alto"}
       },
       lutea: {
-        intencion:"Integrar el patrón con coordinación", ejecucion:"Unilateral · tempo controlado",
+        intencion:"Integrar el patrón con coordinación", ejecucion:"A una pierna · bajando despacio",
         A:{p:"Step up lento a una pierna", p2:"Caminata con zancada larga", s:"Marcha lateral con banda"},
         B:{p:"Step up con mancuernas controlado", p2:"Marcha lateral con mancuernas", s:"Zancada inversa"},
         C:{p:"Step up con barra controlado", p2:"Caminata inclinada con mancuernas", s:"Caminata inclinada con carga"}
@@ -1660,7 +1639,7 @@ const CONTENIDO = {
         C:{p:"Farmer carry ligero", p2:"Caminata con placa al frente", s:"Caminata con placa"}
       },
       folicular: {
-        intencion:"Generar tensión real y construir músculo", ejecucion:"Tempo 3-1-2 · rango completo",
+        intencion:"Generar tensión real y construir músculo", ejecucion:"Bajas en 3, aguantas 1, subes en 2 · rango completo",
         A:{p:"Farmer carry con mochila", p2:"Caminata con una bolsa a un lado", s:"Caminata con dos bolsas"},
         B:{p:"Farmer carry con mancuernas", p2:"Suitcase carry", s:"Farmer carry con discos"},
         C:{p:"Farmer carry pesado", p2:"Caminata con placa al frente", s:"Yoke carry"}
@@ -1672,7 +1651,7 @@ const CONTENIDO = {
         C:{p:"Yoke carry", p2:"Farmer carry máximo", s:"Farmer carry con barra"}
       },
       lutea: {
-        intencion:"Integrar el patrón con coordinación", ejecucion:"Unilateral · tempo controlado",
+        intencion:"Integrar el patrón con coordinación", ejecucion:"Un lado a la vez · bajando despacio",
         A:{p:"Suitcase con mochila a un lado", p2:"Caminata con dos bolsas", s:"Caminata cargada a un lado"},
         B:{p:"Suitcase carry con mancuerna", p2:"Farmer carry alterno", s:"Suitcase carry con banda"},
         C:{p:"Suitcase carry pesado", p2:"Farmer carry con mancuernas", s:"Suitcase carry con disco"}
@@ -1700,7 +1679,7 @@ const CONTENIDO = {
   armeria: {
     niveles: [
       { nombre: "Nivel 1", detalle: "Vas empezando", series: "2 series · 10 a 12 reps" },
-      { nombre: "Nivel 2", detalle: "Ya llevas meses", series: "3 series · 8 a 12 reps" },
+      { nombre: "Nivel 2", detalle: "Ya conoces los ejercicios", series: "3 series · 8 a 12 reps" },
       { nombre: "Nivel 3", detalle: "Pronto", series: "4 a 5 series × 4 a 8 reps", pronto: true }
     ],
     escenarios: [
@@ -1804,11 +1783,9 @@ let CORREO_DE_ELLA = '';
   function abrirReino(){
     puertaEl.hidden=true;
     reinoEl.hidden=false;
-    const p=(CONTENIDO.planes||{})[PLAN_DE_ELLA];
-    const np=(p&&p.nombre)?p.nombre:'';
     $('quienSoy').innerHTML = CORREO_DE_ELLA
-      ? `<span class="mi-correo">${CORREO_DE_ELLA}</span>${np?`<span class="mi-plan">${np}</span>`:''}`
-      : (np?np.toUpperCase():'EL REINO');
+      ? `<span class="mi-correo">${CORREO_DE_ELLA}</span>`
+      : 'EL REINO';
     if(typeof window.arrancarReino==='function') window.arrancarReino();
   }
 
@@ -1942,6 +1919,8 @@ window.arrancarReino=function(){
     if(p.modo==='semanas') return C.meno_semanas;
     return F;
   }
+  /* en casa y con mancuernas no hay máquinas: si la semana trae cardio_casa, va ese */
+  const cardioDe=f=>(state.escenario!=='C'&&f.cardio_casa)?f.cardio_casa:f.cardio;
 
   /* ══ PORTADA ══ */
   $('pTitulo').textContent=C.portada.titulo;
@@ -2100,7 +2079,7 @@ window.arrancarReino=function(){
       ['Activación articular', f.blindaje, '8–12'],
       ['Activación neuromuscular', 'Despertar el cuerpo sin exigirlo', '5–8'],
       ['Trabajo principal', seriesDeHoy(f), '22–35'],
-      ['Cardio', f.cardio, ''],
+      ['Cardio', cardioDe(f), ''],
       ['Cierre y recuperación', 'Respiración y movilidad', '6–14']
     ];
   }
@@ -2116,7 +2095,7 @@ window.arrancarReino=function(){
     $('sBody').innerHTML=f.carta.map(t=>`<p>${t}</p>`).join('');
     $('sIntent').textContent=f.lacre;
 
-    $('intent').textContent=f.entreno.toUpperCase();
+    $('intent').textContent=f.lacre.toUpperCase();
     $('dur').textContent=esc.nombre;
     const _lista=C.sesiones[baseDe(f)]||[];
     const _ses=_lista[state.sesion];
@@ -2215,8 +2194,6 @@ window.arrancarReino=function(){
     else if(state.molestias==='ninguna'&&f.id==='ovulatoria')
       bt='Sin molestias y en tu punto más alto. Este es el día del mes para ir por tu marca.';
     if(bt){b.textContent=bt;b.hidden=false}else{b.hidden=true}
-
-    $('corteText').innerHTML=`<b>${5+(F.indexOf(f)*3)} reinas</b> están en tu misma semana hoy. Tres ya entrenaron.`;
   }
 
   /* ══ EL MAPA ══ */
@@ -2248,12 +2225,6 @@ window.arrancarReino=function(){
       </div>`;
     }).join('');
   }
-  const nombrePlan=(C.planes[state.plan]||{}).nombre||'Standard';
-  $('planTexto').textContent = state.plan==='vip'
-    ? `Vas en ${nombrePlan}. Tienes todo el Club abierto.`
-    : `Vas en ${nombrePlan}. Lo que dice Premium o VIP se abre cuando subas de plan.`;
-  $('linkPlanes').href=C.enlaces.planes;
-  if(state.plan==='vip') $('linkPlanes').style.display='none';
 
   /* ══ NAVEGACIÓN ══ */
   function show(id){
@@ -2377,8 +2348,8 @@ window.arrancarReino=function(){
     });
 
     /* bloque 4 y 5 */
-    if((f.cardio||'').toLowerCase().indexOf('sin cardio')===-1){
-      pasos.push({bloque:'Bloque 4 · Cardio', titulo:'Cardio de hoy', que:f.cardio, datos:[], descanso:null});
+    if((cardioDe(f)||'').toLowerCase().indexOf('sin cardio')===-1){
+      pasos.push({bloque:'Bloque 4 · Cardio', titulo:'Cardio de hoy', que:cardioDe(f), datos:[], descanso:null});
     }
     pasos.push({bloque:'Bloque 5 · Cierre', titulo:'Cierre y recuperación',
                 que: f.id==='ovulatoria' ? 'Respiración y movilidad suave. Hoy no estires al límite.'
@@ -2473,8 +2444,8 @@ window.arrancarReino=function(){
     bc.setAttribute('aria-pressed',String(!sola));
     $('corteBox').style.display=sola?'none':'flex';
     $('privacyLine').textContent=sola
-      ?'Nadie te va a escribir hoy. Aquí estamos cuando vuelvas.'
-      :'Tu guardia solo ve que entrenaste. Lo demás queda entre tu cuerpo y tú.';
+      ?'Hoy es solo tuyo. La comunidad sigue ahí para cuando quieras volver.'
+      :'Qué cuentas y a quién se lo cuentas, eso lo decides tú.';
   }
   bs.addEventListener('click',()=>setCompany(true));
   bc.addEventListener('click',()=>setCompany(false));
