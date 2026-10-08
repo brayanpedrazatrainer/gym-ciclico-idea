@@ -496,6 +496,9 @@
     border:1px solid var(--line);background:#000}
   .en-vmarco iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
   .en-vnota{width:100%;text-align:center;font-size:12px;color:var(--gold-soft);line-height:1.45}
+  .en-video.lista{flex-direction:column;gap:6px}
+  .en-video.lista .en-vbtn{text-align:left;text-transform:none;letter-spacing:.01em;font-family:var(--ui);font-weight:600;font-size:13.5px;padding:12px 14px}
+  .en-vsin{padding:12px 14px;border:1px dashed var(--line);border-radius:8px;font-size:13.5px;color:var(--cream)}
   .en-timer{margin-top:18px;padding-top:16px;border-top:1px solid rgba(184,150,62,.25);text-align:center}
   .en-timer[hidden]{display:none}
   .en-timer-label{font-family:var(--heroic);font-size:7.5px;letter-spacing:.24em;
@@ -1727,10 +1730,46 @@ const CONTENIDO = {
     "Marcha con mochila a un lado en movimiento": "https://youtube.com/shorts/ubET7FO0seo",
     "Desplantes caminata con maleta":        "https://youtube.com/shorts/Tl9MohMDIss",
 
+    /* ---- MOVILIDAD Y BLINDAJE ---- */
+    "Tobillo en media rodilla":              "https://youtube.com/shorts/NFtolzVDlDw",
+    "Desplante con rodilla sobre la punta":  "https://youtube.com/shorts/fCyo94-Y2Vs",
+    "Sentadilla a una pierna con pie atrás": "https://youtube.com/shorts/8mD9DHn2eik",
+    "Desplante bajo con alcance al frente":  "https://youtube.com/shorts/tiEKyJ6siQ0",
+    "Equilibrio en una pierna con pierna al frente": "https://youtube.com/shorts/2tb1YwY6xw8",
+    "Sentadilla a una pierna asistida":      "https://youtube.com/shorts/Su8QycF5aqA",
+    "90/90 de cadera":                       "https://youtube.com/shorts/uCszPKmZr8Q",
+    "90/90 con inclinación al frente":       "https://youtube.com/shorts/B6HmWp7O_Ac",
+    "Cambio 90/90 con brazos cruzados":      "https://youtube.com/shorts/lrS1Nchm91M",
+    "Plancha lateral con rodillas":          "https://youtube.com/shorts/79YXDJk531o",
+    "Plancha lateral con apoyo":             "https://youtube.com/shorts/79YXDJk531o",
+    "Elevación de pierna de lado":           "https://youtube.com/shorts/xljtfZQIJfI",
+    "Limpiaparabrisas sentada":              "https://youtube.com/shorts/sKVd-J1hwdU",
+    "Cambio 90/90 sin manos":                "https://youtube.com/shorts/f5JYgOawcaM",
+
     /* ---- MANCUERNAS ---- */
     "Woodchop con mancuerna":                "https://youtube.com/shorts/COSv0BNBE0k",
     "Woodchop con mancuerna potente":        "https://youtube.com/shorts/COSv0BNBE0k"
   },
+
+  /* --- BLINDAJE: LO QUE HACE EN EL PASO 1 ------------------------
+     A la izquierda, el tipo de blindaje de cada semana (el campo
+     "blindaje" de fases, energia_rutas y meno_semanas).
+     A la derecha, los ejercicios. Si el nombre está en "videos",
+     sale con su video.
+  ---------------------------------------------------------------- */
+  blindajes: {
+    "Blindaje restaurativo":          ["Limpiaparabrisas sentada", "90/90 de cadera", "Tobillo en media rodilla"],
+    "Blindaje progresivo":            ["Desplante con rodilla sobre la punta", "Sentadilla a una pierna asistida", "Elevación de pierna de lado"],
+    "Blindaje protector obligatorio": ["Tobillo en media rodilla", "Desplante con rodilla sobre la punta", "Desplante bajo con alcance al frente", "Plancha lateral con rodillas"],
+    "Blindaje protector":             ["Tobillo en media rodilla", "Desplante con rodilla sobre la punta", "Desplante bajo con alcance al frente", "Plancha lateral con rodillas"],
+    "Blindaje integrador":            ["Equilibrio en una pierna con pierna al frente", "Cambio 90/90 sin manos", "Sentadilla a una pierna asistida"],
+    "Blindaje regulador":             ["Limpiaparabrisas sentada", "90/90 con inclinación al frente", "Cambio 90/90 con brazos cruzados"],
+    "Blindaje completo":              ["Tobillo en media rodilla", "Desplante con rodilla sobre la punta", "90/90 de cadera", "Elevación de pierna de lado", "Plancha lateral con rodillas"],
+    "Blindaje ligero, sin carga":     ["Limpiaparabrisas sentada", "90/90 de cadera", "Tobillo en media rodilla"]
+  },
+
+  /* El bloque "Movilidad articular" del día de recuperación */
+  movilidad_recuperacion: ["Limpiaparabrisas sentada", "90/90 de cadera", "Tobillo en media rodilla"],
 
   /* En la versión de casa algunos videos muestran mancuerna. */
   aviso_video_casa: "En tu versión va sin mancuerna, solo con tu cuerpo.",
@@ -2368,7 +2407,8 @@ window.arrancarReino=function(){
     if(sesion.tipo==='recuperacion'){
       C.recuperacion.bloques.forEach((b,i)=>{
         pasos.push({bloque:'Recuperación activa · '+(i+1)+' de 3', titulo:b[0], que:b[1],
-                    datos:[['Tiempo',b[2]+' min']], descanso:null});
+                    datos:[['Tiempo',b[2]+' min']], descanso:null,
+                    lista: i===0 ? (C.movilidad_recuperacion||null) : null});
       });
       pasos.push({fin:true, titulo:'TERMINASTE', que:alAzar(C.cierre.recuperacion)});
       return pasos;
@@ -2376,7 +2416,9 @@ window.arrancarReino=function(){
 
     /* bloque 1 y 2 */
     pasos.push({bloque:'Bloque 1 · Activación articular', titulo:'Movilidad y blindaje',
-                que:f.blindaje+'. Prepara tobillo, rodilla, cadera, columna y hombro.',
+                que: (C.blindajes||{})[f.blindaje] ? f.blindaje+'. Toca cada uno para ver cómo se hace.'
+                                                 : f.blindaje+'. Prepara tobillo, rodilla, cadera, columna y hombro.',
+                lista:(C.blindajes||{})[f.blindaje]||null,
                 datos:[['Tiempo','8 a 12 min']], descanso:null});
     pasos.push({bloque:'Bloque 2 · Activación neuromuscular', titulo:'Despertar el cuerpo',
                 que:'Movimientos suaves para que el cuerpo entienda que vamos a entrenar.',
@@ -2451,10 +2493,12 @@ window.arrancarReino=function(){
     vb.querySelectorAll('.en-vbtn').forEach(x=>x.setAttribute('aria-pressed','false'));
     if(yaAbierto) return;
     b.setAttribute('aria-pressed','true');
-    vb.insertAdjacentHTML('beforeend',
+    const enLista=vb.classList.contains('lista');
+    /* en una lista el video se abre debajo del ejercicio tocado; si no, al final */
+    (enLista?b:vb).insertAdjacentHTML(enLista?'afterend':'beforeend',
       `<div class="en-vmarco"><iframe src="https://www.youtube-nocookie.com/embed/${b.dataset.vid}?rel=0&playsinline=1&autoplay=1"
         title="C&oacute;mo se hace" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>`
-      +(state.escenario==='A'&&C.aviso_video_casa?`<p class="en-vnota">${C.aviso_video_casa}</p>`:''));
+      +(!enLista&&state.escenario==='A'&&C.aviso_video_casa?`<p class="en-vnota">${C.aviso_video_casa}</p>`:''));
   });
 
   function pintarPaso(){
@@ -2470,9 +2514,21 @@ window.arrancarReino=function(){
     const s=$('enSust');
     if(p.sust){s.textContent=p.sust;s.hidden=false}else{s.hidden=true}
     const vP=videoDe(p.ej), vS=videoDe(p.ejSust), vb=$('enVideo');
-    vb.innerHTML=(vP?`<button class="en-vbtn" data-vid="${vP}" aria-pressed="false">&#9654; Ver c&oacute;mo se hace</button>`:'')
-                +(vS?`<button class="en-vbtn" data-vid="${vS}" aria-pressed="false">&#9654; Ver el reemplazo</button>`:'');
-    vb.hidden=!(vP||vS);
+    if(p.lista){
+      /* paso con varios ejercicios (movilidad y blindaje): uno por renglón */
+      vb.className='en-video lista';
+      vb.innerHTML=p.lista.map(n=>{
+        const id=videoDe(n);
+        return id ? `<button class="en-vbtn" data-vid="${id}" aria-pressed="false">&#9654;&nbsp; ${n}</button>`
+                  : `<p class="en-vsin">${n}</p>`;
+      }).join('');
+      vb.hidden=false;
+    }else{
+      vb.className='en-video';
+      vb.innerHTML=(vP?`<button class="en-vbtn" data-vid="${vP}" aria-pressed="false">&#9654; Ver c&oacute;mo se hace</button>`:'')
+                  +(vS?`<button class="en-vbtn" data-vid="${vS}" aria-pressed="false">&#9654; Ver el reemplazo</button>`:'');
+      vb.hidden=!(vP||vS);
+    }
     if(p.peso){
       $('enDatos').innerHTML += `<div class="en-dato" style="min-width:100%"><small>Cuánto peso</small><b style="font-size:12px;font-family:var(--ui);font-weight:500;color:var(--cream)">${p.peso}</b></div>`;
     }
