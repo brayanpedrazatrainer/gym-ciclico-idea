@@ -437,6 +437,32 @@
     background:rgba(199,55,44,.14);border-left:2px solid var(--red);color:var(--cream)}
   .aviso.ok{background:rgba(184,150,62,.12);border-left-color:var(--gold);color:var(--gold-soft)}
   .aviso[hidden]{display:none}
+  /* antes y después */
+  .fotos-guia p{font-size:13.5px;color:var(--cream);line-height:1.6;margin-top:9px}
+  .fotos-permiso{display:flex;flex-direction:column;gap:8px}
+  .perm-btn{padding:13px 14px;border-radius:8px;border:1px solid var(--line);background:rgba(184,150,62,.06);
+    color:var(--cream);font-family:var(--ui);font-size:13.5px;text-align:left;cursor:pointer}
+  .perm-btn[aria-pressed="true"]{border-color:var(--gold-soft);background:rgba(184,150,62,.2);color:var(--gold-soft);font-weight:600}
+  .fotos-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .foto-slot{position:relative;aspect-ratio:3/4;border:1px dashed var(--line);border-radius:8px;background:rgba(0,0,0,.25);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--gold-soft);
+    font-family:var(--ui);font-size:12.5px;overflow:hidden;cursor:pointer;padding:0}
+  .foto-slot b{font-size:26px;line-height:1;font-weight:300}
+  .foto-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .foto-slot .foto-et{position:absolute;left:0;right:0;bottom:0;padding:7px 6px;font-size:11.5px;text-align:center;
+    color:var(--cream);background:linear-gradient(transparent,rgba(0,0,0,.8))}
+  .foto-slot[disabled]{opacity:.4;cursor:not-allowed}
+  .reina-fotos{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+  .reina-fotos h4{font-family:var(--ui);font-size:14px;color:var(--cream);font-weight:700;word-break:break-all}
+  .reina-fotos .meta{font-size:12px;color:var(--muted);margin:4px 0 10px;line-height:1.5}
+  .reina-fotos .meta b{color:var(--gold-soft);font-weight:600}
+  .panel-fila{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}
+  .panel-thumb{position:relative;aspect-ratio:3/4;border-radius:6px;overflow:hidden;background:rgba(0,0,0,.3);
+    border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);text-align:center}
+  .panel-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .panel-thumb button{position:absolute;right:3px;bottom:3px;width:26px;height:26px;border-radius:50%;border:0;
+    background:rgba(0,0,0,.7);color:var(--gold-soft);font-size:13px;cursor:pointer}
+  .panel-sub{font-family:var(--heroic);font-size:8px;letter-spacing:.2em;color:var(--muted);margin:8px 0 5px;text-transform:uppercase}
   #puerta{max-width:392px}
   .ses{display:flex;align-items:center;gap:12px;width:100%;cursor:pointer;text-align:left;
     margin-bottom:9px;padding:14px 14px;border-radius:9px;
@@ -664,6 +690,15 @@
           </svg>
         </span>
         <span class="door-txt"><b>TU GUARDIA</b><span>La comunidad y el live de cada semana.</span></span>
+        <span class="door-mark">&#9670;</span>
+      </button>
+      <button class="door" data-go="v-fotos">
+        <span class="door-ico">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#B8963E" stroke-width="1.5">
+            <rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="12" cy="13.5" r="3.6"/><path d="M8.5 7 L10 4.5 H14 L15.5 7"/>
+          </svg>
+        </span>
+        <span class="door-txt"><b>MI ANTES Y DESPU&Eacute;S</b><span>Tus fotos de hoy y de los 3 meses.</span></span>
         <span class="door-mark">&#9670;</span>
       </button>
     </div>
@@ -901,6 +936,51 @@
       <p class="p-promise">Lo que cada reina va logrando queda escrito. Ah&iacute; tambi&eacute;n van tus preguntas.</p>
       <a class="btn ghost" id="linkComunidad" href="#" target="_blank" rel="noopener" style="margin-top:14px;text-align:center;text-decoration:none">IR A LA COMUNIDAD</a>
     </div>
+  </section>
+
+  <!-- ══ MI ANTES Y DESPUÉS ══════════════ -->
+  <section class="view" id="v-fotos">
+    <p class="eyebrow" style="margin-top:20px">Mi antes y despu&eacute;s</p>
+    <p class="lead" style="font-size:17px;margin-bottom:6px">Tu punto de partida y tu cambio a los 3 meses.</p>
+
+    <div class="panel">
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <p class="p-title">C&Oacute;MO TOMARLAS</p>
+      <div class="fotos-guia" id="fotosGuia"></div>
+    </div>
+
+    <div class="panel">
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <p class="p-title">TU PERMISO</p>
+      <p class="p-promise">Estas fotos son para mostrar tu cambio. Escoge c&oacute;mo las podemos publicar antes de subirlas.</p>
+      <div class="fotos-permiso" id="fotosPermiso"></div>
+    </div>
+
+    <div class="panel">
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <p class="p-title">ANTES</p>
+      <p class="p-promise">Antes de tu primer entreno.</p>
+      <div class="fotos-grid" id="gridAntes"></div>
+    </div>
+
+    <div class="panel">
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <p class="p-title">A LOS 3 MESES</p>
+      <p class="p-promise" id="despuesNota"></p>
+      <div class="fotos-grid" id="gridDespues"></div>
+    </div>
+
+    <p class="aviso" id="fotosAviso" hidden></p>
+    <input type="file" id="fotoInput" accept="image/*" hidden>
+    <button class="btn ghost" id="btnPanelFotos" style="margin-top:20px" hidden>Panel de fotos &middot; solo t&uacute;</button>
+  </section>
+
+  <!-- ══ PANEL DE FOTOS (solo Brayan) ════ -->
+  <section class="view" id="v-panel">
+    <p class="eyebrow" style="margin-top:20px">Panel de fotos</p>
+    <p class="lead" style="font-size:17px;margin-bottom:6px">Las fotos de cada reina, con su permiso.</p>
+    <div id="panelLista"></div>
+    <button class="btn ghost" id="btnVolverFotos" style="margin-top:20px">Volver</button>
   </section>
 </div>
 
@@ -1935,6 +2015,8 @@ const CONTENIDO = {
    ============================================================ */
 const SUPABASE_URL  = "https://lsxnxupkjupqrvhlxgbq.supabase.co";
 const SUPABASE_KEY  = "sb_publishable_oiY6nnZiC-9pO2sMd3S06g_IVHPPoNK";
+/* Quien ve el panel de fotos. La base de datos lo vuelve a comprobar (es_admin_reino). */
+const CORREO_ADMIN  = "brayanpedrazatrainer@gmail.com";
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -2413,6 +2495,8 @@ window.arrancarReino=function(){
     $('nav').querySelectorAll('button').forEach(b=>b.setAttribute('aria-current',String(b.dataset.go===marca)));
     const ph=document.querySelector('.phone');
     if(ph&&ph.scrollIntoView) ph.scrollIntoView({behavior:'smooth',block:'start'});
+    if(id==='v-fotos') cargarFotos();
+    if(id==='v-panel') cargarPanel();
   }
 
   function resetSobre(){
@@ -2764,6 +2848,194 @@ window.arrancarReino=function(){
 
   $('btnEntrenar').addEventListener('click',()=>{
     PASOS=armarPasos(); pasoActual=0; pintarPaso(); show('v-entreno');
+  });
+
+  /* ══ MI ANTES Y DESPUÉS ══
+     Fotos en el espacio privado "fotos" de Supabase, carpeta = id de ella:
+     {id}/antes-frente.jpg … {id}/despues-espalda.jpg
+     Fila en fotos_reinas: permiso y fecha de la foto de antes (abre la de después a los 90 días). */
+  const FT=C.fotos;
+  const yo={uid:null, fila:null, urls:{}, permiso:null, destino:null};
+  const rutaFoto=(uid,mom,lado)=>uid+'/'+mom+'-'+lado+'.jpg';
+  const fechaLarga=d=>d.toLocaleDateString('es-CO',{day:'numeric',month:'long',year:'numeric'});
+  function avisoFotos(t,ok){ const a=$('fotosAviso'); a.textContent=t||''; a.className=ok?'aviso ok':'aviso'; a.hidden=!t; }
+  function abreDespues(){
+    if(!yo.fila||!yo.fila.antes_fecha) return null;
+    const d=new Date(yo.fila.antes_fecha); d.setDate(d.getDate()+FT.dias_despues); return d;
+  }
+
+  $('fotosGuia').innerHTML=FT.guia.map(t=>`<p>${t}</p>`).join('');
+  $('btnPanelFotos').hidden = (typeof CORREO_DE_ELLA==='undefined' || CORREO_DE_ELLA.toLowerCase()!==CORREO_ADMIN);
+  $('btnPanelFotos').addEventListener('click',()=>show('v-panel'));
+  $('btnVolverFotos').addEventListener('click',()=>show('v-fotos'));
+
+  async function cargarFotos(){
+    avisoFotos('Cargando tus fotos...',true);
+    try{
+      const {data:u}=await sb.auth.getUser();
+      yo.uid=u&&u.user ? u.user.id : null;
+      if(!yo.uid){ avisoFotos('Vuelve a entrar con tu correo para ver tus fotos.'); return; }
+      const {data:fila}=await sb.from('fotos_reinas').select('*').eq('id',yo.uid).maybeSingle();
+      yo.fila=fila||null;
+      yo.permiso=yo.fila ? yo.fila.permiso : null;
+      const rutas=[]; ['antes','despues'].forEach(m=>FT.lados.forEach(l=>rutas.push(rutaFoto(yo.uid,m,l.id))));
+      const {data:firm}=await sb.storage.from('fotos').createSignedUrls(rutas,3600);
+      yo.urls={}; (firm||[]).forEach(x=>{ if(x.signedUrl&&!x.error) yo.urls[x.path]=x.signedUrl; });
+      pintarFotos(); avisoFotos('');
+    }catch(e){ avisoFotos('No pude cargar tus fotos. Revisa tu conexión e intenta de nuevo.'); }
+  }
+
+  function pintarFotos(){
+    $('fotosPermiso').innerHTML=FT.permisos.map(p=>
+      `<button class="perm-btn" data-perm="${p.id}" aria-pressed="${yo.permiso===p.id}">${p.texto}</button>`).join('');
+    const abre=abreDespues(), hoy=new Date();
+    const despuesAbierto = abre && hoy>=abre;
+    $('despuesNota').textContent = !abre ? 'Se abre 3 meses después de tu foto de antes.'
+                                 : despuesAbierto ? 'Ya te toca. Usa el mismo lugar y la misma ropa de tu foto de antes.'
+                                 : 'Se abre el '+fechaLarga(abre)+'.';
+    const celda=(mom,l,abierto)=>{
+      const url=yo.urls[rutaFoto(yo.uid,mom,l.id)];
+      const bloqueada=!yo.permiso||!abierto;
+      return `<button class="foto-slot" data-mom="${mom}" data-lado="${l.id}" ${bloqueada?'disabled':''}>
+        ${url?`<img src="${url}" alt="${l.texto}">`:`<b>+</b>`}
+        <span class="foto-et">${l.texto}${url?' · cambiar':''}</span></button>`;
+    };
+    $('gridAntes').innerHTML=FT.lados.map(l=>celda('antes',l,true)).join('');
+    $('gridDespues').innerHTML=FT.lados.map(l=>celda('despues',l,despuesAbierto)).join('');
+    if(!yo.permiso) avisoFotos('Primero escoge tu permiso, y ahí se habilitan las fotos.',true);
+  }
+
+  $('fotosPermiso').addEventListener('click',async e=>{
+    const b=e.target.closest('.perm-btn'); if(!b||!yo.uid) return;
+    yo.permiso=b.dataset.perm; pintarFotos(); avisoFotos('');
+    const {error}=await sb.from('fotos_reinas').upsert({id:yo.uid, permiso:yo.permiso, actualizada:new Date().toISOString()});
+    if(error) avisoFotos('No pude guardar tu permiso. Intenta de nuevo.');
+  });
+
+  function elegirFoto(e){
+    const b=e.target.closest('.foto-slot'); if(!b||b.disabled) return;
+    yo.destino={mom:b.dataset.mom, lado:b.dataset.lado};
+    $('fotoInput').value=''; $('fotoInput').click();
+  }
+  $('gridAntes').addEventListener('click',elegirFoto);
+  $('gridDespues').addEventListener('click',elegirFoto);
+
+  /* la foto se achica en el celular antes de subirla: lado largo 1280 px, JPEG ~200 KB */
+  function comprimir(file){
+    return new Promise((ok,mal)=>{
+      const img=new Image(), url=URL.createObjectURL(file);
+      img.onload=()=>{
+        const k=Math.min(1,1280/Math.max(img.naturalWidth,img.naturalHeight));
+        const c=document.createElement('canvas');
+        c.width=Math.round(img.naturalWidth*k); c.height=Math.round(img.naturalHeight*k);
+        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+        URL.revokeObjectURL(url);
+        c.toBlob(b=>b?ok(b):mal(new Error('sin imagen')),'image/jpeg',0.82);
+      };
+      img.onerror=()=>{ URL.revokeObjectURL(url); mal(new Error('formato')); };
+      img.src=url;
+    });
+  }
+
+  $('fotoInput').addEventListener('change',async()=>{
+    const file=$('fotoInput').files[0]; if(!file||!yo.destino||!yo.uid) return;
+    const {mom,lado}=yo.destino;
+    avisoFotos('Subiendo tu foto...',true);
+    try{
+      const blob=await comprimir(file);
+      const {error}=await sb.storage.from('fotos').upload(rutaFoto(yo.uid,mom,lado),blob,
+                      {upsert:true, contentType:'image/jpeg', cacheControl:'0'});
+      if(error) throw error;
+      const ahora=new Date().toISOString();
+      const cambios={id:yo.uid, permiso:yo.permiso, actualizada:ahora};
+      if(mom==='antes'&&!(yo.fila&&yo.fila.antes_fecha)) cambios.antes_fecha=ahora;
+      if(mom==='despues'&&!(yo.fila&&yo.fila.despues_fecha)) cambios.despues_fecha=ahora;
+      const {error:e2}=await sb.from('fotos_reinas').upsert(cambios);
+      if(e2) throw e2;
+      await cargarFotos();
+      avisoFotos('Listo, tu foto quedó guardada.',true);
+    }catch(e){
+      avisoFotos(e&&e.message==='formato' ? 'Esa foto no se pudo abrir. Prueba tomarla de nuevo con la cámara.'
+                                          : 'No se pudo subir la foto. Revisa tu conexión e intenta de nuevo.');
+    }
+  });
+
+  /* ══ PANEL DE FOTOS (solo Brayan; la base de datos solo le entrega todo a él) ══ */
+  let PANEL={filas:[], reinas:{}, urls:{}};
+  const nombreArchivo=(correo,mom,lado)=>(correo||'reina').toLowerCase().replace(/[^a-z0-9]+/g,'-')+'-'+mom+'-'+lado+'.jpg';
+
+  async function cargarPanel(){
+    $('panelLista').innerHTML='<p class="p-promise" style="margin-top:16px">Cargando...</p>';
+    try{
+      const {data:reinas,error:e1}=await sb.from('reinas').select('id,correo,nombre');
+      if(e1) throw e1;
+      const {data:filas,error:e2}=await sb.from('fotos_reinas').select('*').order('antes_fecha',{ascending:false});
+      if(e2) throw e2;
+      PANEL.reinas={}; (reinas||[]).forEach(r=>PANEL.reinas[r.id]=r);
+      PANEL.filas=(filas||[]).filter(f=>f.antes_fecha||f.despues_fecha);
+      if(!PANEL.filas.length){ $('panelLista').innerHTML='<p class="p-promise" style="margin-top:16px">Todavía ninguna reina ha subido fotos.</p>'; return; }
+      const rutas=[]; PANEL.filas.forEach(f=>['antes','despues'].forEach(m=>FT.lados.forEach(l=>rutas.push(rutaFoto(f.id,m,l.id)))));
+      const {data:firm}=await sb.storage.from('fotos').createSignedUrls(rutas,3600);
+      PANEL.urls={}; (firm||[]).forEach(x=>{ if(x.signedUrl&&!x.error) PANEL.urls[x.path]=x.signedUrl; });
+      pintarPanel();
+    }catch(e){ $('panelLista').innerHTML='<p class="aviso">No pude cargar el panel. Revisa tu conexión.</p>'; }
+  }
+
+  function pintarPanel(){
+    const textoPermiso=id=>{ const p=FT.permisos.find(x=>x.id===id); return p?p.texto:'Sin permiso escogido'; };
+    $('panelLista').innerHTML=PANEL.filas.map(f=>{
+      const r=PANEL.reinas[f.id]||{};
+      const fila=mom=>`<p class="panel-sub">${mom==='antes'?'Antes':'A los 3 meses'}</p><div class="panel-fila">`+
+        FT.lados.map(l=>{
+          const url=PANEL.urls[rutaFoto(f.id,mom,l.id)];
+          return `<div class="panel-thumb">${url
+            ? `<a href="${url}" target="_blank" rel="noopener"><img src="${url}" alt="${l.texto}"></a>
+               <button data-bajar="${f.id}|${mom}|${l.id}" aria-label="Descargar">&#8595;</button>`
+            : l.texto}</div>`;
+        }).join('')+'</div>';
+      return `<div class="reina-fotos">
+        <h4>${r.nombre||r.correo||'Reina'}</h4>
+        <p class="meta">${r.nombre&&r.correo?r.correo+'<br>':''}Permiso: <b>${textoPermiso(f.permiso)}</b><br>
+          Antes: ${f.antes_fecha?fechaLarga(new Date(f.antes_fecha)):'—'} · 3 meses: ${f.despues_fecha?fechaLarga(new Date(f.despues_fecha)):'—'}</p>
+        ${fila('antes')}${fila('despues')}
+        <button class="btn ghost" data-zip="${f.id}" style="margin-top:6px">Descargar todas sus fotos</button>
+      </div>`;
+    }).join('');
+  }
+
+  function guardarArchivo(blob,nombre){
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=nombre;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  }
+  function cargarJSZip(){
+    return window.JSZip ? Promise.resolve(window.JSZip) : new Promise((ok,mal)=>{
+      const s=document.createElement('script');
+      s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+      s.onload=()=>ok(window.JSZip); s.onerror=mal; document.head.appendChild(s);
+    });
+  }
+
+  $('panelLista').addEventListener('click',async e=>{
+    const uno=e.target.closest('[data-bajar]'), todas=e.target.closest('[data-zip]');
+    if(uno){
+      const [id,mom,lado]=uno.dataset.bajar.split('|');
+      const blob=await fetch(PANEL.urls[rutaFoto(id,mom,lado)]).then(r=>r.blob());
+      guardarArchivo(blob,nombreArchivo((PANEL.reinas[id]||{}).correo,mom,lado));
+    }
+    if(todas){
+      const id=todas.dataset.zip, correo=(PANEL.reinas[id]||{}).correo;
+      todas.textContent='Preparando...';
+      try{
+        const JSZip=await cargarJSZip(), zip=new JSZip();
+        for(const m of ['antes','despues']) for(const l of FT.lados){
+          const url=PANEL.urls[rutaFoto(id,m,l.id)];
+          if(url) zip.file(nombreArchivo(correo,m,l.id), await fetch(url).then(r=>r.blob()));
+        }
+        guardarArchivo(await zip.generateAsync({type:'blob'}), nombreArchivo(correo,'fotos','todas').replace(/\.jpg$/,'.zip'));
+        todas.textContent='Descargar todas sus fotos';
+      }catch(err){ todas.textContent='No se pudo. Intenta de nuevo'; }
+    }
   });
 
   /* ══ COMPAÑÍA ══ */
