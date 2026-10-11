@@ -1829,6 +1829,13 @@ const CONTENIDO = {
     "Elevación de pierna de lado":           "https://youtube.com/shorts/xljtfZQIJfI",
     "Limpiaparabrisas sentada":              "https://youtube.com/shorts/sKVd-J1hwdU",
     "Cambio 90/90 sin manos":                "https://youtube.com/shorts/f5JYgOawcaM",
+    "Desplante con rotación de tronco":      "https://youtube.com/shorts/ByWXnJy9l3s",
+    "Bisagra con pie adelante":              "https://youtube.com/shorts/EOfF_x1i68Y",
+    "Brazos arriba y en W de pie":           "https://youtube.com/shorts/VM6iWR82RXw",
+    "Tobillo con banda sentada":             "https://youtube.com/shorts/NBkqv3IOoZs",
+    "Rodillas al pecho acostada":            "https://youtube.com/shorts/-XUiffVYMZA",
+    "Figura 4 acostada":                     "https://youtube.com/shorts/EAtHqyhe44A",
+    "Liberación de pantorrilla en cuatro apoyos": "https://youtube.com/shorts/fqbYZaqpBXE",
 
     /* ---- MANCUERNAS ---- */
     "Woodchop con mancuerna":                "https://youtube.com/shorts/COSv0BNBE0k",
@@ -1842,14 +1849,14 @@ const CONTENIDO = {
      sale con su video.
   ---------------------------------------------------------------- */
   blindajes: {
-    "Blindaje restaurativo":          ["Limpiaparabrisas sentada", "90/90 de cadera", "Tobillo en media rodilla"],
-    "Blindaje progresivo":            ["Desplante con rodilla sobre la punta", "Sentadilla a una pierna asistida", "Elevación de pierna de lado"],
-    "Blindaje protector obligatorio": ["Tobillo en media rodilla", "Desplante con rodilla sobre la punta", "Desplante bajo con alcance al frente", "Plancha lateral con rodillas"],
-    "Blindaje protector":             ["Tobillo en media rodilla", "Desplante con rodilla sobre la punta", "Desplante bajo con alcance al frente", "Plancha lateral con rodillas"],
-    "Blindaje integrador":            ["Equilibrio en una pierna con pierna al frente", "Cambio 90/90 sin manos", "Sentadilla a una pierna asistida"],
-    "Blindaje regulador":             ["Limpiaparabrisas sentada", "90/90 con inclinación al frente", "Cambio 90/90 con brazos cruzados"],
-    "Blindaje completo":              ["Tobillo en media rodilla", "Desplante con rodilla sobre la punta", "90/90 de cadera", "Elevación de pierna de lado", "Plancha lateral con rodillas"],
-    "Blindaje ligero, sin carga":     ["Limpiaparabrisas sentada", "90/90 de cadera", "Tobillo en media rodilla"]
+    "Blindaje restaurativo":          ["Limpiaparabrisas sentada", "90/90 de cadera", "Tobillo en media rodilla", "Rodillas al pecho acostada", "Brazos arriba y en W de pie"],
+    "Blindaje progresivo":            ["Desplante con rodilla sobre la punta", "Sentadilla a una pierna asistida", "Elevación de pierna de lado", "Bisagra con pie adelante", "Brazos arriba y en W de pie"],
+    "Blindaje protector obligatorio": ["Tobillo en media rodilla", "Desplante con rodilla sobre la punta", "Desplante bajo con alcance al frente", "Plancha lateral con rodillas", "Desplante con rotación de tronco"],
+    "Blindaje protector":             ["Tobillo en media rodilla", "Desplante con rodilla sobre la punta", "Desplante bajo con alcance al frente", "Plancha lateral con rodillas", "Desplante con rotación de tronco"],
+    "Blindaje integrador":            ["Equilibrio en una pierna con pierna al frente", "Cambio 90/90 sin manos", "Sentadilla a una pierna asistida", "Desplante con rotación de tronco"],
+    "Blindaje regulador":             ["Limpiaparabrisas sentada", "90/90 con inclinación al frente", "Cambio 90/90 con brazos cruzados", "Figura 4 acostada", "Rodillas al pecho acostada"],
+    "Blindaje completo":              ["Tobillo en media rodilla", "Desplante con rodilla sobre la punta", "90/90 de cadera", "Elevación de pierna de lado", "Plancha lateral con rodillas", "Brazos arriba y en W de pie"],
+    "Blindaje ligero, sin carga":     ["Limpiaparabrisas sentada", "90/90 de cadera", "Tobillo en media rodilla", "Liberación de pantorrilla en cuatro apoyos", "Rodillas al pecho acostada"]
   },
 
   /* Cuánto dura cada ejercicio de movilidad, en segundos.
@@ -1867,7 +1874,14 @@ const CONTENIDO = {
     "Sentadilla a una pierna asistida":              { seg:30, lado:true },
     "Equilibrio en una pierna con pierna al frente": { seg:40, lado:true },
     "Elevación de pierna de lado":                   { seg:45, lado:true },
-    "Plancha lateral con rodillas":                  { seg:25, lado:true }
+    "Plancha lateral con rodillas":                  { seg:25, lado:true },
+    "Desplante con rotación de tronco":              { seg:30, lado:true },
+    "Bisagra con pie adelante":                      { seg:30, lado:true },
+    "Brazos arriba y en W de pie":                   { seg:45 },
+    "Tobillo con banda sentada":                     { seg:40 },
+    "Rodillas al pecho acostada":                    { seg:45 },
+    "Figura 4 acostada":                             { seg:40, lado:true },
+    "Liberación de pantorrilla en cuatro apoyos":    { seg:30, lado:true }
   },
 
   /* Lo que ella ve en lugar del nombre del patrón */
@@ -1892,7 +1906,7 @@ const CONTENIDO = {
      seg = trabajo de cada ejercicio; pausa = descanso entre ejercicios.
   ---------------------------------------------------------------- */
   activacion: {
-    lista:   ["Skipping", "Desplazamientos laterales en jumping jacks", "Marcha lateral"],
+    lista:   ["Skipping", "Polichilenas", "Marcha lateral"],
     seg:     10,
     pausa:   15,
     vueltas: 2
