@@ -499,6 +499,7 @@
   .en-video.lista{flex-direction:column;gap:6px}
   .en-video.lista .en-vbtn{text-align:left;text-transform:none;letter-spacing:.01em;font-family:var(--ui);font-weight:600;font-size:13.5px;padding:12px 14px}
   .en-vsin{padding:12px 14px;border:1px dashed var(--line);border-radius:8px;font-size:13.5px;color:var(--cream)}
+  .en-vdosis{display:block;margin-top:3px;font-family:var(--ui);font-weight:400;font-size:12px;color:var(--muted);letter-spacing:0;text-transform:none}
   .en-timer{margin-top:18px;padding-top:16px;border-top:1px solid rgba(184,150,62,.25);text-align:center}
   .en-timer[hidden]{display:none}
   .en-timer-label{font-family:var(--heroic);font-size:7.5px;letter-spacing:.24em;
@@ -1422,11 +1423,11 @@ const CONTENIDO = {
      Ella no conoce su máximo. Esto sí lo puede sentir.
   ---------------------------------------------------------------- */
   esfuerzo: {
-    menstrual:    "Terminas la serie y sientes que podrías hacer 5 o 6 más",
-    folicular:    "Terminas la serie y sientes que podrías hacer 2 o 3 más",
-    ovulatoria:   "Terminas la serie y sientes que podrías hacer 1 o 2 más",
-    lutea:        "Terminas la serie y sientes que podrías hacer 3 o 4 más",
-    premenstrual: "Terminas la serie y sientes que podrías hacer 4 o 5 más"
+    menstrual:    "Terminas la serie y sientes que podrías hacer 5 o 6 repeticiones más",
+    folicular:    "Terminas la serie y sientes que podrías hacer 2 o 3 repeticiones más",
+    ovulatoria:   "Terminas la serie y sientes que podrías hacer 1 o 2 repeticiones más",
+    lutea:        "Terminas la serie y sientes que podrías hacer 3 o 4 repeticiones más",
+    premenstrual: "Terminas la serie y sientes que podrías hacer 4 o 5 repeticiones más"
   },
 
   /* --- FASES CON DOS EJERCICIOS POR PATRÓN -----------------------
@@ -1768,11 +1769,29 @@ const CONTENIDO = {
     "Blindaje ligero, sin carga":     ["Limpiaparabrisas sentada", "90/90 de cadera", "Tobillo en media rodilla"]
   },
 
+  /* Cuánto dura cada ejercicio de movilidad, en segundos.
+     lado:true = esos segundos son por cada lado.
+     Las vueltas se calculan solas para que el paso dure entre 8 y 12 min. */
+  tiempos_movilidad: {
+    "Limpiaparabrisas sentada":                      { seg:60 },
+    "90/90 de cadera":                               { seg:45, lado:true },
+    "90/90 con inclinación al frente":               { seg:45, lado:true },
+    "Cambio 90/90 con brazos cruzados":              { seg:60 },
+    "Cambio 90/90 sin manos":                        { seg:60 },
+    "Tobillo en media rodilla":                      { seg:40, lado:true },
+    "Desplante con rodilla sobre la punta":          { seg:40, lado:true },
+    "Desplante bajo con alcance al frente":          { seg:30, lado:true },
+    "Sentadilla a una pierna asistida":              { seg:30, lado:true },
+    "Equilibrio en una pierna con pierna al frente": { seg:40, lado:true },
+    "Elevación de pierna de lado":                   { seg:45, lado:true },
+    "Plancha lateral con rodillas":                  { seg:25, lado:true }
+  },
+
   /* El bloque "Movilidad articular" del día de recuperación */
   movilidad_recuperacion: ["Limpiaparabrisas sentada", "90/90 de cadera", "Tobillo en media rodilla"],
 
   /* En la versión de casa algunos videos muestran mancuerna. */
-  aviso_video_casa: "En tu versión va sin mancuerna, solo con tu cuerpo.",
+  aviso_video_casa: "Si el video tiene mancuernas, en tu versión puedes usar otro elemento. Ej: maleta, bolsas, botellas, etc.",
 
   /* --- Los 7 patrones en los tres escenarios ---------------------- */
   patrones: {
@@ -2394,6 +2413,15 @@ window.arrancarReino=function(){
 
   const alAzar=l=>(l&&l.length)?l[Math.floor(Math.random()*l.length)]:'';
 
+  /* movilidad: vueltas para que el paso quede cerca de 10 min (cuenta 10 seg de cambio entre ejercicios) */
+  function datosMovilidad(lista){
+    const T=C.tiempos_movilidad||{};
+    const vuelta=lista.reduce((s,n)=>{ const t=T[n]; return s+(t ? t.seg*(t.lado?2:1) : 45)+10; },0);
+    let v=1;
+    for(let k=2;k<=3;k++) if(Math.abs(k*vuelta-600)<Math.abs(v*vuelta-600)) v=k;
+    return [['Vueltas',String(v)],['Tiempo','unos '+Math.round(v*vuelta/60)+' min']];
+  }
+  const textoDosis=n=>{ const t=(C.tiempos_movilidad||{})[n]; return t ? t.seg+' seg'+(t.lado?' por lado':'') : ''; };
   function armarPasos(){
     const f=ajustar(faseDe(state.fase));
     const esc=C.armeria.escenarios.find(x=>x.id===state.escenario)||C.armeria.escenarios[0];
@@ -2407,7 +2435,8 @@ window.arrancarReino=function(){
     if(sesion.tipo==='recuperacion'){
       C.recuperacion.bloques.forEach((b,i)=>{
         pasos.push({bloque:'Recuperación activa · '+(i+1)+' de 3', titulo:b[0], que:b[1],
-                    datos:[['Tiempo',b[2]+' min']], descanso:null,
+                    datos: (i===0&&C.movilidad_recuperacion) ? datosMovilidad(C.movilidad_recuperacion) : [['Tiempo',b[2]+' min']],
+                    descanso:null,
                     lista: i===0 ? (C.movilidad_recuperacion||null) : null});
       });
       pasos.push({fin:true, titulo:'TERMINASTE', que:alAzar(C.cierre.recuperacion)});
@@ -2419,7 +2448,8 @@ window.arrancarReino=function(){
                 que: (C.blindajes||{})[f.blindaje] ? f.blindaje+'. Toca cada uno para ver cómo se hace.'
                                                  : f.blindaje+'. Prepara tobillo, rodilla, cadera, columna y hombro.',
                 lista:(C.blindajes||{})[f.blindaje]||null,
-                datos:[['Tiempo','8 a 12 min']], descanso:null});
+                datos: (C.blindajes||{})[f.blindaje] ? datosMovilidad(C.blindajes[f.blindaje]) : [['Tiempo','8 a 12 min']],
+                descanso:null});
     pasos.push({bloque:'Bloque 2 · Activación neuromuscular', titulo:'Despertar el cuerpo',
                 que:'Movimientos suaves para que el cuerpo entienda que vamos a entrenar.',
                 datos:[['Tiempo','5 a 8 min']], descanso:null});
@@ -2519,8 +2549,8 @@ window.arrancarReino=function(){
       vb.className='en-video lista';
       vb.innerHTML=p.lista.map(n=>{
         const id=videoDe(n);
-        return id ? `<button class="en-vbtn" data-vid="${id}" aria-pressed="false">&#9654;&nbsp; ${n}</button>`
-                  : `<p class="en-vsin">${n}</p>`;
+        return id ? `<button class="en-vbtn" data-vid="${id}" aria-pressed="false">&#9654;&nbsp; ${n}<small class="en-vdosis">${textoDosis(n)}</small></button>`
+                  : `<p class="en-vsin">${n}<small class="en-vdosis">${textoDosis(n)}</small></p>`;
       }).join('');
       vb.hidden=false;
     }else{
@@ -2551,14 +2581,36 @@ window.arrancarReino=function(){
   }
   function pararReloj(){ if(reloj){clearInterval(reloj);reloj=null} }
 
+  /* pitido sin archivos de audio; el sonido se habilita con el primer toque de ella */
+  let audioCtx=null;
+  function pitar(veces,dur,frec){
+    try{
+      audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+      if(audioCtx.state==='suspended') audioCtx.resume();
+      for(let i=0;i<veces;i++){
+        const t=audioCtx.currentTime+i*(dur+0.12);
+        const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+        o.frequency.value=frec; o.connect(g); g.connect(audioCtx.destination);
+        g.gain.setValueAtTime(0.0001,t);
+        g.gain.exponentialRampToValueAtTime(0.5,t+0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+        o.start(t); o.stop(t+dur+0.05);
+      }
+    }catch(e){}
+    try{ if(navigator.vibrate) navigator.vibrate(veces>1?[250,120,250,120,400]:150); }catch(e){}
+  }
+
   $('btnReloj').addEventListener('click',()=>{
     if(reloj){ pararReloj(); $('btnReloj').textContent='Seguir'; $('enReloj').className='en-reloj'; return; }
+    if(relojSeg<=0){ $('enSiguiente').click(); return; }   /* "Listo, sigue" pasa al siguiente paso */
+    pitar(1,0.18,880);
     $('btnReloj').textContent='Pausar';
     $('enReloj').className='en-reloj corriendo';
     reloj=setInterval(()=>{
       relojSeg--;
       if(relojSeg<=0){
         relojSeg=0; mostrarReloj(); pararReloj();
+        pitar(3,0.28,990);
         $('enReloj').className='en-reloj listo';
         $('btnReloj').textContent='Listo, sigue';
         return;
