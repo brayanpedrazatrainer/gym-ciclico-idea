@@ -1157,7 +1157,7 @@ const CONTENIDO = {
              "Eso ya cuenta. Movernos suave hoy es lo que hace que mañana sí puedas."],
       ojo:"",
       bloques_propios:[
-        ["Mueve tus articulaciones","Suave, articulación por articulación","8–10"],
+        ["Mueve tus articulaciones","Movilidad sencilla, articulación por articulación","3"],
         ["Fortalece suave","Sin peso y sin afán","8–10"],
         ["Baja el ritmo","Caminata suave y respiración","5–10"]
       ],
@@ -1415,7 +1415,7 @@ const CONTENIDO = {
     porque: "Mover suave hoy es lo que hace que lo que entrenes esta semana se te note. Hacer menos y que te rinda más empieza aquí.",
     saltar: "Si hoy llegaste con ganas, entrena. La recuperación te espera mañana.",
     bloques: [
-      ["Mueve tus articulaciones", "Suave, articulación por articulación", "8–10"],
+      ["Mueve tus articulaciones", "Movilidad sencilla, articulación por articulación", "3"],
       ["Fortalece suave", "Sin peso y sin afán", "8–10"],
       ["Baja el ritmo", "Caminata suave y respiración", "5–10"]
     ]
@@ -1734,6 +1734,7 @@ const CONTENIDO = {
     "Desplantes caminata con maleta":        "https://youtube.com/shorts/Tl9MohMDIss",
 
     /* ---- MOVILIDAD Y BLINDAJE ---- */
+    "Movilidad articular":                   "https://youtube.com/shorts/UXtyk2rb8Vs",
     "Tobillo en media rodilla":              "https://youtube.com/shorts/NFtolzVDlDw",
     "Desplante con rodilla sobre la punta":  "https://youtube.com/shorts/fCyo94-Y2Vs",
     "Sentadilla a una pierna con pie atrás": "https://youtube.com/shorts/8mD9DHn2eik",
@@ -1793,8 +1794,51 @@ const CONTENIDO = {
   zonas: { "Sentadilla":"Piernas", "Empujar":"Pecho y brazos", "Jalar":"Espalda", "Bisagra":"Glúteos",
            "Rotación":"Abdomen", "Marcha":"Piernas y equilibrio", "Cargada":"Postura y agarre" },
 
-  /* El primer bloque del día de recuperación ("Mueve tus articulaciones") */
-  movilidad_recuperacion: ["Limpiaparabrisas sentada", "90/90 de cadera", "Tobillo en media rodilla"],
+  /* --- MOVILIDAD: va primero, antes del blindaje -----------------
+     Un solo video con movilidad sencilla para cada articulación.
+     Se usa al empezar cada entreno y en el día de recuperación.
+     Cuando haya un video por ejercicio, esto se vuelve una lista.
+  ---------------------------------------------------------------- */
+  movilidad: {
+    titulo: "Mueve tus articulaciones",
+    que:    "Movilidad sencilla para cada articulación. Sigue el video completo.",
+    nombre: "Movilidad articular",
+    video:  "https://youtube.com/shorts/UXtyk2rb8Vs",
+    seg:    180
+  },
+
+  /* --- DESPIERTA EL CUERPO (activación) ---------------------------
+     Tiempos muy cortos: solo activar, sin fatigar ni hacer cardio.
+     seg = trabajo de cada ejercicio; pausa = descanso entre ejercicios.
+  ---------------------------------------------------------------- */
+  activacion: {
+    lista:   ["Skipping", "Polichilenas", "Marcha lateral"],
+    seg:     20,
+    pausa:   15,
+    vueltas: 2
+  },
+
+  /* --- FOTOS DE ANTES Y DESPUÉS (para testimonios) --------------- */
+  fotos: {
+    guia: [
+      "Reina, en tres meses vas a querer compararte, y la memoria engaña.",
+      "Toma 4 fotos: de frente, de lado derecho, de lado izquierdo y de espaldas.",
+      "Párate natural, como estás un día cualquiera. En la foto de antes casi todas buscan la \"buena foto\": meten la panza, buscan el ángulo y esconden el godito. Esta es justo la foto para mostrarlo todo, porque de ahí arranca tu cambio.",
+      "Usa ropa ajustada, top y licra o short, para que se vea la forma de tu cuerpo. Busca buena luz y saca el cuerpo completo.",
+      "Guarda ese lugar y esa ropa para tu foto de los 3 meses."
+    ],
+    permisos: [
+      { id: "con_cara", texto: "Puedes publicarlas con mi cara" },
+      { id: "sin_cara", texto: "Puedes publicarlas tapando mi cara" }
+    ],
+    lados: [
+      { id: "frente",    texto: "De frente" },
+      { id: "derecho",   texto: "Lado derecho" },
+      { id: "izquierdo", texto: "Lado izquierdo" },
+      { id: "espalda",   texto: "De espaldas" }
+    ],
+    dias_despues: 90
+  },
 
   /* En la versión de casa algunos videos muestran mancuerna. */
   aviso_video_casa: "Si el video tiene mancuernas, en tu versión puedes usar otro elemento. Ej: maleta, bolsas, botellas, etc.",
@@ -2210,8 +2254,10 @@ window.arrancarReino=function(){
     if(_s&&_s.tipo==='recuperacion') return C.recuperacion.bloques;
     if(f.bloques_propios) return f.bloques_propios;
     return [
-      ['Prepara tus articulaciones', (C.blindajes||{})[f.blindaje] ? C.blindajes[f.blindaje].length+' ejercicios de movilidad' : 'Movilidad suave', '8–12'],
-      ['Despierta el cuerpo', 'Movimientos suaves, sin exigirte', '5–8'],
+      ['Mueve tus articulaciones', 'Movilidad sencilla, con video', String(Math.round(C.movilidad.seg/60))],
+      ['Prepara tus articulaciones', (C.blindajes||{})[f.blindaje] ? C.blindajes[f.blindaje].length+' ejercicios para cuidarlas' : 'Movilidad suave',
+        (C.blindajes||{})[f.blindaje] ? String(minutosDe(tramosDe(C.blindajes[f.blindaje]))) : '5–8'],
+      ['Despierta el cuerpo', 'Activación corta, sin cansarte', String(minutosDe(tramosActivacion()))],
       ['Tus ejercicios', seriesDeHoy(f), '22–35'],
       ['Sube pulsaciones', cardioDe(f), ''],
       ['Baja el ritmo', 'Respiración y movilidad', '6–14']
@@ -2419,30 +2465,63 @@ window.arrancarReino=function(){
 
   const alAzar=l=>(l&&l.length)?l[Math.floor(Math.random()*l.length)]:'';
 
-  /* movilidad: vueltas para que el paso quede cerca de 10 min (cuenta 10 seg de cambio entre ejercicios) */
+  /* Pasos por tiempo (movilidad, blindaje, activación).
+     El blindaje va después de los 3 min de movilidad: sus vueltas buscan ~7 min
+     para que el inicio completo quede entre 8 y 12. */
+  const OBJETIVO_BLINDAJE=420, CAMBIO_SEG=10;
   function vueltasDe(lista){
     const T=C.tiempos_movilidad||{};
-    const vuelta=lista.reduce((s,n)=>{ const t=T[n]; return s+(t ? t.seg*(t.lado?2:1) : 45)+10; },0);
+    const vuelta=lista.reduce((s,n)=>{ const t=T[n]; return s+(t ? t.seg*(t.lado?2:1) : 45)+CAMBIO_SEG; },0);
     let v=1;
-    for(let k=2;k<=3;k++) if(Math.abs(k*vuelta-600)<Math.abs(v*vuelta-600)) v=k;
+    for(let k=2;k<=3;k++) if(Math.abs(k*vuelta-OBJETIVO_BLINDAJE)<Math.abs(v*vuelta-OBJETIVO_BLINDAJE)) v=k;
     return {v, vuelta};
   }
-  function datosMovilidad(lista){
-    const {v,vuelta}=vueltasDe(lista);
-    return [['Vueltas',String(v)],['Tiempo','unos '+Math.round(v*vuelta/60)+' min']];
-  }
-  /* el cronómetro guiado: cada ejercicio (y cada lado) es un tramo; entre ejercicios, 10 seg para acomodarse */
+  const minutosDe=tr=>Math.max(1,Math.round(tr.reduce((s,x)=>s+x.seg,0)/60));
+  /* el cronómetro guiado: cada ejercicio (y cada lado) es un tramo; entre ejercicios, una pausa para acomodarse */
   function tramosDe(lista){
     const T=C.tiempos_movilidad||{}, V=vueltasDe(lista).v, tr=[];
     for(let v=1;v<=V;v++) lista.forEach((n,idx)=>{
       const t=T[n]||{seg:45};
-      if(tr.length) tr.push({cambio:true, seg:10, n, idx});
+      if(tr.length) tr.push({cambio:true, seg:CAMBIO_SEG, n, idx});
       if(t.lado){ tr.push({n, idx, v, V, lado:1, seg:t.seg}); tr.push({n, idx, v, V, lado:2, seg:t.seg}); }
       else tr.push({n, idx, v, V, seg:t.seg});
     });
     return tr;
   }
+  function tramosActivacion(){
+    const A=C.activacion, tr=[];
+    for(let v=1;v<=A.vueltas;v++) A.lista.forEach((n,idx)=>{
+      if(tr.length) tr.push({cambio:true, descanso:true, seg:A.pausa, n, idx});
+      tr.push({n, idx, v, V:A.vueltas, seg:A.seg});
+    });
+    return tr;
+  }
   const textoDosis=n=>{ const t=(C.tiempos_movilidad||{})[n]; return t ? t.seg+' seg'+(t.lado?' por lado':'') : ''; };
+
+  /* los tres pasos de inicio; el de recuperación usa movilidad y blindaje ligero */
+  function pasoMovilidad(bloque){
+    const M=C.movilidad;
+    return {bloque, titulo:M.titulo, que:M.que, lista:[M.nombre], dosis:{[M.nombre]:Math.round(M.seg/60)+' min · sigue el video'},
+            tramos:[{n:M.nombre, idx:0, v:1, V:1, seg:M.seg}],
+            datos:[['Tiempo',Math.round(M.seg/60)+' min']], descanso:null};
+  }
+  function pasoBlindaje(bloque, tipo, titulo){
+    const L=(C.blindajes||{})[tipo];
+    if(!L) return {bloque, titulo, que:'Tobillo, rodilla, cadera, columna y hombro.',
+                   datos:[['Tiempo','5 a 8 min']], descanso:null};
+    const tr=tramosDe(L);
+    return {bloque, titulo, que:'Toca cada uno para ver cómo se hace. Con el cronómetro te guío.',
+            lista:L, tramos:tr,
+            datos:[['Vueltas',String(vueltasDe(L).v)],['Tiempo','unos '+minutosDe(tr)+' min']], descanso:null};
+  }
+  function pasoActivacion(bloque){
+    const A=C.activacion, tr=tramosActivacion();
+    const dosis={}; A.lista.forEach(n=>dosis[n]=A.seg+' seg · suave, sin fatigarte');
+    return {bloque, titulo:'Despierta el cuerpo',
+            que:'Solo para activar: tiempos cortos y sin cansarte. Con el cronómetro te guío.',
+            lista:A.lista, dosis, tramos:tr,
+            datos:[['Vueltas',String(A.vueltas)],['Tiempo','unos '+minutosDe(tr)+' min']], descanso:null};
+  }
   function armarPasos(){
     const f=ajustar(faseDe(state.fase));
     const esc=C.armeria.escenarios.find(x=>x.id===state.escenario)||C.armeria.escenarios[0];
@@ -2455,27 +2534,19 @@ window.arrancarReino=function(){
 
     if(sesion.tipo==='recuperacion'){
       C.recuperacion.bloques.forEach((b,i)=>{
-        pasos.push({bloque:'Recuperación · '+(i+1)+' de 3', titulo:b[0], que:b[1],
-                    datos: (i===0&&C.movilidad_recuperacion) ? datosMovilidad(C.movilidad_recuperacion) : [['Tiempo',b[2]+' min']],
-                    descanso:null,
-                    lista: i===0 ? (C.movilidad_recuperacion||null) : null,
-                    tramos: (i===0&&C.movilidad_recuperacion) ? tramosDe(C.movilidad_recuperacion) : null});
+        const bl='Recuperación · '+(i+1)+' de 3';
+        if(i===0) pasos.push(pasoMovilidad(bl));
+        else if(i===1) pasos.push(pasoBlindaje(bl,'Blindaje ligero, sin carga',b[0]));
+        else pasos.push({bloque:bl, titulo:b[0], que:b[1], datos:[['Tiempo',b[2]+' min']], descanso:null});
       });
       pasos.push({fin:true, titulo:'TERMINASTE', que:alAzar(C.cierre.recuperacion)});
       return pasos;
     }
 
-    /* bloque 1 y 2 */
-    pasos.push({bloque:'Antes del entreno', titulo:'Prepara tus articulaciones',
-                que: (C.blindajes||{})[f.blindaje] ? 'Toca cada uno para ver cómo se hace. Con el cronómetro te guío.'
-                                                 : 'Tobillo, rodilla, cadera, columna y hombro.',
-                lista:(C.blindajes||{})[f.blindaje]||null,
-                tramos:(C.blindajes||{})[f.blindaje] ? tramosDe(C.blindajes[f.blindaje]) : null,
-                datos: (C.blindajes||{})[f.blindaje] ? datosMovilidad(C.blindajes[f.blindaje]) : [['Tiempo','8 a 12 min']],
-                descanso:null});
-    pasos.push({bloque:'Antes del entreno', titulo:'Despierta el cuerpo',
-                que:'Movimientos suaves para que el cuerpo entienda que vamos a entrenar.',
-                datos:[['Tiempo','5 a 8 min']], descanso:null});
+    /* inicio: movilidad, después blindaje, después activación */
+    pasos.push(pasoMovilidad('Antes del entreno'));
+    pasos.push(pasoBlindaje('Antes del entreno', f.blindaje, 'Prepara tus articulaciones'));
+    pasos.push(pasoActivacion('Antes del entreno'));
 
     /* bloque 3: uno o dos pasos por patrón, según la fase */
     const doble=(C.dobles||{})[carga];
@@ -2572,8 +2643,8 @@ window.arrancarReino=function(){
       vb.className='en-video lista';
       vb.innerHTML=p.lista.map(n=>{
         const id=videoDe(n);
-        return id ? `<button class="en-vbtn" data-vid="${id}" aria-pressed="false">&#9654;&nbsp; ${n}<small class="en-vdosis">${textoDosis(n)}</small></button>`
-                  : `<p class="en-vsin">${n}<small class="en-vdosis">${textoDosis(n)}</small></p>`;
+        return id ? `<button class="en-vbtn" data-vid="${id}" aria-pressed="false">&#9654;&nbsp; ${n}<small class="en-vdosis">${(p.dosis&&p.dosis[n])||textoDosis(n)}</small></button>`
+                  : `<p class="en-vsin">${n}<small class="en-vdosis">${(p.dosis&&p.dosis[n])||textoDosis(n)}</small></p>`;
       }).join('');
       vb.hidden=false;
     }else{
@@ -2618,7 +2689,7 @@ window.arrancarReino=function(){
 
   function textoTramo(i){
     const x=tramos[i];
-    return x.cambio ? 'Prepárate · '+x.n
+    return x.cambio ? (x.descanso?'Descansa · sigue ':'Prepárate · ')+x.n
                     : x.n+(x.lado?' · lado '+x.lado:'')+(x.V>1?' · vuelta '+x.v+' de '+x.V:'');
   }
   function marcarTramo(){
