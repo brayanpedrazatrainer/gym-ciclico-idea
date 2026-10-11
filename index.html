@@ -500,8 +500,10 @@
   .en-video.lista .en-vbtn{text-align:left;text-transform:none;letter-spacing:.01em;font-family:var(--ui);font-weight:600;font-size:13.5px;padding:12px 14px}
   .en-vsin{padding:12px 14px;border:1px dashed var(--line);border-radius:8px;font-size:13.5px;color:var(--cream)}
   .en-vdosis{display:block;margin-top:3px;font-family:var(--ui);font-weight:400;font-size:12px;color:var(--muted);letter-spacing:0;text-transform:none}
+  .en-video.lista .activo{border-color:var(--gold-soft);box-shadow:0 0 0 1px var(--gold-soft) inset}
   .en-timer{margin-top:18px;padding-top:16px;border-top:1px solid rgba(184,150,62,.25);text-align:center}
   .en-timer[hidden]{display:none}
+  .en-timer-label.grande{font-family:var(--ui);font-size:14px;letter-spacing:.01em;text-transform:none;color:var(--cream);font-weight:600}
   .en-timer-label{font-family:var(--heroic);font-size:7.5px;letter-spacing:.24em;
     text-transform:uppercase;color:var(--muted)}
   .en-reloj{font-family:var(--brandface);font-size:52px;line-height:1;color:var(--cream);margin:8px 0 14px;
@@ -844,7 +846,7 @@
       <div class="en-video" id="enVideo" hidden></div>
 
       <div class="en-timer" id="enTimer" hidden>
-        <p class="en-timer-label">Descanso</p>
+        <p class="en-timer-label" id="enTimerLbl">Descanso</p>
         <div class="en-reloj" id="enReloj">00:00</div>
         <div class="en-timer-btns">
           <button class="btn ghost" id="btnReloj" style="margin:0">Empezar descanso</button>
@@ -1155,9 +1157,9 @@ const CONTENIDO = {
              "Eso ya cuenta. Movernos suave hoy es lo que hace que mañana sí puedas."],
       ojo:"",
       bloques_propios:[
-        ["Movilidad articular","Suave, articulación por articulación","8–10"],
-        ["Blindaje ligero","Estabilizadores profundos, sin carga","8–10"],
-        ["Recuperación","Caminata suave y respiración","5–10"]
+        ["Mueve tus articulaciones","Suave, articulación por articulación","8–10"],
+        ["Fortalece suave","Sin peso y sin afán","8–10"],
+        ["Baja el ritmo","Caminata suave y respiración","5–10"]
       ],
       patrones:[]
     }
@@ -1413,9 +1415,9 @@ const CONTENIDO = {
     porque: "Mover suave hoy es lo que hace que lo que entrenes esta semana se te note. Hacer menos y que te rinda más empieza aquí.",
     saltar: "Si hoy llegaste con ganas, entrena. La recuperación te espera mañana.",
     bloques: [
-      ["Movilidad articular", "Suave, articulación por articulación", "8–10"],
-      ["Blindaje ligero", "Estabilizadores profundos, sin carga", "8–10"],
-      ["Recuperación muscular", "Caminata suave y respiración", "5–10"]
+      ["Mueve tus articulaciones", "Suave, articulación por articulación", "8–10"],
+      ["Fortalece suave", "Sin peso y sin afán", "8–10"],
+      ["Baja el ritmo", "Caminata suave y respiración", "5–10"]
     ]
   },
 
@@ -1787,7 +1789,11 @@ const CONTENIDO = {
     "Plancha lateral con rodillas":                  { seg:25, lado:true }
   },
 
-  /* El bloque "Movilidad articular" del día de recuperación */
+  /* Lo que ella ve en lugar del nombre del patrón */
+  zonas: { "Sentadilla":"Piernas", "Empujar":"Pecho y brazos", "Jalar":"Espalda", "Bisagra":"Glúteos",
+           "Rotación":"Abdomen", "Marcha":"Piernas y equilibrio", "Cargada":"Postura y agarre" },
+
+  /* El primer bloque del día de recuperación ("Mueve tus articulaciones") */
   movilidad_recuperacion: ["Limpiaparabrisas sentada", "90/90 de cadera", "Tobillo en media rodilla"],
 
   /* En la versión de casa algunos videos muestran mancuerna. */
@@ -2204,11 +2210,11 @@ window.arrancarReino=function(){
     if(_s&&_s.tipo==='recuperacion') return C.recuperacion.bloques;
     if(f.bloques_propios) return f.bloques_propios;
     return [
-      ['Activación articular', f.blindaje, '8–12'],
-      ['Activación neuromuscular', 'Despertar el cuerpo sin exigirlo', '5–8'],
-      ['Trabajo principal', seriesDeHoy(f), '22–35'],
-      ['Cardio', cardioDe(f), ''],
-      ['Cierre y recuperación', 'Respiración y movilidad', '6–14']
+      ['Prepara tus articulaciones', (C.blindajes||{})[f.blindaje] ? C.blindajes[f.blindaje].length+' ejercicios de movilidad' : 'Movilidad suave', '8–12'],
+      ['Despierta el cuerpo', 'Movimientos suaves, sin exigirte', '5–8'],
+      ['Tus ejercicios', seriesDeHoy(f), '22–35'],
+      ['Sube pulsaciones', cardioDe(f), ''],
+      ['Baja el ritmo', 'Respiración y movilidad', '6–14']
     ];
   }
 
@@ -2263,7 +2269,7 @@ window.arrancarReino=function(){
         const sust      = det ? det[esc.id].s : (gen? ((gen[esc.id]||'').split(' · ')[1]||'') : '');
         return `
         <div class="ej">
-          <div class="ej-top"><span class="ej-n">${n.toUpperCase()}</span><span class="ej-name">${principal}</span></div>
+          <div class="ej-top"><span class="ej-n">${((C.zonas||{})[n]||n).toUpperCase()}</span><span class="ej-name">${principal}</span></div>
           ${det?`<div class="ej-como">${det[esc.id].como||det.ejecucion}</div>`:''}
           <div class="ej-dato">
             <i>Series: <b>${presc.series}</b></i>
@@ -2409,17 +2415,32 @@ window.arrancarReino=function(){
   /* ══════════════════════════════════════════
      MODO ENTRENO · paso a paso
      ══════════════════════════════════════════ */
-  let PASOS=[], pasoActual=0, reloj=null, relojSeg=0;
+  let PASOS=[], pasoActual=0, reloj=null, relojSeg=0, tramos=null, tramoI=0;
 
   const alAzar=l=>(l&&l.length)?l[Math.floor(Math.random()*l.length)]:'';
 
   /* movilidad: vueltas para que el paso quede cerca de 10 min (cuenta 10 seg de cambio entre ejercicios) */
-  function datosMovilidad(lista){
+  function vueltasDe(lista){
     const T=C.tiempos_movilidad||{};
     const vuelta=lista.reduce((s,n)=>{ const t=T[n]; return s+(t ? t.seg*(t.lado?2:1) : 45)+10; },0);
     let v=1;
     for(let k=2;k<=3;k++) if(Math.abs(k*vuelta-600)<Math.abs(v*vuelta-600)) v=k;
+    return {v, vuelta};
+  }
+  function datosMovilidad(lista){
+    const {v,vuelta}=vueltasDe(lista);
     return [['Vueltas',String(v)],['Tiempo','unos '+Math.round(v*vuelta/60)+' min']];
+  }
+  /* el cronómetro guiado: cada ejercicio (y cada lado) es un tramo; entre ejercicios, 10 seg para acomodarse */
+  function tramosDe(lista){
+    const T=C.tiempos_movilidad||{}, V=vueltasDe(lista).v, tr=[];
+    for(let v=1;v<=V;v++) lista.forEach((n,idx)=>{
+      const t=T[n]||{seg:45};
+      if(tr.length) tr.push({cambio:true, seg:10, n, idx});
+      if(t.lado){ tr.push({n, idx, v, V, lado:1, seg:t.seg}); tr.push({n, idx, v, V, lado:2, seg:t.seg}); }
+      else tr.push({n, idx, v, V, seg:t.seg});
+    });
+    return tr;
   }
   const textoDosis=n=>{ const t=(C.tiempos_movilidad||{})[n]; return t ? t.seg+' seg'+(t.lado?' por lado':'') : ''; };
   function armarPasos(){
@@ -2434,23 +2455,25 @@ window.arrancarReino=function(){
 
     if(sesion.tipo==='recuperacion'){
       C.recuperacion.bloques.forEach((b,i)=>{
-        pasos.push({bloque:'Recuperación activa · '+(i+1)+' de 3', titulo:b[0], que:b[1],
+        pasos.push({bloque:'Recuperación · '+(i+1)+' de 3', titulo:b[0], que:b[1],
                     datos: (i===0&&C.movilidad_recuperacion) ? datosMovilidad(C.movilidad_recuperacion) : [['Tiempo',b[2]+' min']],
                     descanso:null,
-                    lista: i===0 ? (C.movilidad_recuperacion||null) : null});
+                    lista: i===0 ? (C.movilidad_recuperacion||null) : null,
+                    tramos: (i===0&&C.movilidad_recuperacion) ? tramosDe(C.movilidad_recuperacion) : null});
       });
       pasos.push({fin:true, titulo:'TERMINASTE', que:alAzar(C.cierre.recuperacion)});
       return pasos;
     }
 
     /* bloque 1 y 2 */
-    pasos.push({bloque:'Bloque 1 · Activación articular', titulo:'Movilidad y blindaje',
-                que: (C.blindajes||{})[f.blindaje] ? f.blindaje+'. Toca cada uno para ver cómo se hace.'
-                                                 : f.blindaje+'. Prepara tobillo, rodilla, cadera, columna y hombro.',
+    pasos.push({bloque:'Antes del entreno', titulo:'Prepara tus articulaciones',
+                que: (C.blindajes||{})[f.blindaje] ? 'Toca cada uno para ver cómo se hace. Con el cronómetro te guío.'
+                                                 : 'Tobillo, rodilla, cadera, columna y hombro.',
                 lista:(C.blindajes||{})[f.blindaje]||null,
+                tramos:(C.blindajes||{})[f.blindaje] ? tramosDe(C.blindajes[f.blindaje]) : null,
                 datos: (C.blindajes||{})[f.blindaje] ? datosMovilidad(C.blindajes[f.blindaje]) : [['Tiempo','8 a 12 min']],
                 descanso:null});
-    pasos.push({bloque:'Bloque 2 · Activación neuromuscular', titulo:'Despertar el cuerpo',
+    pasos.push({bloque:'Antes del entreno', titulo:'Despierta el cuerpo',
                 que:'Movimientos suaves para que el cuerpo entienda que vamos a entrenar.',
                 datos:[['Tiempo','5 a 8 min']], descanso:null});
 
@@ -2467,7 +2490,7 @@ window.arrancarReino=function(){
       const sust      = det ? det[esc.id].s  : (gen ? ((gen[esc.id]||'').split(' · ')[1]||'') : '');
       cuenta++;
       pasos.push({
-        bloque:'Bloque 3 · '+n+' · ejercicio '+cuenta+' de '+totalEj,
+        bloque:'Ejercicio '+cuenta+' de '+totalEj+' · '+((C.zonas||{})[n]||n),
         titulo:principal, ej:principal, ejSust:sust,
         que: det ? (det[esc.id].como||det.ejecucion) : (C.esfuerzo[carga]||''),
         datos:[['Series',presc.series],['Descanso',presc.descanso]],
@@ -2478,7 +2501,7 @@ window.arrancarReino=function(){
       if(doble && segundo){
         cuenta++;
         pasos.push({
-          bloque:'Bloque 3 · '+n+' · ejercicio '+cuenta+' de '+totalEj,
+          bloque:'Ejercicio '+cuenta+' de '+totalEj+' · '+((C.zonas||{})[n]||n),
           titulo:segundo, ej:segundo,
           que: det ? (det[esc.id].como||det.ejecucion) : '',
           datos:[['Series',seriesSegundo],['Descanso',presc.descanso]],
@@ -2491,9 +2514,9 @@ window.arrancarReino=function(){
 
     /* bloque 4 y 5 */
     if((cardioDe(f)||'').toLowerCase().indexOf('sin cardio')===-1){
-      pasos.push({bloque:'Bloque 4 · Cardio', titulo:'Cardio de hoy', que:cardioDe(f), datos:[], descanso:null});
+      pasos.push({bloque:'Después de los ejercicios', titulo:'Sube pulsaciones', que:cardioDe(f), datos:[], descanso:null});
     }
-    pasos.push({bloque:'Bloque 5 · Cierre', titulo:'Cierre y recuperación',
+    pasos.push({bloque:'Para terminar', titulo:'Baja el ritmo',
                 que: f.id==='ovulatoria' ? 'Respiración y movilidad suave. Hoy no estires al límite.'
                                          : 'Respiración y movilidad suave para bajar pulsaciones.',
                 datos:[['Tiempo','6 a 14 min']], descanso:null});
@@ -2563,10 +2586,22 @@ window.arrancarReino=function(){
       $('enDatos').innerHTML += `<div class="en-dato" style="min-width:100%"><small>Cuánto peso</small><b style="font-size:12px;font-family:var(--ui);font-weight:500;color:var(--cream)">${p.peso}</b></div>`;
     }
     const t=$('enTimer');
-    if(p.descanso){
+    tramos=p.tramos||null; tramoI=0;
+    if(tramos){
+      t.hidden=false;
+      relojSeg=tramos[0].seg;
+      mostrarReloj();
+      $('enTimerLbl').textContent=textoTramo(0);
+      $('enTimerLbl').classList.add('grande');
+      $('btnReloj').textContent='Empezar';
+      $('enReloj').className='en-reloj';
+      marcarTramo();
+    }else if(p.descanso){
       t.hidden=false;
       relojSeg=segundosDe(p.descanso);
       mostrarReloj();
+      $('enTimerLbl').textContent='Descanso';
+      $('enTimerLbl').classList.remove('grande');
       $('btnReloj').textContent='Empezar descanso';
       $('enReloj').className='en-reloj';
     }else{ t.hidden=true; }
@@ -2580,6 +2615,16 @@ window.arrancarReino=function(){
     $('enReloj').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
   }
   function pararReloj(){ if(reloj){clearInterval(reloj);reloj=null} }
+
+  function textoTramo(i){
+    const x=tramos[i];
+    return x.cambio ? 'Prepárate · '+x.n
+                    : x.n+(x.lado?' · lado '+x.lado:'')+(x.V>1?' · vuelta '+x.v+' de '+x.V:'');
+  }
+  function marcarTramo(){
+    const k=tramos?tramos[tramoI].idx:-1;
+    $('enVideo').querySelectorAll('.en-vbtn,.en-vsin').forEach((r,j)=>r.classList.toggle('activo',j===k));
+  }
 
   /* pitido sin archivos de audio; el sonido se habilita con el primer toque de ella */
   let audioCtx=null;
@@ -2608,6 +2653,16 @@ window.arrancarReino=function(){
     $('enReloj').className='en-reloj corriendo';
     reloj=setInterval(()=>{
       relojSeg--;
+      if(relojSeg<=0 && tramos && tramoI<tramos.length-1){
+        /* movilidad: pasa solo al siguiente tramo */
+        tramoI++;
+        relojSeg=tramos[tramoI].seg;
+        $('enTimerLbl').textContent=textoTramo(tramoI);
+        marcarTramo();
+        pitar(1,0.15,tramos[tramoI].cambio?660:880);
+        mostrarReloj();
+        return;
+      }
       if(relojSeg<=0){
         relojSeg=0; mostrarReloj(); pararReloj();
         pitar(3,0.28,990);
