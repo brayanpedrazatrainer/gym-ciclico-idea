@@ -63,3 +63,8 @@ grant select on public.reinas to authenticated;
 grant select, insert, update on public.fotos_reinas to authenticated;
 revoke truncate, trigger, references on public.reinas from anon, authenticated;
 revoke truncate, trigger, references on public.fotos_reinas from anon, authenticated;
+
+-- 2026-10-12: cada reina puede quitar sus propias fotos para volver a tomarlas
+create policy "cada reina quita sus fotos"
+  on storage.objects for delete to authenticated
+  using (bucket_id = 'fotos' and (storage.foldername(name))[1] = auth.uid()::text);

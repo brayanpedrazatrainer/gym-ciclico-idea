@@ -342,6 +342,8 @@
 
   .lesson{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px dashed rgba(242,233,220,.09)}
   .lesson:last-child{border-bottom:none}
+  .lesson.con-video{cursor:pointer}
+  .lesson.con-video:hover .les-t{color:var(--gold-soft)}
   .les-play{flex-shrink:0;width:26px;height:26px;border-radius:50%;border:1px solid rgba(184,150,62,.5);
     display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:8px}
   .les-t{flex:1;font-size:13px;color:var(--cream);line-height:1.35}
@@ -452,6 +454,13 @@
   .foto-slot .foto-et{position:absolute;left:0;right:0;bottom:0;padding:7px 6px;font-size:11.5px;text-align:center;
     color:var(--cream);background:linear-gradient(transparent,rgba(0,0,0,.8))}
   .foto-slot[disabled]{opacity:.4;cursor:not-allowed}
+  .foto-slot.lleno{cursor:default;border-style:solid}
+  .foto-celda{display:flex;flex-direction:column;gap:6px}
+  .foto-acc{display:flex;gap:6px}
+  .foto-acc button{flex:1;padding:8px 4px;border-radius:6px;border:1px solid var(--line);background:rgba(184,150,62,.08);
+    color:var(--gold-soft);font-family:var(--ui);font-size:12px;cursor:pointer}
+  .foto-acc button[data-accion="quitar"]{color:var(--muted)}
+  .foto-acc button[disabled]{opacity:.4;cursor:not-allowed}
   .reina-fotos{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
   .reina-fotos h4{font-family:var(--ui);font-size:14px;color:var(--cream);font-weight:700;word-break:break-all}
   .reina-fotos .meta{font-size:12px;color:var(--muted);margin:4px 0 10px;line-height:1.5}
@@ -1544,13 +1553,13 @@ const CONTENIDO = {
       },
       folicular: {
         intencion:"Generar tensión real y construir músculo", ejecucion:"Bajas en 3, aguantas 1, subes en 2 · rango completo",
-        A:{p:"Sentadilla búlgara", p2:"Sentadilla profunda con pausa", s:"Sentadilla a una pierna asistida"},
+        A:{p:"Sentadilla búlgara", p2:"Sentadilla con pausa", s:"Sentadilla a una pierna asistida"},
         B:{p:"Goblet squat pesado", p2:"Zancada con mancuernas", s:"Búlgara con mancuernas"},
         C:{p:"Sentadilla con barra", p2:"Zancada con barra", s:"Hack squat"}
       },
       ovulatoria: {
         intencion:"Expresar potencia aprovechando tu pico", ejecucion:"Bajada controlada · subida explosiva",
-        A:{p:"Sentadilla con levantamiento de talón", p2:"Zancada con salto", s:"Sentadilla explosiva sin despegar"},
+        A:{p:"Sentadilla con levantamiento de talón", p2:"Tijera", s:"Sentadilla explosiva sin despegar"},
         B:{p:"Goblet squat explosivo", p2:"Búlgara explosiva", s:"Sentadilla con salto y mancuerna"},
         C:{p:"Sentadilla barra pesada", p2:"Prensa pesada", s:"Hack squat carga alta"}
       },
@@ -1571,31 +1580,31 @@ const CONTENIDO = {
       menstrual: {
         intencion:"Sentir el patrón y reconectar", ejecucion:"Pausa de 2 a 3 seg abajo · rango cómodo",
         A:{p:"Flexión sobre rodillas", p2:"Pike en pared suave", s:"Flexión en silla"},
-        B:{p:"Press con mancuerna ligero", p2:"Press de hombro sentada ligero", s:"Press con banda"},
+        B:{p:"Press con mancuerna ligero", p2:"Press de hombro sentada ligero", s:"Flexión sobre rodillas"},
         C:{p:"Press en máquina ligero", p2:"Press de hombro en máquina ligero", s:"Press con mancuerna sentada"}
       },
       folicular: {
         intencion:"Generar tensión real y construir músculo", ejecucion:"Bajas en 3, aguantas 1, subes en 2 · rango completo",
-        A:{p:"Flexión sobre rodillas", p2:"Pike push-up", s:"Flexión en silla"},
+        A:{p:"Flexión sobre rodillas", p2:"Push press con sentadilla", s:"Flexión en silla"},
         B:{p:"Press con mancuerna en banco", p2:"Press militar con mancuernas", s:"Press en el piso"},
         C:{p:"Press banca", p2:"Press inclinado con barra", s:"Press militar con barra"}
       },
       ovulatoria: {
         intencion:"Expresar potencia aprovechando tu pico", ejecucion:"Bajada controlada · subida explosiva",
-        A:{p:"Flexión sobre rodillas", p2:"Pike explosivo", s:"Flexión en silla"},
+        A:{p:"Flexión sobre rodillas", p2:"Push press con sentadilla", s:"Flexión en silla"},
         B:{p:"Push press con mancuerna", p2:"Press en banco explosivo", s:"Press explosivo"},
         C:{p:"Press banca pesado", p2:"Fondos en paralelas", s:"Press militar pesado"}
       },
       lutea: {
         intencion:"Integrar el patrón con coordinación", ejecucion:"Un lado a la vez · bajando despacio",
         A:{como:"Bajando despacio", p:"Flexión sobre rodillas", p2:"Pike en pared", s:"Flexión en silla"},
-        B:{p:"Press a un brazo", p2:"Press militar a un brazo", s:"Press alterno"},
+        B:{como:"Bajando despacio", p:"Press plano", p2:"Press militar a un brazo", s:"Press alterno"},
         C:{p:"Press con mancuerna a un brazo", p2:"Press de hombro a un brazo en polea", s:"Press polea a un brazo"}
       },
       premenstrual: {
         intencion:"Mantener sin destruir", ejecucion:"Rango cómodo · lejos del fallo",
         A:{p:"Flexión sobre rodillas", p2:"Pike en pared suave", s:"Flexión en silla"},
-        B:{p:"Press con mancuerna ligero", p2:"Press de hombro sentada ligero", s:"Press con banda"},
+        B:{p:"Press con mancuerna ligero", p2:"Press de hombro sentada ligero", s:"Flexión sobre rodillas"},
         C:{p:"Press en máquina ligero", p2:"Press de hombro en máquina ligero", s:"Press mancuerna sentada"}
       }
     },
@@ -1607,7 +1616,7 @@ const CONTENIDO = {
       menstrual: {
         intencion:"Sentir el patrón y reconectar", ejecucion:"Pausa de 2 a 3 seg abajo · rango cómodo",
         A:{p:"Remo solo cuerpo", p2:"Jalón con banda sentada", s:"Remo en toalla"},
-        B:{p:"Remo con mancuerna ligero", p2:"Jalón con banda", s:"Remo con banda"},
+        B:{p:"Remo con mancuerna ligero", p2:"Jalón acostado con toalla", s:"Jalón acostado con toalla"},
         C:{p:"Jalón en polea ligero", p2:"Remo bajo en polea ligero", s:"Remo en máquina ligero"}
       },
       folicular: {
@@ -1619,19 +1628,19 @@ const CONTENIDO = {
       ovulatoria: {
         intencion:"Expresar potencia aprovechando tu pico", ejecucion:"Bajada controlada · subida explosiva",
         A:{p:"Remo solo cuerpo", p2:"Jalón acostado con toalla", s:"Remo invertido rápido en rodillas"},
-        B:{p:"Remo alto explosivo", p2:"Jalón con banda potente", s:"Remo con mancuerna potente"},
+        B:{p:"Remo inclinado a una mano", p2:"Jalón acostado con toalla", s:"Remo con mancuerna potente"},
         C:{p:"Dominadas asistidas", p2:"Remo en barra T", s:"Jalón en polea pesado"}
       },
       lutea: {
         intencion:"Integrar el patrón con coordinación", ejecucion:"A un brazo · bajando despacio",
         A:{como:"Bajando despacio", p:"Remo solo cuerpo", p2:"Jalón con banda a un brazo", s:"Remo escalonado"},
-        B:{p:"Remo a un brazo con apoyo", p2:"Jalón con banda a un brazo", s:"Remo alterno"},
+        B:{p:"Remo a un brazo con apoyo", p2:"Jalón acostado con toalla", s:"Remo alterno"},
         C:{p:"Remo en polea a un brazo", p2:"Jalón a un brazo en polea", s:"Remo en máquina a un brazo"}
       },
       premenstrual: {
         intencion:"Mantener sin destruir", ejecucion:"Rango cómodo · lejos del fallo",
         A:{p:"Remo solo cuerpo", p2:"Jalón con banda", s:"Remo invertido alto"},
-        B:{p:"Remo con banda", p2:"Jalón con banda sentada", s:"Remo con mancuerna ligero"},
+        B:{p:"Remo inclinado a una mano", p2:"Jalón acostado con toalla", s:"Jalón acostado con toalla"},
         C:{p:"Jalón en polea ligero", p2:"Remo bajo en polea ligero", s:"Remo en máquina ligero"}
       }
     },
@@ -1647,13 +1656,13 @@ const CONTENIDO = {
       },
       folicular: {
         intencion:"Generar tensión real y construir músculo", ejecucion:"Bajas en 3, aguantas 1, subes en 2 · rango completo",
-        A:{p:"Empuje de cadera", p2:"Buenos días sin carga", s:"Puente con marcha"},
+        A:{p:"Empuje de cadera", p2:"Buenos días", s:"Puente con marcha"},
         B:{p:"Peso muerto rumano con mancuernas", p2:"Hip thrust con mancuerna", s:"Peso muerto sumo con mancuerna"},
         C:{p:"Peso muerto con barra", p2:"Hip thrust con barra", s:"Peso muerto rumano con barra"}
       },
       ovulatoria: {
         intencion:"Expresar potencia aprovechando tu pico", ejecucion:"Bajada controlada · subida explosiva",
-        A:{p:"Empuje de cadera explosivo con maleta", p2:"Salto de longitud corto", s:"Salto corto desde bisagra"},
+        A:{p:"Empuje de cadera explosivo con maleta", p2:"Peso muerto rumano", s:"Empuje de cadera"},
         B:{p:"Swing con mancuerna", p2:"Hip thrust con mancuerna potente", s:"Peso muerto rumano potente"},
         C:{p:"Peso muerto barra pesado", p2:"Hip thrust pesado", s:"Hip thrust barra pesado"}
       },
@@ -1665,7 +1674,7 @@ const CONTENIDO = {
       },
       premenstrual: {
         intencion:"Mantener sin destruir", ejecucion:"Rango cómodo · lejos del fallo",
-        A:{p:"Puente de glúteo", p2:"Buenos días sin carga", s:"Bisagra con pie adelante"},
+        A:{p:"Puente de glúteo", p2:"Buenos días", s:"Bisagra con pie adelante"},
         B:{p:"Peso muerto rumano ligero", p2:"Hip thrust ligero", s:"Peso muerto sumo ligero"},
         C:{p:"Hip thrust en máquina ligero", p2:"Peso muerto rumano en Smith ligero", s:"Puente en máquina ligero"}
       }
@@ -1674,31 +1683,31 @@ const CONTENIDO = {
       menstrual: {
         intencion:"Sentir el patrón y reconectar", ejecucion:"Pausa de 2 a 3 seg abajo · rango cómodo",
         A:{p:"Desplante con rotación de tronco", p2:"Pallof con manos", s:"Dead bug"},
-        B:{p:"Pallof press con banda ligero", p2:"Giro sentada con mancuerna", s:"Rotación con mancuerna ligera"},
+        B:{p:"Pallof con manos", p2:"Giro sentada con mancuerna", s:"Rotación con mancuerna ligera"},
         C:{p:"Pallof en polea ligero", p2:"Rotación en máquina ligera", s:"Pallof con banda ligero"}
       },
       folicular: {
         intencion:"Generar tensión real y construir músculo", ejecucion:"Bajas en 3, aguantas 1, subes en 2 · rango completo",
         A:{p:"Pallof con manos", p2:"Desplantes hacia adelante y rotación de tronco", s:"Plancha lateral"},
-        B:{p:"Pallof press con banda", p2:"Woodchop de abajo a arriba", s:"Woodchop con mancuerna"},
+        B:{p:"Pallof con manos", p2:"Woodchop de abajo a arriba", s:"Woodchop con mancuerna"},
         C:{p:"Pallof en polea", p2:"Woodchop de abajo a arriba en cable", s:"Woodchop en cable"}
       },
       ovulatoria: {
         intencion:"Expresar potencia aprovechando tu pico", ejecucion:"Bajada controlada · subida explosiva",
         A:{p:"Woodchop con maleta", p2:"Toque de talones en plancha", s:"Rotación con salto"},
-        B:{p:"Woodchop con mancuerna potente", p2:"Pallof press rápido con banda", s:"Lanzamiento con banda"},
+        B:{p:"Woodchop con mancuerna potente", p2:"Toque de talones en plancha", s:"Plancha lateral con rotación"},
         C:{p:"Woodchop en cable potente", p2:"Pallof en polea con paso", s:"Rotación en polea rápida"}
       },
       lutea: {
         intencion:"Integrar el patrón con coordinación", ejecucion:"Un lado a la vez · bajando despacio",
         A:{p:"Plancha lateral con rotación", p2:"Dead bug contralateral", s:"Plancha lateral con apoyo"},
-        B:{p:"Pallof press a un brazo", p2:"Giro con mancuerna a un lado", s:"Pallof con banda a un lado"},
+        B:{p:"Plancha lateral con rotación", p2:"Giro con mancuerna a un lado", s:"Plancha lateral con apoyo"},
         C:{p:"Pallof en polea a un brazo", p2:"Rotación en polea con paso", s:"Woodchop en cable a un lado"}
       },
       premenstrual: {
         intencion:"Mantener sin destruir", ejecucion:"Rango cómodo · lejos del fallo",
         A:{p:"Desplante con rotación de tronco", p2:"Dead bug", s:"Dead bug lento"},
-        B:{p:"Pallof con banda ligero", p2:"Giro sentada ligero", s:"Rotación con mancuerna ligera"},
+        B:{p:"Pallof con manos", p2:"Giro sentada ligero", s:"Rotación con mancuerna ligera"},
         C:{p:"Pallof en polea ligero", p2:"Rotación en polea ligera", s:"Woodchop en cable ligero"}
       }
     },
@@ -1738,7 +1747,7 @@ const CONTENIDO = {
       menstrual: {
         intencion:"Sentir el patrón y reconectar", ejecucion:"Pausa de 2 a 3 seg abajo · rango cómodo",
         A:{p:"Marcha con maleta abajo estático", p2:"Sostener mochila a un lado", s:"Sostener y caminar"},
-        B:{p:"Farmer carry ligero", p2:"Suitcase carry ligero", s:"Farmer carry con bandas"},
+        B:{p:"Farmer carry ligero", p2:"Suitcase carry ligero", s:"Marcha con mochila a un lado en movimiento"},
         C:{p:"Farmer carry ligero", p2:"Caminata con placa al frente", s:"Caminata con placa"}
       },
       folicular: {
@@ -1756,13 +1765,13 @@ const CONTENIDO = {
       lutea: {
         intencion:"Integrar el patrón con coordinación", ejecucion:"Un lado a la vez · bajando despacio",
         A:{p:"Marcha con mochila a un lado en movimiento", p2:"Caminata con dos bolsas", s:"Caminata cargada a un lado"},
-        B:{p:"Suitcase carry con mancuerna", p2:"Farmer carry alterno", s:"Suitcase carry con banda"},
+        B:{p:"Suitcase carry con mancuerna", p2:"Farmer carry alterno", s:"Marcha con maleta abajo estático"},
         C:{p:"Suitcase carry pesado", p2:"Farmer carry con mancuernas", s:"Suitcase carry con disco"}
       },
       premenstrual: {
         intencion:"Mantener sin destruir", ejecucion:"Rango cómodo · lejos del fallo",
         A:{p:"Marcha con maleta abajo estático", p2:"Sostener a un lado y caminar", s:"Sostener y caminar"},
-        B:{p:"Farmer carry ligero", p2:"Suitcase carry ligero", s:"Farmer carry con bandas"},
+        B:{p:"Farmer carry ligero", p2:"Suitcase carry ligero", s:"Marcha con mochila a un lado en movimiento"},
         C:{p:"Farmer carry ligero", p2:"Caminata con placa ligera", s:"Caminata con placa"}
       }
     }
@@ -1813,7 +1822,7 @@ const CONTENIDO = {
 
     /* ---- CARDIO ---- */
     "Cruce de pierna con brazo de pie":      "https://youtube.com/shorts/EqElVNNx71M",
-    "Skipping lateral":                      "https://youtube.com/shorts/0clCgOKbHSM",
+    "Marcha lateral":                        "https://youtube.com/shorts/0clCgOKbHSM",
     "Skipping brazos al frente":             "https://youtu.be/jpeL_x6TD_8",
     "Escaladora dinámica":                   "https://youtube.com/shorts/eSj7AGHjMz0",
     "Desplantes hacia atrás":                "https://youtube.com/shorts/tsPaxsQVGpw",
@@ -1845,7 +1854,68 @@ const CONTENIDO = {
 
     /* ---- MANCUERNAS ---- */
     "Woodchop con mancuerna":                "https://youtube.com/shorts/COSv0BNBE0k",
-    "Woodchop con mancuerna potente":        "https://youtube.com/shorts/COSv0BNBE0k"
+    "Woodchop con mancuerna potente":        "https://youtube.com/shorts/COSv0BNBE0k",
+    "Goblet squat":                          "https://youtu.be/jgYFnGPlQO0",
+    "Goblet squat ligero":                   "https://youtu.be/jgYFnGPlQO0",
+    "Goblet squat pesado":                   "https://youtu.be/jgYFnGPlQO0",
+    "Goblet squat explosivo":                "https://youtu.be/jgYFnGPlQO0",
+    "Goblet squat con pausa":                "https://youtu.be/jgYFnGPlQO0",
+    "Búlgara con mancuernas":                "https://youtube.com/shorts/rjnsNi-2Hx8",
+    "Búlgara explosiva":                     "https://youtube.com/shorts/rjnsNi-2Hx8",
+    "Zancada con mancuernas":                "https://youtube.com/shorts/-TuNt_0ANVg",
+    "Zancada corta con mancuerna":           "https://youtube.com/shorts/-TuNt_0ANVg",
+    "Zancada inversa con mancuernas":        "https://youtube.com/shorts/-TuNt_0ANVg",
+    "Zancada inversa":                       "https://youtube.com/shorts/-TuNt_0ANVg",
+    "Press plano":                           "https://youtube.com/shorts/WkyZgj4y89U",
+    "Press con mancuerna ligero":            "https://youtube.com/shorts/WkyZgj4y89U",
+    "Press con mancuerna en banco":          "https://youtube.com/shorts/WkyZgj4y89U",
+    "Press en banco explosivo":              "https://youtube.com/shorts/WkyZgj4y89U",
+    "Push press con sentadilla":             "https://youtu.be/lObuIy3ZDCg",
+    "Push press con mancuerna":              "https://youtu.be/lObuIy3ZDCg",
+    "Remo inclinado a una mano":             "https://youtu.be/QlPEiZLttho",
+    "Remo con mancuerna ligero":             "https://youtu.be/QlPEiZLttho",
+    "Remo a un brazo con mancuerna":         "https://youtu.be/QlPEiZLttho",
+    "Remo a un brazo con apoyo":             "https://youtu.be/QlPEiZLttho",
+    "Remo inclinado con mancuernas":         "https://youtu.be/QlPEiZLttho",
+    "Remo con mancuerna potente":            "https://youtu.be/QlPEiZLttho",
+    "Remo alterno":                          "https://youtu.be/QlPEiZLttho",
+    "Peso muerto rumano":                    "https://youtu.be/hIn_odA7Nck",
+    "Buenos días":                           "https://youtu.be/6i-a9X8uwjw",
+    "Peso muerto rumano ligero":             "https://youtu.be/hIn_odA7Nck",
+    "Peso muerto rumano con mancuernas":     "https://youtu.be/hIn_odA7Nck",
+    "Peso muerto rumano potente":            "https://youtu.be/hIn_odA7Nck",
+    "Hip thrust con mancuerna":              "https://youtu.be/90j0eMzTD70",
+    "Hip thrust con mancuerna ligero":       "https://youtu.be/90j0eMzTD70",
+    "Hip thrust ligero":                     "https://youtu.be/90j0eMzTD70",
+    "Hip thrust con mancuerna potente":      "https://youtube.com/shorts/ZCHI_v5wNUQ",
+    "Hip thrust a una pierna":               "https://youtube.com/shorts/ABeSp-Pc5q4",
+    "Step up con mancuernas":                "https://youtube.com/shorts/I_upAwWJw3g",
+    "Step up con mancuernas controlado":     "https://youtube.com/shorts/I_upAwWJw3g",
+    "Step up bajo con mancuernas":           "https://youtube.com/shorts/I_upAwWJw3g",
+    "Step up bajo":                          "https://youtube.com/shorts/I_upAwWJw3g",
+    "Farmer carry ligero":                   "https://youtube.com/shorts/lKjr4nvABiM",
+    "Farmer carry con mancuernas":           "https://youtube.com/shorts/lKjr4nvABiM",
+    "Farmer carry pesado rápido":            "https://youtube.com/shorts/lKjr4nvABiM",
+    "Farmer carry pesado":                   "https://youtube.com/shorts/lKjr4nvABiM",
+    "Farmer carry alterno":                  "https://youtube.com/shorts/lKjr4nvABiM",
+    "Suitcase carry":                        "https://youtube.com/shorts/ubET7FO0seo",
+    "Suitcase carry ligero":                 "https://youtube.com/shorts/ubET7FO0seo",
+    "Suitcase carry pesado":                 "https://youtube.com/shorts/ubET7FO0seo",
+    "Suitcase carry con mancuerna":          "https://youtube.com/shorts/ubET7FO0seo"
+  },
+
+  /* Notas que salen debajo del video de un ejercicio */
+  notas_video: {
+    "Buenos días": "En el video se hace a una pierna. Tú hazlo con las dos piernas apoyadas."
+  },
+
+  /* Perimenopausia y menopausia: sin impacto de arriba abajo.
+     Si el ejercicio de la izquierda sale en su entreno, se cambia por el de la derecha. */
+  sin_impacto: {
+    "Tijera":                                     "Desplantes atrás",
+    "Skipping":                                   "Cruce de pierna con brazo de pie",
+    "Skipping brazos arriba":                     "Cruce de pierna con brazo de pie",
+    "Desplazamientos laterales en jumping jacks": "Escaladora dinámica"
   },
 
   /* --- BLINDAJE: LO QUE HACE EN EL PASO 1 ------------------------
@@ -1912,7 +1982,7 @@ const CONTENIDO = {
      seg = trabajo de cada ejercicio; pausa = descanso entre ejercicios.
   ---------------------------------------------------------------- */
   activacion: {
-    lista:   ["Skipping", "Desplazamientos laterales en jumping jacks", "Cruce de pierna con brazo de pie"],
+    lista:   ["Skipping", "Marcha lateral", "Desplazamientos laterales en jumping jacks"],
     /* perimenopausia y menopausia: sin impacto de arriba abajo */
     lista_sin_impacto: ["Cruce de pierna con brazo de pie", "Escaladora dinámica"],
     seg:     10,
@@ -1930,7 +2000,7 @@ const CONTENIDO = {
      En perimenopausia y menopausia se usa la versión sin_impacto.
   ---------------------------------------------------------------- */
   cardio_tipos: {
-    cima:                 { lista:["Escaladora dinámica", "Tijera", "Skipping lateral", "Desplantes hacia atrás"],
+    cima:                 { lista:["Escaladora dinámica", "Tijera", "Marcha lateral", "Desplantes hacia atrás"],
                             trabajo:30, descanso:30, minutos:10, gimnasio:true },
     arranque:             { lista:["Cruce de pierna con brazo de pie", "Skipping brazos al frente"],
                             trabajo:60, descanso:0, minutos:8, gimnasio:false },
@@ -2217,6 +2287,8 @@ window.arrancarReino=function(){
   const sinImpacto=()=>state.perfil==='peri'||state.perfil==='meno';
   /* en las listas solo sale lo que ya tiene video */
   const conVideo=l=>(l||[]).filter(n=>(C.videos||{})[n]);
+  /* perimenopausia y menopausia: el ejercicio con impacto se cambia por su versión sin impacto */
+  const nombreEj=n=>(n && sinImpacto() && (C.sin_impacto||{})[n]) || n;
 
   /* cardio guiado de la semana, o null si esa semana va por texto */
   function planCardio(f){
@@ -2241,12 +2313,26 @@ window.arrancarReino=function(){
   $('pLema').textContent=C.portada.lema;
   $('pEntrada').textContent=C.portada.entrada;
   $('pEmpieza').textContent=C.portada.empieza;
-  $('empiezaLecciones').innerHTML=C.empieza.map(l=>`
-    <div class="lesson">
-      <span class="les-play">${l.video?'&#9654;':'&#9670;'}</span>
+  /* los videos de Empieza Aquí se ven aquí mismo: se tocan y se abren debajo */
+  const idYoutube=v=>{ const m=String(v||'').match(/(?:shorts\/|v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+                       return m ? m[1] : (/^[A-Za-z0-9_-]{11}$/.test(v||'') ? v : ''); };
+  $('empiezaLecciones').innerHTML=C.empieza.map(l=>{
+    const id=idYoutube(l.video);
+    return `<div class="lesson${id?' con-video':''}" ${id?`data-vid="${id}" role="button" tabindex="0"`:''}>
+      <span class="les-play">${id?'&#9654;':'&#9670;'}</span>
       <span class="les-t">${l.titulo}</span>
-      ${l.video?`<span class="les-m">${l.minutos} min</span>`:`<span class="les-soon">PRONTO</span>`}
-    </div>`).join('');
+      ${id?`<span class="les-m">${l.minutos} min</span>`:`<span class="les-soon">PRONTO</span>`}
+    </div>`;
+  }).join('');
+  $('empiezaLecciones').addEventListener('click',e=>{
+    const l=e.target.closest('.lesson.con-video'); if(!l) return;
+    const abierto=l.nextElementSibling&&l.nextElementSibling.classList.contains('en-vmarco');
+    $('empiezaLecciones').querySelectorAll('.en-vmarco').forEach(x=>x.remove());
+    if(abierto) return;
+    l.insertAdjacentHTML('afterend',`<div class="en-vmarco" style="margin:6px auto 12px"><iframe
+      src="https://www.youtube-nocookie.com/embed/${l.dataset.vid}?rel=0&playsinline=1&autoplay=1"
+      title="${l.querySelector('.les-t').textContent}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>`);
+  });
 
   /* ══ PASO 1 · SU SITUACIÓN ══ */
   $('perfiles').innerHTML=(C.perfiles||[]).map(p=>`
@@ -2446,8 +2532,9 @@ window.arrancarReino=function(){
       $('arPatrones').innerHTML=(sesion.patrones||[]).map((n,i)=>{
         const det=(C.ejercicios[n]||{})[carga];
         const gen=C.patrones[n];
-        const principal = det ? det[esc.id].p : (gen? (gen[esc.id]||'').split(' · ')[0] : '');
-        const sust      = det ? det[esc.id].s : (gen? ((gen[esc.id]||'').split(' · ')[1]||'') : '');
+        const principal = det ? nombreEj(det[esc.id].p) : (gen? (gen[esc.id]||'').split(' · ')[0] : '');
+        const _s        = det ? nombreEj(det[esc.id].s) : (gen? ((gen[esc.id]||'').split(' · ')[1]||'') : '');
+        const sust      = _s===principal ? '' : _s;   /* sin reemplazo repetido */
         return `
         <div class="ej">
           <div class="ej-top"><span class="ej-n">${((C.zonas||{})[n]||n).toUpperCase()}</span><span class="ej-name">${principal}</span></div>
@@ -2711,9 +2798,10 @@ window.arrancarReino=function(){
     (sesion.patrones||[]).forEach(n=>{
       const det=(C.ejercicios[n]||{})[carga];
       const gen=C.patrones[n];
-      const principal = det ? det[esc.id].p  : (gen ? (gen[esc.id]||'').split(' · ')[0] : n);
-      const segundo   = det ? det[esc.id].p2 : '';
-      const sust      = det ? det[esc.id].s  : (gen ? ((gen[esc.id]||'').split(' · ')[1]||'') : '');
+      const principal = det ? nombreEj(det[esc.id].p)  : (gen ? (gen[esc.id]||'').split(' · ')[0] : n);
+      const segundo   = det ? nombreEj(det[esc.id].p2) : '';
+      const _s        = det ? nombreEj(det[esc.id].s)  : (gen ? ((gen[esc.id]||'').split(' · ')[1]||'') : '');
+      const sust      = _s===principal ? '' : _s;   /* sin reemplazo repetido */
       cuenta++;
       pasos.push({
         bloque:'Ejercicio '+cuenta+' de '+totalEj+' · '+((C.zonas||{})[n]||n),
@@ -2780,6 +2868,7 @@ window.arrancarReino=function(){
     (enLista?b:vb).insertAdjacentHTML(enLista?'afterend':'beforeend',
       `<div class="en-vmarco"><iframe src="https://www.youtube-nocookie.com/embed/${b.dataset.vid}?rel=0&playsinline=1&autoplay=1"
         title="C&oacute;mo se hace" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>`
+      +(b.dataset.nota?`<p class="en-vnota">${b.dataset.nota}</p>`:'')
       +(!enLista&&state.escenario==='A'&&C.aviso_video_casa?`<p class="en-vnota">${C.aviso_video_casa}</p>`:''));
   });
 
@@ -2807,8 +2896,8 @@ window.arrancarReino=function(){
       vb.hidden=false;
     }else{
       vb.className='en-video';
-      vb.innerHTML=(vP?`<button class="en-vbtn" data-vid="${vP}" aria-pressed="false">&#9654; Ver c&oacute;mo se hace</button>`:'')
-                  +(vS?`<button class="en-vbtn" data-vid="${vS}" aria-pressed="false">&#9654; Ver el reemplazo</button>`:'');
+      vb.innerHTML=(vP?`<button class="en-vbtn" data-vid="${vP}" data-nota="${(C.notas_video||{})[p.ej]||''}" aria-pressed="false">&#9654; Ver c&oacute;mo se hace</button>`:'')
+                  +(vS?`<button class="en-vbtn" data-vid="${vS}" data-nota="${(C.notas_video||{})[p.ejSust]||''}" aria-pressed="false">&#9654; Ver el reemplazo</button>`:'');
       vb.hidden=!(vP||vS);
     }
     if(p.peso){
@@ -2971,9 +3060,14 @@ window.arrancarReino=function(){
     const celda=(mom,l,abierto)=>{
       const url=yo.urls[rutaFoto(yo.uid,mom,l.id)];
       const bloqueada=!yo.permiso||!abierto;
-      return `<button class="foto-slot" data-mom="${mom}" data-lado="${l.id}" ${bloqueada?'disabled':''}>
-        ${url?`<img src="${url}" alt="${l.texto}">`:`<b>+</b>`}
-        <span class="foto-et">${l.texto}${url?' · cambiar':''}</span></button>`;
+      if(!url) return `<button class="foto-slot" data-mom="${mom}" data-lado="${l.id}" ${bloqueada?'disabled':''}>
+        <b>+</b><span class="foto-et">${l.texto}</span></button>`;
+      return `<div class="foto-celda">
+        <div class="foto-slot lleno"><img src="${url}" alt="${l.texto}"><span class="foto-et">${l.texto}</span></div>
+        <div class="foto-acc">
+          <button data-accion="cambiar" data-mom="${mom}" data-lado="${l.id}" ${bloqueada?'disabled':''}>Tomar otra</button>
+          <button data-accion="quitar" data-mom="${mom}" data-lado="${l.id}">Quitar</button>
+        </div></div>`;
     };
     $('gridAntes').innerHTML=FT.lados.map(l=>celda('antes',l,true)).join('');
     $('gridDespues').innerHTML=FT.lados.map(l=>celda('despues',l,despuesAbierto)).join('');
@@ -2987,8 +3081,16 @@ window.arrancarReino=function(){
     if(error) avisoFotos('No pude guardar tu permiso. Intenta de nuevo.');
   });
 
-  function elegirFoto(e){
-    const b=e.target.closest('.foto-slot'); if(!b||b.disabled) return;
+  async function elegirFoto(e){
+    const b=e.target.closest('button.foto-slot,[data-accion]'); if(!b||b.disabled) return;
+    if(b.dataset.accion==='quitar'){
+      if(!confirm('¿Quitar esta foto? Después puedes tomar otra.')) return;
+      avisoFotos('Quitando tu foto...',true);
+      const {error}=await sb.storage.from('fotos').remove([rutaFoto(yo.uid,b.dataset.mom,b.dataset.lado)]);
+      if(error){ avisoFotos('No se pudo quitar la foto. Intenta de nuevo.'); return; }
+      await cargarFotos(); avisoFotos('Listo, la quitaste. Toca + para tomar otra.',true);
+      return;
+    }
     yo.destino={mom:b.dataset.mom, lado:b.dataset.lado};
     $('fotoInput').value=''; $('fotoInput').click();
   }
@@ -3023,8 +3125,10 @@ window.arrancarReino=function(){
       if(error) throw error;
       const ahora=new Date().toISOString();
       const cambios={id:yo.uid, permiso:yo.permiso, actualizada:ahora};
-      if(mom==='antes'&&!(yo.fila&&yo.fila.antes_fecha)) cambios.antes_fecha=ahora;
-      if(mom==='despues'&&!(yo.fila&&yo.fila.despues_fecha)) cambios.despues_fecha=ahora;
+      /* la fecha cuenta desde la primera foto de ese momento; si las quitó todas y vuelve a empezar, se reinicia */
+      const habiaFotos=FT.lados.some(l=>l.id!==lado&&yo.urls[rutaFoto(yo.uid,mom,l.id)]);
+      if(mom==='antes'&&(!habiaFotos||!(yo.fila&&yo.fila.antes_fecha))) cambios.antes_fecha=ahora;
+      if(mom==='despues'&&(!habiaFotos||!(yo.fila&&yo.fila.despues_fecha))) cambios.despues_fecha=ahora;
       const {error:e2}=await sb.from('fotos_reinas').upsert(cambios);
       if(e2) throw e2;
       await cargarFotos();
