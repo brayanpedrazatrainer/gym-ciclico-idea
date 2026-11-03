@@ -698,7 +698,7 @@
             <path d="M3 19 C3 15.5 5.7 13.5 9 13.5 C12.3 13.5 15 15.5 15 19"/><path d="M15.5 15 C18.4 15 21 16.4 21 19"/>
           </svg>
         </span>
-        <span class="door-txt"><b>TU GUARDIA</b><span>La comunidad y el live de cada semana.</span></span>
+        <span class="door-txt"><b>TU GUARDIA</b><span>La comunidad, cuando quieras compañía.</span></span>
         <span class="door-mark">&#9670;</span>
       </button>
       <button class="door" data-go="v-fotos">
@@ -934,13 +934,6 @@
 
     <div class="panel">
       <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
-      <p class="p-title">LA MESA</p>
-      <p class="p-promise">El entrenamiento en vivo de cada semana. Cada una lo hace seg&uacute;n su semana.</p>
-      <a class="btn" id="linkLive" href="#" target="_blank" rel="noopener" style="margin-top:14px;text-align:center;text-decoration:none">ENTRAR A LA MESA</a>
-    </div>
-
-    <div class="panel">
-      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
       <p class="p-title">LAS CR&Oacute;NICAS</p>
       <p class="p-promise">Lo que cada reina va logrando queda escrito. Ah&iacute; tambi&eacute;n van tus preguntas.</p>
       <a class="btn ghost" id="linkComunidad" href="#" target="_blank" rel="noopener" style="margin-top:14px;text-align:center;text-decoration:none">IR A LA COMUNIDAD</a>
@@ -1015,7 +1008,6 @@ const CONTENIDO = {
   enlaces: {
     comunidad: "https://www.skool.com/gym-virtual-ciclico-6444",
     classroom: "https://www.skool.com/gym-virtual-ciclico-6444/classroom",
-    live:      "https://www.skool.com/gym-virtual-ciclico-6444/classroom/e6e7c766?md=f9e07bfae6cb43b193146775ef563c00",
     planes:    "https://www.skool.com/gym-virtual-ciclico-6444/plans?src=join",
     empiezaAqui: "https://www.skool.com/gym-virtual-ciclico-6444/classroom/adae9d67?md=8c117ca38e884b1fb54006968aa01d01"
   },
@@ -2092,9 +2084,6 @@ const CONTENIDO = {
   /* --- EL MAPA: los módulos del Club ------------------------------ */
   mapa: [
     /* Mismo orden y mismas palabras que la página de planes de Skool. */
-    { seccion: "TU REINO", promesa: "Entrenamiento según tu ciclo paso a paso en casa, con solo mancuernas o gimnasio.", plan: "standard",
-      enlace: "https://www.skool.com/gym-virtual-ciclico-6444/classroom/a6d26c59?md=2ede23b90fa1482b96ff646049b39298",
-      lecciones: [] },
     { seccion: "MINI CÁPSULAS", promesa: "Cortas y al grano: ciclo, cuerpo, hormonas y alimentación.", plan: "standard",
       enlace: "https://www.skool.com/gym-virtual-ciclico-6444/classroom/144f3b3f?md=d7b1bff62ef44269975e2f5b448e33e3",
       lecciones: [
@@ -2128,7 +2117,10 @@ const CONTENIDO = {
       lecciones: [] },
     { seccion: "RETOS EN GRUPO", promesa: "Con fecha de inicio y de final, para cuando quieras ir por algo puntual.", plan: "vip",
       enlace: "https://www.skool.com/gym-virtual-ciclico-6444/classroom/a248bf90?md=96cb24a545b04168bc7fba5e246dcf72",
-      lecciones: [{ titulo: "Reto vigente", minutos: "", video: "" }]}
+      lecciones: [{ titulo: "Reto vigente", minutos: "", video: "" }]},
+    { seccion: "TU REINO", promesa: "Seguimiento cercano de tu ciclo y proceso, tu historial guardado y tu alimentación del día.", plan: "premium",
+      enlace: "https://www.skool.com/gym-virtual-ciclico-6444/classroom/a6d26c59?md=2ede23b90fa1482b96ff646049b39298",
+      lecciones: [] }
   ]
 };
 
@@ -3252,7 +3244,6 @@ window.arrancarReino=function(){
   bs.addEventListener('click',()=>setCompany(true));
   bc.addEventListener('click',()=>setCompany(false));
 
-  $('linkLive').href=C.enlaces.live;
   if($('linkEmpieza')) $('linkEmpieza').href=C.enlaces.empiezaAqui||C.enlaces.classroom;
   $('linkComunidad').href=C.enlaces.comunidad;
 
