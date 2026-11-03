@@ -379,7 +379,6 @@
     color:var(--gold);border:1px solid rgba(184,150,62,.35);border-radius:4px;padding:4px 7px;white-space:nowrap;opacity:.85}
   .lock{flex-shrink:0;font-family:var(--heroic);font-weight:700;font-size:8px;letter-spacing:.16em;
     color:var(--gold);border:1px solid rgba(184,150,62,.4);border-radius:4px;padding:4px 7px;white-space:nowrap}
-  .lock-msg{font-family:var(--voice);font-style:italic;font-weight:300;font-size:13px;color:var(--muted);line-height:1.5}
 
   .pat-row{display:flex;gap:12px;align-items:baseline;padding:11px 0;border-bottom:1px dashed rgba(242,233,220,.09)}
   .pat-row:last-child{border-bottom:none}
@@ -2617,7 +2616,7 @@ window.arrancarReino=function(){
     const mio=nivelPlan(state.plan);
     $('mapaSecciones').innerHTML=C.mapa.map(s=>{
       const et=C.planes[s.plan]?C.planes[s.plan].nombre:'';
-      const abierto=true;   /* todos se abren: Skool decide si la deja entrar */
+      const incluido=nivelPlan(s.plan)<=mio;   /* lo de otro plan se ve, pero el botón lleva a los planes */
       return `
       <div class="panel">
         <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
@@ -2626,17 +2625,14 @@ window.arrancarReino=function(){
           ${s.plan==='standard'?'':`<span class="etiqueta">${et}</span>`}
         </div>
         <p class="p-promise">${s.promesa}</p>
-        ${abierto ? s.lecciones.map(l=>`
+        ${s.lecciones.map(l=>`
           <div class="lesson">
             <span class="les-play">${l.video?'&#9654;':'&#9670;'}</span>
             <span class="les-t">${l.titulo}</span>
             ${l.video?`<span class="les-m">${l.minutos} min</span>`:`<span class="les-soon">PRONTO</span>`}
-          </div>`).join('') + (s.enlace?`
-          <a class="btn ghost" href="${s.enlace}" target="_blank" rel="noopener"
-             style="margin-top:14px;text-align:center;text-decoration:none">ABRIR EN EL CLUB</a>`:'')
-        : `<p class="lock-msg">Esto vive en el plan ${et}. Cuando subas, se abre.</p>
-           <a class="btn ghost" href="${C.enlaces.planes}" target="_blank" rel="noopener"
-              style="margin-top:12px;text-align:center;text-decoration:none">VER LOS PLANES</a>`}
+          </div>`).join('')}
+        <a class="btn ghost" href="${incluido?s.enlace:C.enlaces.planes}" target="_blank" rel="noopener"
+           style="margin-top:14px;text-align:center;text-decoration:none">${incluido?'ABRIR EN EL CLUB':'VER LOS PLANES'}</a>
       </div>`;
     }).join('');
   }
