@@ -322,6 +322,9 @@
   .door-ico svg{transform:rotate(-45deg)}
   .door-txt b{display:block;font-family:var(--heroic);font-weight:800;font-size:14px;letter-spacing:.1em;color:var(--cream)}
   .door-txt span{display:block;font-size:11.5px;color:var(--muted);line-height:1.45;margin-top:4px}
+  /* reto: lo del Club se ve con candado */
+  .candado{display:inline-block;width:10px;height:11px;margin-left:4px;vertical-align:-1px}
+  .door.bloqueada .door-mark .candado{width:13px;height:14px;margin:0}
   .door-mark{margin-left:auto;font-size:11px;color:var(--gold);opacity:.7}
 
   /* ══ EL MAPA ═════════════════════════════ */
@@ -595,12 +598,22 @@
         <p class="picker-name" style="margin-top:14px">Tu contrase&ntilde;a</p>
         <input class="campo" type="password" id="inClave" autocomplete="current-password" placeholder="••••••••">
         <button class="btn" id="btnEntrar" style="margin-top:18px">ENTRAR</button>
-        <button class="btn ghost" id="btnOlvide" style="margin-top:10px">Es mi primera vez o olvid&eacute; mi contrase&ntilde;a</button>
+        <button class="btn ghost" id="btnCrearCuenta" style="margin-top:10px">Es mi primera vez: crear mi cuenta</button>
+        <button class="btn ghost" id="btnOlvide" style="margin-top:10px">Olvid&eacute; mi contrase&ntilde;a</button>
+      </div>
+
+      <div id="formCrear" hidden>
+        <p class="p-title">CREA TU CUENTA</p>
+        <p class="p-promise">Usa el mismo correo con el que te inscribiste. La contrase&ntilde;a la escoges t&uacute;: m&iacute;nimo seis caracteres.</p>
+        <input class="campo" type="email" id="inCorreo3" autocomplete="email" placeholder="tucorreo@correo.com">
+        <input class="campo" type="password" id="inClave3" autocomplete="new-password" placeholder="Tu contrase&ntilde;a" style="margin-top:10px">
+        <button class="btn" id="btnCrear" style="margin-top:16px">CREAR Y ENTRAR</button>
+        <button class="btn ghost" id="btnVolverEntrar2" style="margin-top:10px">Volver</button>
       </div>
 
       <div id="formClave" hidden>
-        <p class="p-title">CREA TU CONTRASE&Ntilde;A</p>
-        <p class="p-promise">Escribe tu correo y te llega un enlace para ponerla. Con esa entras de aqu&iacute; en adelante.</p>
+        <p class="p-title">RECUPERA TU CONTRASE&Ntilde;A</p>
+        <p class="p-promise">Escribe tu correo y te llega un enlace para poner una nueva. Con esa entras de aqu&iacute; en adelante.</p>
         <input class="campo" type="email" id="inCorreo2" autocomplete="email" placeholder="tucorreo@correo.com">
         <button class="btn" id="btnEnviar" style="margin-top:16px">ENVIARME EL ENLACE</button>
         <button class="btn ghost" id="btnVolverEntrar" style="margin-top:10px">Volver</button>
@@ -652,6 +665,21 @@
     <button data-go="v-guardia">Tu guardia</button>
   </nav>
 
+  <!-- ══ RETO: antes de empezar o ya terminado ══ -->
+  <section class="view" id="v-estado">
+    <div class="hall">
+      <h1 class="hall-title" id="estadoNombre"></h1>
+    </div>
+    <div class="panel" style="margin-top:24px">
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <p class="p-title" id="estadoTitulo"></p>
+      <p class="porque-txt" id="estadoTexto"></p>
+      <a class="btn" id="estadoBoton" href="#" target="_blank" rel="noopener" style="margin-top:18px;text-align:center;text-decoration:none"></a>
+      <button class="btn ghost" id="estadoFotos" style="margin-top:10px"></button>
+    </div>
+    <button class="btn ghost" id="btnSalir2" style="margin-top:20px">Cerrar sesi&oacute;n</button>
+  </section>
+
   <!-- ══ LA ENTRADA ══════════════════════ -->
   <section class="view active" id="v-entrada">
     <div class="hall">
@@ -669,7 +697,15 @@
       <p class="hall-sub" id="pEntrada"></p>
     </div>
 
-    <div class="panel" style="margin-top:24px">
+    <div class="panel" id="panelReto" style="margin-top:24px" hidden>
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <p class="p-title" id="retoTitulo"></p>
+      <p class="p-promise" id="retoTexto"></p>
+      <a class="btn ghost" id="linkReto" href="#" target="_blank" rel="noopener"
+         style="margin-top:14px;text-align:center;text-decoration:none"></a>
+    </div>
+
+    <div class="panel" id="panelEmpieza" style="margin-top:24px">
       <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
       <p class="p-title">EMPIEZA AQU&Iacute;</p>
       <p class="p-promise" id="pEmpieza"></p>
@@ -687,7 +723,7 @@
             <circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.2"/><path d="M12 3 L12 6 M12 18 L12 21 M3 12 L6 12 M18 12 L21 12"/>
           </svg>
         </span>
-        <span class="door-txt"><b>EL MAPA</b><span>Todo lo dem&aacute;s del Club, cuando quieras profundizar.</span></span>
+        <span class="door-txt"><b>EL MAPA</b><span id="puertaMapa">Todo lo dem&aacute;s del Club, cuando quieras profundizar.</span></span>
         <span class="door-mark">&#9670;</span>
       </button>
       <button class="door" data-go="v-guardia">
@@ -697,7 +733,7 @@
             <path d="M3 19 C3 15.5 5.7 13.5 9 13.5 C12.3 13.5 15 15.5 15 19"/><path d="M15.5 15 C18.4 15 21 16.4 21 19"/>
           </svg>
         </span>
-        <span class="door-txt"><b>TU GUARDIA</b><span>La comunidad, cuando quieras compañía.</span></span>
+        <span class="door-txt"><b>TU GUARDIA</b><span id="puertaGuardia">La comunidad, cuando quieras compañía.</span></span>
         <span class="door-mark">&#9670;</span>
       </button>
       <button class="door" data-go="v-fotos">
@@ -706,7 +742,7 @@
             <rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="12" cy="13.5" r="3.6"/><path d="M8.5 7 L10 4.5 H14 L15.5 7"/>
           </svg>
         </span>
-        <span class="door-txt"><b>MI ANTES Y DESPU&Eacute;S</b><span>Tus fotos de hoy y de los 3 meses.</span></span>
+        <span class="door-txt"><b>MI ANTES Y DESPU&Eacute;S</b><span id="puertaFotos">Tus fotos de hoy y de los 3 meses.</span></span>
         <span class="door-mark">&#9670;</span>
       </button>
     </div>
@@ -906,8 +942,8 @@
   <!-- ══ EL MAPA ═════════════════════════ -->
   <section class="view" id="v-mapa">
     <p class="eyebrow" style="margin-top:20px">El mapa</p>
-    <p class="lead" style="font-size:17px;margin-bottom:6px">Todo el Club, cuando quieras m&aacute;s.</p>
-    <p class="sub" style="margin-bottom:18px">Aqu&iacute; est&aacute; todo lo que sostiene el m&eacute;todo. No lo necesitas para entrenar hoy, pero es lo que te va a hacer due&ntilde;a de tu proceso.</p>
+    <p class="lead" style="font-size:17px;margin-bottom:6px" id="mapaLead">Todo el Club, cuando quieras m&aacute;s.</p>
+    <p class="sub" style="margin-bottom:18px" id="mapaSub">Aqu&iacute; est&aacute; todo lo que sostiene el m&eacute;todo. No lo necesitas para entrenar hoy, pero es lo que te va a hacer due&ntilde;a de tu proceso.</p>
 
     <div id="mapaSecciones"></div>
   </section>
@@ -917,7 +953,14 @@
     <p class="eyebrow" style="margin-top:20px">Tu guardia</p>
     <p class="lead" style="font-size:17px;margin-bottom:16px">No eres la &uacute;nica que est&aacute; en esta semana.</p>
 
-    <div class="panel">
+    <div class="panel" id="guardiaBloqueada" hidden>
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <div class="mod-head"><p class="p-title" id="guardiaTitulo"></p><span class="etiqueta">CLUB</span></div>
+      <p class="p-promise" id="guardiaTexto"></p>
+      <a class="btn ghost" id="guardiaPlanes" href="#" target="_blank" rel="noopener" style="margin-top:14px;text-align:center;text-decoration:none">VER LOS PLANES</a>
+    </div>
+
+    <div class="panel guardia-abierta">
       <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
       <p class="p-title">C&Oacute;MO QUIERES TU D&Iacute;A</p>
       <p class="p-promise">T&uacute; decides si hoy hay compa&ntilde;&iacute;a. Sin dar explicaciones.</p>
@@ -931,7 +974,7 @@
       <p class="privacy" id="privacyLine"></p>
     </div>
 
-    <div class="panel">
+    <div class="panel guardia-abierta">
       <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
       <p class="p-title">LAS CR&Oacute;NICAS</p>
       <p class="p-promise">Lo que cada reina va logrando queda escrito. Ah&iacute; tambi&eacute;n van tus preguntas.</p>
@@ -942,7 +985,7 @@
   <!-- ══ MI ANTES Y DESPUÉS ══════════════ -->
   <section class="view" id="v-fotos">
     <p class="eyebrow" style="margin-top:20px">Mi antes y despu&eacute;s</p>
-    <p class="lead" style="font-size:17px;margin-bottom:6px">Tu punto de partida y tu cambio a los 3 meses.</p>
+    <p class="lead" style="font-size:17px;margin-bottom:6px" id="fotosLead">Tu punto de partida y tu cambio a los 3 meses.</p>
 
     <div class="panel">
       <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
@@ -966,7 +1009,7 @@
 
     <div class="panel">
       <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
-      <p class="p-title">A LOS 3 MESES</p>
+      <p class="p-title" id="fotosDespuesTitulo">A LOS 3 MESES</p>
       <p class="p-promise" id="despuesNota"></p>
       <div class="fotos-grid" id="gridDespues"></div>
     </div>
@@ -974,6 +1017,7 @@
     <p class="aviso" id="fotosAviso" hidden></p>
     <input type="file" id="fotoInput" accept="image/*" hidden>
     <button class="btn ghost" id="btnPanelFotos" style="margin-top:20px" hidden>Panel de fotos &middot; solo t&uacute;</button>
+    <button class="btn ghost" id="btnVolverEstado" style="margin-top:20px" hidden>Volver</button>
   </section>
 
   <!-- ══ PANEL DE FOTOS (solo Brayan) ════ -->
@@ -2080,6 +2124,60 @@ const CONTENIDO = {
     { titulo: "Cómo escoger tu entreno de hoy", minutos: "2", video: "5HNIhtgiJQs" }
   ],
 
+  /* --- EL RETO: Diciembre sin culpa --------------------------------
+     Solo lo ve quien tiene plan "reto". Las fechas de inicio y fin de
+     cada una están en su cuenta (Supabase, tabla habilitadas).
+     En el reto: no ve Empieza Aquí; el mapa y Tu guardia salen con
+     candado; el entreno sale en versión corta y siempre le toca entrenar.
+     En los textos, {fecha} se cambia por la fecha de inicio de ella.
+  ---------------------------------------------------------------- */
+  reto: {
+    nombre: "Diciembre sin culpa",
+    curso:  "https://www.skool.com/gym-virtual-ciclico-6444/classroom/40542f35?md=ec6fbe7f9da2420892ba57b2da1ac8ab",
+
+    /* la entrada, en lugar de Empieza Aquí */
+    portada: "Las indicaciones de tu reto están en tu curso. Aquí vienes a lo tuyo: abrir, ubicarte y entrenar.",
+    boton_curso: "ABRIR MI RETO",
+
+    /* antes de que empiece */
+    antes_titulo: "TU RETO EMPIEZA EL {fecha}",
+    antes_texto:  "Ya tienes tu entrada, reina. Ese día se abre tu primer entreno. Mientras tanto, mira las indicaciones en tu curso y toma tu foto del antes.",
+    antes_fotos:  "TOMAR MI FOTO DEL ANTES",
+
+    /* cuando terminó */
+    fin_titulo: "TU RETO TERMINÓ",
+    fin_texto:  "Viviste diciembre a tu manera y llegaste a enero sin volver a la casilla uno. Lo que sigue es sostenerlo, y eso es el Club.",
+    fin_boton:  "VER LOS PLANES",
+    fin_fotos:  "SUBIR MI FOTO DEL DESPUÉS",
+
+    /* el mapa y Tu guardia, con candado */
+    puerta_mapa:    "Lo que te espera en el Club.",
+    puerta_guardia: "La comunidad del Club.",
+    mapa_lead: "Esto es el Club.",
+    mapa_sub:  "Lo que te espera cuando des el siguiente paso. Durante el reto lo ves, y se abre cuando entras al Club.",
+    guardia_titulo: "LA COMUNIDAD DEL CLUB",
+    guardia_texto:  "Mujeres que entrenan en la misma semana que tú y se acompañan todos los días. Se abre cuando entras al Club.",
+
+    /* el entreno corto */
+    sesion: "Sesión corta · unos 30 min",
+    series: 2,          /* series de cada ejercicio */
+    cardio_min: 4,      /* minutos de cardio */
+    cierre_min: 3,      /* minutos de "Baja el ritmo" */
+
+    /* las fotos */
+    foto_despues_desde: "2026-12-20",
+    puerta_fotos: "Tus fotos del inicio y del cierre del reto.",
+    fotos_lead: "Tu punto de partida y tu cierre de diciembre.",
+    fotos_despues_titulo: "AL CIERRE DEL RETO",
+    fotos_guia: [
+      "Reina, al final de diciembre vas a querer compararte, y la memoria engaña.",
+      "Toma 4 fotos: de frente, de lado derecho, de lado izquierdo y de espaldas.",
+      "Párate natural, como estás un día cualquiera. En la foto de antes casi todas buscan la \"buena foto\": meten la panza, buscan el ángulo y esconden el godito. Esta es justo la foto para mostrarlo todo, porque de ahí arranca tu cambio.",
+      "Usa ropa ajustada, top y licra o short, para que se vea la forma de tu cuerpo. Busca buena luz y saca el cuerpo completo.",
+      "Guarda ese lugar y esa ropa para tu foto del después, desde el 20 de diciembre."
+    ]
+  },
+
   /* --- EL MAPA: los módulos del Club ------------------------------ */
   mapa: [
     /* Mismo orden y mismas palabras que la página de planes de Skool. */
@@ -2137,6 +2235,8 @@ const CORREO_ADMIN  = "brayanpedrazatrainer@gmail.com";
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let PLAN_DE_ELLA = 'standard';
+/* reto: "antes", "activo" o "terminado" (lo calcula la base de datos con su propia hora) */
+let ESTADO_DE_ELLA = 'activo', INICIO_DE_ELLA = null;
 let CORREO_DE_ELLA = '';
 
 (function puerta(){
@@ -2152,7 +2252,7 @@ let CORREO_DE_ELLA = '';
   const callar=()=>{aviso.hidden=true};
 
   const mostrar=cual=>{
-    ['formEntrar','formClave','formNueva'].forEach(f=>{ $(f).hidden = (f!==cual) });
+    ['formEntrar','formCrear','formClave','formNueva'].forEach(f=>{ $(f).hidden = (f!==cual) });
     callar();
   };
 
@@ -2169,9 +2269,16 @@ let CORREO_DE_ELLA = '';
     const uid = (usuaria && usuaria.id) ? usuaria.id : usuaria;
     if(usuaria && usuaria.email) CORREO_DE_ELLA = usuaria.email;   // el correo siempre viene de la sesión
     try{
+      const {data:acc,error:ea}=await sb.rpc('mi_acceso');
+      const a=!ea&&acc&&acc[0];
+      if(a){
+        PLAN_DE_ELLA=a.plan||'standard';
+        ESTADO_DE_ELLA=a.estado||'activo';
+        INICIO_DE_ELLA=a.inicio||null;
+      }
       const {data,error}=await sb.from('reinas').select('plan,correo').eq('id',uid).single();
       if(!error&&data){
-        PLAN_DE_ELLA=data.plan||'standard';
+        if(!a) PLAN_DE_ELLA=data.plan||'standard';
         if(!CORREO_DE_ELLA) CORREO_DE_ELLA=data.correo||'';
       }
     }catch(e){ /* si falla, queda en standard */ }
@@ -2186,7 +2293,7 @@ let CORREO_DE_ELLA = '';
     if(error){
       const m=(error.message||'').toLowerCase();
       if(m.indexOf('invalid')!==-1 || m.indexOf('credentials')!==-1){
-        decir('Ese correo y esa contraseña no coinciden. Si es tu primera vez, usa el botón de abajo.');
+        decir('Ese correo y esa contraseña no coinciden. Si es tu primera vez, toca "Es mi primera vez: crear mi cuenta".');
       }else{
         decir('No pude abrirte: '+(error.message||'error desconocido'));
       }
@@ -2198,7 +2305,39 @@ let CORREO_DE_ELLA = '';
 
   $('inClave').addEventListener('keydown',e=>{ if(e.key==='Enter') $('btnEntrar').click(); });
 
-  /* ---- primera vez u olvidó su contraseña ---- */
+  /* ---- primera vez: ella crea su cuenta ----
+     Solo se crea si su correo está en la lista de habilitadas (Supabase);
+     ahí mismo queda con su plan y sus fechas. */
+  $('btnCrearCuenta').addEventListener('click',()=>{
+    $('inCorreo3').value=$('inCorreo').value.trim(); mostrar('formCrear');
+  });
+  $('btnVolverEntrar2').addEventListener('click',()=>{ mostrar('formEntrar'); });
+  $('btnCrear').addEventListener('click',async()=>{
+    const correo=$('inCorreo3').value.trim(), clave=$('inClave3').value;
+    if(!correo||!clave){ decir('Escribe tu correo y la contraseña que quieres.'); return; }
+    if(clave.length<6){ decir('Ponle mínimo seis caracteres a tu contraseña.'); return; }
+    decir('Creando tu cuenta...',true);
+    const {data,error}=await sb.auth.signUp({email:correo,password:clave});
+    if(error){
+      const m=(error.message||'').toLowerCase();
+      if(m.indexOf('already')!==-1 || m.indexOf('registered')!==-1){
+        decir('Ese correo ya tiene cuenta. Vuelve y entra con tu contraseña.');
+      }else if(m.indexOf('database')!==-1 || m.indexOf('saving new user')!==-1){
+        decir('Ese correo todavía no está habilitado. Revisa que sea el mismo con el que te inscribiste. Si ya pagaste, escríbeme por Skool y lo activo.');
+      }else if(m.indexOf('password')!==-1){
+        decir('Esa contraseña no sirve. Prueba con otra de mínimo seis caracteres.');
+      }else{
+        decir('No pude crear tu cuenta: '+(error.message||'error desconocido'));
+      }
+      return;
+    }
+    if(!data||!data.session){ decir('Tu cuenta quedó creada. Vuelve y entra con tu correo y tu contraseña.',true); return; }
+    await traerPlan(data.user);
+    abrirReino();
+  });
+  $('inClave3').addEventListener('keydown',e=>{ if(e.key==='Enter') $('btnCrear').click(); });
+
+  /* ---- olvidó su contraseña ---- */
   $('btnOlvide').addEventListener('click',()=>{ mostrar('formClave'); });
   $('btnVolverEntrar').addEventListener('click',()=>{ mostrar('formEntrar'); });
 
@@ -2236,7 +2375,7 @@ let CORREO_DE_ELLA = '';
 
   /* ---- cerrar sesión ---- */
   document.addEventListener('click',async e=>{
-    if(e.target&&e.target.id==='btnSalir'){
+    if(e.target&&(e.target.id==='btnSalir'||e.target.id==='btnSalir2')){
       await sb.auth.signOut();
       window.location.reload();
     }
@@ -2279,6 +2418,11 @@ window.arrancarReino=function(){
   const state={perfil:null,fase:null,sesion:0,saltarRecup:false,energia:'media',animo:'sensible',molestias:'algo',sueno:'regular',
                sola:false,escenario:'A',nivel:0,plan:(typeof PLAN_DE_ELLA!=='undefined'?PLAN_DE_ELLA:'standard')};
 
+  /* reto: la misma experiencia con el entreno corto; lo del Club se ve con candado */
+  const esReto=state.plan==='reto'||state.plan==='vencido';
+  const R=C.reto||{};
+  const seriesCortas=s=>esReto ? String(s||'').replace(/^\s*\d+\s*series/,(R.series||2)+' series') : s;
+
   /* recordar sus elecciones en este dispositivo */
   const rec=(k,v)=>{try{localStorage.setItem('gc_'+k,v)}catch(e){}};
   const leer=k=>{try{return localStorage.getItem('gc_'+k)}catch(e){return null}};
@@ -2308,15 +2452,16 @@ window.arrancarReino=function(){
     const P=(sinImpacto()&&T['sin_impacto_'+t]) || T[t];
     if(!P || (state.escenario==='C'&&!P.gimnasio)) return null;
     const lista=conVideo(P.lista);
-    return lista.length ? Object.assign({},P,{lista}) : null;
+    return lista.length ? Object.assign({},P,{lista},esReto?{minutos:R.cardio_min||4}:{}) : null;
   }
   function cardioDe(f){
     const P=planCardio(f);
     if(P) return P.descanso ? 'Intervalos de '+P.trabajo+' seg con '+P.descanso+' de descanso · '+P.minutos+' min'
                             : P.lista.length+' ejercicios alternando cada minuto · '+P.minutos+' min';
-    if(state.escenario==='C'&&f.cardio_gimnasio) return f.cardio_gimnasio;
-    if(state.escenario!=='C'&&f.cardio_casa) return f.cardio_casa;
-    return f.cardio;
+    const t = (state.escenario==='C'&&f.cardio_gimnasio) ? f.cardio_gimnasio
+            : (state.escenario!=='C'&&f.cardio_casa) ? f.cardio_casa : f.cardio;
+    /* reto: la misma intención, recortada */
+    return esReto ? String(t||'').replace(/·\s*\d+(\s*a\s*\d+)?\s*min\s*$/,'· '+(R.cardio_min||4)+' min') : t;
   }
 
   /* ══ PORTADA ══ */
@@ -2439,8 +2584,9 @@ window.arrancarReino=function(){
     const hoy=new Date();
     const dia=Math.floor((hoy-new Date(hoy.getFullYear(),0,0))/86400000);
     state.sesion=dia%lista.length;
-    /* si pidió entrenar en su día de recuperación, le damos la sesión siguiente */
-    if(state.saltarRecup){
+    /* si pidió entrenar en su día de recuperación, le damos la sesión siguiente.
+       En el reto siempre le toca entrenar: sus días de descanso son su recuperación. */
+    if(state.saltarRecup||esReto){
       for(let k=1;k<=lista.length;k++){
         const i=(state.sesion+k)%lista.length;
         if(lista[i].tipo!=='recuperacion'){ state.sesion=i; break; }
@@ -2476,6 +2622,7 @@ window.arrancarReino=function(){
     const carga=faseDeCarga(f);
     const p=(C.prescripciones[carga]||{})[state.nivel===0?'n1':'n2'];
     if(!p) return f.prescripcion||'';
+    if(esReto) return seriesCortas(p.series)+' · descanso '+p.descanso;
     const d=(C.dobles||{})[carga];
     const extra = d ? ' · el segundo ejercicio de cada patrón va con '+d[state.nivel===0?'n1':'n2'] : '';
     return p.series+' · descanso '+p.descanso+extra;
@@ -2486,6 +2633,15 @@ window.arrancarReino=function(){
     const _s=_l[state.sesion];
     if(_s&&_s.tipo==='recuperacion') return C.recuperacion.bloques;
     if(f.bloques_propios) return f.bloques_propios;
+    if(esReto) return [
+      ['Mueve tus articulaciones', 'Movilidad sencilla, con video', String(Math.round(C.movilidad.seg/60))],
+      ['Prepara tus articulaciones', (C.blindajes||{})[f.blindaje] ? C.blindajes[f.blindaje].length+' ejercicios para cuidarlas' : 'Movilidad suave',
+        (C.blindajes||{})[f.blindaje] ? String(minutosDe(tramosDe(C.blindajes[f.blindaje]))) : '5–8'],
+      ['Despierta el cuerpo', 'Activación corta, sin cansarte', String(minutosDe(tramosActivacion()))],
+      ['Tus ejercicios', seriesDeHoy(f), (_s&&(_s.patrones||[]).length>3) ? '15–20' : '10–15'],
+      ['Sube pulsaciones', cardioDe(f), String(R.cardio_min||4)],
+      ['Baja el ritmo', 'Respiración y movilidad', String(R.cierre_min||3)]
+    ];
     return [
       ['Mueve tus articulaciones', 'Movilidad sencilla, con video', String(Math.round(C.movilidad.seg/60))],
       ['Prepara tus articulaciones', (C.blindajes||{})[f.blindaje] ? C.blindajes[f.blindaje].length+' ejercicios para cuidarlas' : 'Movilidad suave',
@@ -2515,7 +2671,7 @@ window.arrancarReino=function(){
     const _num=_lista.slice(0,state.sesion+1).filter(x=>x.tipo!=='recuperacion').length;
     $('sessionName').textContent = (_ses&&_ses.tipo==='recuperacion')
       ? `${C.recuperacion.titulo} · ${C.recuperacion.duracion}`
-      : `Sesión ${_num} · ${f.tipo_sesion} · ${niv.nombre}`;
+      : `Sesión ${_num} · ${esReto ? R.sesion : f.tipo_sesion} · ${niv.nombre}`;
     $('blocks').innerHTML=bloquesDe(f).map(b=>
       `<li class="block"><span class="b-name">${b[0]}</span><span class="b-note">${b[1]}</span><span class="b-min">${b[2]?b[2]+"'":''}</span></li>`).join('');
 
@@ -2552,7 +2708,7 @@ window.arrancarReino=function(){
           <div class="ej-top"><span class="ej-n">${((C.zonas||{})[n]||n).toUpperCase()}</span><span class="ej-name">${principal}</span></div>
           ${det?`<div class="ej-como">${det[esc.id].como||det.ejecucion}</div>`:''}
           <div class="ej-dato">
-            <i>Series: <b>${presc.series}</b></i>
+            <i>Series: <b>${seriesCortas(presc.series)}</b></i>
             <i>Descanso: <b>${presc.descanso}</b></i>
           </div>
           ${sust?`<div class="ej-sust">Si no tienes con qué: ${sust}</div>`:''}
@@ -2613,6 +2769,18 @@ window.arrancarReino=function(){
   /* ══ EL MAPA ══ */
   const nivelPlan=p=>(C.planes[p]?C.planes[p].nivel:1);
   function pintarModulos(){
+    /* reto: solo lo de Standard, sin lecciones ni enlaces, y un botón a los planes */
+    if(esReto){
+      $('mapaSecciones').innerHTML=C.mapa.filter(s=>s.plan==='standard').map(s=>`
+      <div class="panel">
+        <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+        <div class="mod-head"><p class="p-title">${s.seccion}</p><span class="etiqueta">CLUB</span></div>
+        <p class="p-promise" style="margin-bottom:0">${s.promesa}</p>
+      </div>`).join('') + `
+      <a class="btn" href="${C.enlaces.planes}" target="_blank" rel="noopener"
+         style="margin-top:6px;text-align:center;text-decoration:none">VER LOS PLANES</a>`;
+      return;
+    }
     const mio=nivelPlan(state.plan);
     $('mapaSecciones').innerHTML=C.mapa.map(s=>{
       const et=C.planes[s.plan]?C.planes[s.plan].nombre:'';
@@ -2802,7 +2970,9 @@ window.arrancarReino=function(){
     /* bloque 3: uno o dos pasos por patrón, según la fase */
     const doble=(C.dobles||{})[carga];
     const seriesSegundo = doble ? doble[state.nivel===0?'n1':'n2'] : null;
-    const totalEj=(sesion.patrones||[]).length*(doble?2:1);
+    /* reto: solo el primer ejercicio de cada patrón */
+    const conSegundo=doble&&!esReto;
+    const totalEj=(sesion.patrones||[]).length*(conSegundo?2:1);
     let cuenta=0;
     (sesion.patrones||[]).forEach(n=>{
       const det=(C.ejercicios[n]||{})[carga];
@@ -2816,12 +2986,12 @@ window.arrancarReino=function(){
         bloque:'Ejercicio '+cuenta+' de '+totalEj+' · '+((C.zonas||{})[n]||n),
         titulo:principal, ej:principal, ejSust:sust,
         que: det ? (det[esc.id].como||det.ejecucion) : (C.esfuerzo[carga]||''),
-        datos:[['Series',presc.series],['Descanso',presc.descanso]],
+        datos:[['Series',seriesCortas(presc.series)],['Descanso',presc.descanso]],
         sust: sust ? 'Si no tienes con qué: '+sust : '',
         peso: C.esfuerzo[carga]||'',
         descanso: presc.descanso
       });
-      if(doble && segundo){
+      if(conSegundo && segundo){
         cuenta++;
         pasos.push({
           bloque:'Ejercicio '+cuenta+' de '+totalEj+' · '+((C.zonas||{})[n]||n),
@@ -2845,7 +3015,7 @@ window.arrancarReino=function(){
     pasos.push({bloque:'Para terminar', titulo:'Baja el ritmo',
                 que: f.id==='ovulatoria' ? 'Respiración y movilidad suave. Hoy no estires al límite.'
                                          : 'Respiración y movilidad suave para bajar pulsaciones.',
-                datos:[['Tiempo','6 a 14 min']], descanso:null});
+                datos:[['Tiempo', esReto ? (R.cierre_min||3)+' min' : '6 a 14 min']], descanso:null});
 
     pasos.push({fin:true, titulo:'TERMINASTE', que:alAzar(C.cierre.entreno)});
     return pasos;
@@ -3033,11 +3203,12 @@ window.arrancarReino=function(){
   const fechaLarga=d=>d.toLocaleDateString('es-CO',{day:'numeric',month:'long',year:'numeric'});
   function avisoFotos(t,ok){ const a=$('fotosAviso'); a.textContent=t||''; a.className=ok?'aviso ok':'aviso'; a.hidden=!t; }
   function abreDespues(){
+    if(esReto) return new Date(R.foto_despues_desde+'T00:00:00-05:00');   /* reto: fecha fija, hora de Colombia */
     if(!yo.fila||!yo.fila.antes_fecha) return null;
     const d=new Date(yo.fila.antes_fecha); d.setDate(d.getDate()+FT.dias_despues); return d;
   }
 
-  $('fotosGuia').innerHTML=FT.guia.map(t=>`<p>${t}</p>`).join('');
+  $('fotosGuia').innerHTML=((esReto&&R.fotos_guia)||FT.guia).map(t=>`<p>${t}</p>`).join('');
   $('btnPanelFotos').hidden = (typeof CORREO_DE_ELLA==='undefined' || CORREO_DE_ELLA.toLowerCase()!==CORREO_ADMIN);
   $('btnPanelFotos').addEventListener('click',()=>show('v-panel'));
   $('btnVolverFotos').addEventListener('click',()=>show('v-fotos'));
@@ -3243,11 +3414,62 @@ window.arrancarReino=function(){
   if($('linkEmpieza')) $('linkEmpieza').href=C.enlaces.empiezaAqui||C.enlaces.classroom;
   $('linkComunidad').href=C.enlaces.comunidad;
 
+  /* ══ RETO ══ */
+  const CANDADO='<svg class="candado" viewBox="0 0 12 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">'
+               +'<rect x="1.5" y="6" width="9" height="7" rx="1.2"/><path d="M3.5 6 V4.2 a2.5 2.5 0 0 1 5 0 V6"/></svg>';
+  function fechaInicio(){
+    const d=INICIO_DE_ELLA ? new Date(INICIO_DE_ELLA) : null;
+    return d ? d.toLocaleDateString('es-CO',{day:'numeric',month:'long',timeZone:'America/Bogota'}) : '';
+  }
+  function aplicarReto(){
+    $('panelEmpieza').hidden=true;
+    $('panelReto').hidden=false;
+    $('retoTitulo').textContent=(R.nombre||'').toUpperCase();
+    $('retoTexto').textContent=R.portada||'';
+    $('linkReto').href=R.curso; $('linkReto').textContent=R.boton_curso||'';
+    /* el mapa y Tu guardia: se ven con candado */
+    ['v-mapa','v-guardia'].forEach(v=>{
+      const b=$('nav').querySelector(`[data-go="${v}"]`); if(b) b.insertAdjacentHTML('beforeend',CANDADO);
+      const d=document.querySelector(`.door[data-go="${v}"]`);
+      if(d){ d.classList.add('bloqueada'); d.querySelector('.door-mark').innerHTML=CANDADO; }
+    });
+    $('puertaMapa').textContent=R.puerta_mapa||'';
+    $('puertaGuardia').textContent=R.puerta_guardia||'';
+    $('mapaLead').textContent=R.mapa_lead||'';
+    $('mapaSub').textContent=R.mapa_sub||'';
+    document.querySelectorAll('.guardia-abierta').forEach(p=>p.hidden=true);
+    $('guardiaBloqueada').hidden=false;
+    $('guardiaTitulo').textContent=R.guardia_titulo||'';
+    $('guardiaTexto').textContent=R.guardia_texto||'';
+    $('guardiaPlanes').href=C.enlaces.planes;
+    /* las fotos: del inicio y del cierre del reto */
+    $('puertaFotos').textContent=R.puerta_fotos||'';
+    $('fotosLead').textContent=R.fotos_lead||'';
+    $('fotosDespuesTitulo').textContent=R.fotos_despues_titulo||'';
+  }
+  /* antes de empezar o ya terminado: una sola pantalla, sin el menú */
+  function mostrarEstado(){
+    const antes=ESTADO_DE_ELLA==='antes';
+    $('nav').hidden=true;
+    $('estadoNombre').textContent=(R.nombre||'').toUpperCase();
+    $('estadoTitulo').textContent=antes ? (R.antes_titulo||'').replace('{fecha}',fechaInicio().toUpperCase()) : (R.fin_titulo||'');
+    $('estadoTexto').textContent=antes ? (R.antes_texto||'') : (R.fin_texto||'');
+    $('estadoBoton').href=antes ? R.curso : C.enlaces.planes;
+    $('estadoBoton').textContent=antes ? (R.boton_curso||'') : (R.fin_boton||'');
+    $('estadoFotos').textContent=antes ? (R.antes_fotos||'') : (R.fin_fotos||'');
+    $('btnVolverEstado').hidden=false;
+    show('v-estado');
+  }
+  $('estadoFotos').addEventListener('click',()=>show('v-fotos'));
+  $('btnVolverEstado').addEventListener('click',()=>show('v-estado'));
+
   /* ---- se pinta todo ANTES de cualquier adorno ---- */
+  if(esReto) aplicarReto();
   setCompany(false);
   pintarModulos();
   if(state.perfil) pintarOpciones();
   if(state.fase){ escogerSesionDelDia(); pintarHoy(); $('checkFase').textContent=faseDe(state.fase).etiqueta; }
+  if(esReto && ESTADO_DE_ELLA!=='activo') mostrarEstado();
 
   /* ══ inclinación 3D · adorno ══ */
   try{
