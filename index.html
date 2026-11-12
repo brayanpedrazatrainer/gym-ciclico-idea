@@ -6,7 +6,7 @@
 <title>El Reino — Gym Cíclico</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@400;600;800;900&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,300&family=Karla:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Barlow+Semi+Condensed:wght@500;600&family=Bebas+Neue&family=Cinzel:wght@400;600;800;900&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,300&family=Karla:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#0E0B0A; --surface:#191211; --surface-2:#221818; --surface-3:#2C1F1E;
@@ -556,6 +556,25 @@
   .note.recup{background:rgba(184,150,62,.10);border-left:2px solid var(--gold);color:var(--cream)}
   .porque-txt{font-family:var(--voice);font-style:italic;font-weight:300;font-size:14.5px;
     line-height:1.6;color:var(--cream)}
+
+  /* Títulos grandes en Anton SC: más héroe que gobernante.
+     Las etiquetas pequeñas siguen en Cinzel, que se lee mejor a ese tamaño. */
+  :root{--hero:'Anton SC','Anton',Impact,'Arial Narrow',sans-serif}
+  .hall-title{font-family:var(--hero);font-weight:400;font-size:46px;letter-spacing:.04em;line-height:1}
+  .p-title{font-family:var(--hero);font-weight:400;font-size:21px;letter-spacing:.04em;line-height:1.1}
+  .intent{font-family:var(--hero);font-weight:400;font-size:34px;letter-spacing:.03em;line-height:1}
+  .intent .intent-et{font-family:var(--heroic)}
+  .door-txt b{font-family:var(--hero);font-weight:400;font-size:19px;letter-spacing:.05em}
+  .sem-txt b{font-family:var(--hero);font-weight:400;font-size:18px;letter-spacing:.04em}
+  .en-titulo{font-family:var(--hero);font-weight:400;font-size:32px;letter-spacing:.02em;line-height:1.05}
+  .en-fin .en-titulo{font-size:38px}
+  .s-phase{font-family:var(--hero);font-weight:400;font-size:26px;letter-spacing:.04em;line-height:1.1}
+  .s-sign b{font-family:var(--hero);font-weight:400;font-size:30px;letter-spacing:.04em}
+  /* botones, lema y texto de la entrada: misma voz de héroe, y legible */
+  :root{--hero-txt:'Barlow Semi Condensed','Arial Narrow',sans-serif}
+  .btn{font-family:var(--hero);font-weight:400;font-size:18px;letter-spacing:.06em}
+  .hall-lema{font-family:var(--hero);font-weight:400;font-size:21px;letter-spacing:.04em;line-height:1.15;margin-top:12px}
+  .hall-sub{font-family:var(--hero-txt);font-style:normal;font-weight:500;font-size:17.5px;line-height:1.5;color:var(--cream)}
 </style>
 </head>
 <body>
@@ -1042,8 +1061,8 @@ const CONTENIDO = {
   /* --- Cómo se presenta el Reino --------------------------------- */
   portada: {
     titulo: "EL REINO",
-    lema: "Haz menos, que te rinda más.",
-    entrada: "Mientras otras se exprimen como naranja en el gimnasio, tú vas a entrenar según lo que te pide el cuerpo. Ahí es donde empieza a salir la verdadera reina que ya llevas adentro.",
+    lema: "Esta vez no vuelves a la casilla uno, te mantienes entrenando.",
+    entrada: "Esta vez no empiezas de cero. Tu plan marcha al ritmo de tu cuerpo: das batalla la semana que puedes y pides tregua la que toca. Así se forja la verdadera reina que llevas dentro.",
     empieza: "Dos videos y ya sabes ubicarte. Después de eso, solo abres y entrenas."
   },
 
@@ -1172,7 +1191,7 @@ const CONTENIDO = {
       carta: [
         "Reina,",
         "Baja el ánimo y sube el hambre. Te vas a mirar al espejo y te vas a ver hinchada.",
-        "Estás en otra fase, y esa hinchazón se va sola. Esta es la semana en la que siempre te bajabas del barco. Hoy toca hacer menos para que esta vez no pase."
+        "Estás en otra fase, y esa hinchazón se va sola. Esta es la semana en la que siempre te bajabas del barco. Hoy aflojas para que esta vez sigas en el barco."
       ],
       cuerpo: "Entra la progesterona. Retienes líquido y el hambre aparece de verdad. La hinchazón que ves no es grasa.",
       ojo: "",
@@ -1344,7 +1363,7 @@ const CONTENIDO = {
       cuerpo:"El colágeno se degrada más rápido en esta etapa. El blindaje es lo que te mantiene entrenando años.",
       carta:["Reina,",
              "Semana de cuidar la casa antes de volver a empezar.",
-             "Nadie aplaude estas semanas, y son las que te dejan seguir entrenando cuando otras ya pararon."],
+             "Nadie aplaude estas semanas, y son las que te dejan seguir entrenando cuando antes ya habrías parado."],
       ojo:"", patrones:["Sentadilla","Jalar","Rotación"]
     }
   ],
@@ -1516,7 +1535,7 @@ const CONTENIDO = {
       "Hoy no le ganaste a nadie más que a la de ayer. Esa es la única pelea que cuenta.",
       "Esto que acabas de hacer nadie lo vio. Se va a ver en tres meses.",
       "Ahí está la reina que llevas adentro. No apareció hoy, solo se dejó ver un poquito más.",
-      "Hiciste lo que tu cuerpo podía dar hoy. Ni más ni menos. Eso es gobernarte.",
+      "Hiciste lo que tu cuerpo podía dar hoy. Ni más ni menos. Eso es cumplirte.",
       "Esta ya es tuya. Cuando lleves tres meses así, vas a mirar para atrás y no lo vas a creer.",
       "Terminaste aunque no tenías ganas. Eso pasa cuando el plan por fin está hecho a tu medida.",
       "Esta vez no es volver a la casilla uno. Esta vez el plan está hecho para tu cuerpo, reina."
@@ -1534,7 +1553,7 @@ const CONTENIDO = {
     titulo: "Recuperación activa",
     duracion: "20 a 30 min",
     nota: "Sin sudar y sin subir las pulsaciones. Esto no es descansar, es aparecer.",
-    porque: "Mover suave hoy es lo que hace que lo que entrenes esta semana se te note. Hacer menos y que te rinda más empieza aquí.",
+    porque: "Mover suave hoy es lo que hace que lo que entrenes esta semana se te note. Aflojar cuando toca también es parte de no volver a la casilla uno.",
     saltar: "Si hoy llegaste con ganas, entrena. La recuperación te espera mañana.",
     bloques: [
       ["Mueve tus articulaciones", "Movilidad sencilla, articulación por articulación", "3"],
@@ -2113,7 +2132,7 @@ const CONTENIDO = {
     ],
     escenarios: [
       { id: "A", nombre: "Solo cuerpo", detalle: "Sin equipo" },
-      { id: "B", nombre: "Mancuernas", detalle: "Y bandas elásticas" },
+      { id: "B", nombre: "Mancuernas", detalle: "" },
       { id: "C", nombre: "Gimnasio", detalle: "Máquinas y barra" }
     ]
   },
@@ -2598,7 +2617,7 @@ window.arrancarReino=function(){
 
   /* ══ ARMERÍA: escenario y nivel ══ */
   $('scenPick').innerHTML=C.armeria.escenarios.map(s=>
-    `<button data-s="${s.id}" aria-pressed="${s.id===state.escenario}">${s.nombre}<small>${s.detalle}</small></button>`).join('');
+    `<button data-s="${s.id}" aria-pressed="${s.id===state.escenario}">${s.nombre}${s.detalle?`<small>${s.detalle}</small>`:''}</button>`).join('');
   $('lvlPick').innerHTML=C.armeria.niveles.map((n,i)=>
     `<button data-l="${i}" aria-pressed="${i===state.nivel}" ${n.pronto?'class="proximo" disabled':''}>${n.nombre}<small>${n.detalle}</small></button>`).join('');
 
