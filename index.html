@@ -2897,6 +2897,7 @@ window.arrancarReino=function(){
     return {v, vuelta};
   }
   const minutosDe=tr=>Math.max(1,Math.round(tr.reduce((s,x)=>s+x.seg,0)/60));
+  const unosMin=tr=>{ const m=minutosDe(tr); return m===1 ? '1 min' : 'unos '+m+' min'; };
   /* el cronómetro guiado: cada ejercicio (y cada lado) es un tramo; entre ejercicios, una pausa para acomodarse */
   function tramosDe(lista){
     const T=C.tiempos_movilidad||{}, V=vueltasDe(lista).v, tr=[];
@@ -2936,7 +2937,7 @@ window.arrancarReino=function(){
     const tr=tramosDe(L);
     return {bloque, titulo, que:'Toca cada uno para ver cómo se hace. Con el cronómetro te guío.',
             lista:L, tramos:tr,
-            datos:[['Vueltas',String(vueltasDe(L).v)],['Tiempo','unos '+minutosDe(tr)+' min']], descanso:null};
+            datos:[['Vueltas',String(vueltasDe(L).v)],['Tiempo',unosMin(tr)]], descanso:null};
   }
   function pasoActivacion(bloque){
     const A=C.activacion, L=listaActivacion(), tr=tramosActivacion();
@@ -2944,7 +2945,7 @@ window.arrancarReino=function(){
     return {bloque, titulo:'Despierta el cuerpo',
             que:'Solo para activar: tiempos cortos y sin cansarte. Con el cronómetro te guío.',
             lista:L, dosis, tramos:tr,
-            datos:[['Vueltas',String(A.vueltas)],['Tiempo','unos '+minutosDe(tr)+' min']], descanso:null};
+            datos:[['Vueltas',String(A.vueltas)],['Tiempo',unosMin(tr)]], descanso:null};
   }
   /* cardio guiado: intervalos (cima) o alternar cada minuto (arranque) */
   function pasoCardio(bloque,P){
